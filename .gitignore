@@ -1,24 +1,26 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
+*.class
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
+# Package Files #
+*.jar
+*.war
+*.ear
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# Idea Project Files #
 *.iml
-*.ipr
+*gitignore
+*.sql
+*.classpath
+*.project
+*/.settings/
+/.settings/
+# Image Files #
+*.jpg
+*.png
+*.gif
+/.idea/
+/bin/
 
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
+/jfinalshop-4.0-pay/src/test/
+target/
+logs/
+archive.zip

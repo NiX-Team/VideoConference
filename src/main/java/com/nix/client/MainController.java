@@ -8,5 +8,6 @@ import javafx.scene.input.MouseEvent;
 public class MainController {
 
     public void setImage(MouseEvent mouseEvent) {
+
     }
 }

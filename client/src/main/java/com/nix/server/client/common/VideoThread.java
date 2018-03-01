@@ -1,12 +1,12 @@
-package com.nix.client;
+package com.nix.server.client.common;
 
 import com.xuggle.xuggler.*;
-import org.omg.CORBA.FREE_MEM;
 
 import java.awt.image.BufferedImage;
 
 /**
  * @author 11723
+ * 本机摄像头录制线程
  */
 public class VideoThread{
     public static final String DEFAULT_DEVICE_NAME = "vfwcap";
@@ -178,7 +178,6 @@ public class VideoThread{
             VIDEO_THREAD.THREAD.interrupt();
         }
     }
-
     public interface Exe{
         /**
          * 抓取到图片后回调方法

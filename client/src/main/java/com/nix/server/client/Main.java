@@ -1,11 +1,13 @@
-package com.nix.client;
+package com.nix.server.client;
 
+import com.nix.server.client.common.VideoThread;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
@@ -20,7 +22,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        root = FXMLLoader.load(getClass().getResource("sample.fxml"));
+        root = FXMLLoader.load(getClass().getResource("controller/sample.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
@@ -35,6 +37,7 @@ public class Main extends Application {
         VideoThread.start(new VideoThread.Exe() {
             @Override
             public void exeImage(BufferedImage javaImage) {
+                Image image = new Image("");
                 imageView.setImage(SwingFXUtils.toFXImage(javaImage,new WritableImage(100,100)));
             }
         });

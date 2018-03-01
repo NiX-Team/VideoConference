@@ -1,4 +1,4 @@
-package com.nix;
+package com.nix.server;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

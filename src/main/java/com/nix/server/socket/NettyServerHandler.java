@@ -1,5 +1,7 @@
 package com.nix.server.socket;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -13,14 +15,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         System.out.println("server received data :" + msg);
         //写回数据，
-        ctx.write(msg);
-    }
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) {
-        //flush掉所有写回的数据
-        ctx.writeAndFlush(Unpooled.EMPTY_BUFFER)
-                //当flush完成后关闭channel
-                .addListener(ChannelFutureListener.CLOSE);
+        ctx.writeAndFlush(msg);
     }
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

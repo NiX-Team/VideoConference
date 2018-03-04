@@ -2,15 +2,15 @@ package com.nix.client.common;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.EventLoopGroup;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.CharsetUtil;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 11723
@@ -19,6 +19,7 @@ import java.net.InetSocketAddress;
 public class VideoClient {
     private final String host;
     private final int port;
+    private final EventLoopGroup group = new NioEventLoopGroup();
 
     public VideoClient(String host, int port) {
         this.host = host;
@@ -26,16 +27,23 @@ public class VideoClient {
     }
 
     public void start() throws Exception {
-        EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
-            b.group(group);
+            b.group(group)
+                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
+                    //发包缓冲区，单位多少？
+                    .option(ChannelOption.SO_SNDBUF, 1024*256)
+                    //收包换成区，单位多少？
+                    .option(ChannelOption.SO_RCVBUF, 1024*256)
+                    //TCP立即发包
+                    .option(ChannelOption.TCP_NODELAY, true)
+                    .option(ChannelOption.SO_KEEPALIVE,true);
             b.channel(NioSocketChannel.class);
             b.remoteAddress(new InetSocketAddress(host, port));
             b.handler(new ChannelInitializer<SocketChannel>() {
 
                 @Override
-                public void initChannel(SocketChannel ch) throws Exception {
+                public void initChannel(SocketChannel ch) {
                     ch.pipeline().addLast(new NettyClientHandler());
                 }
             });
@@ -53,14 +61,25 @@ public class VideoClient {
 
                 }
             });
-            f.channel().closeFuture().sync();
-        } finally {
-            group.shutdownGracefully().sync();
+            if (f.isSuccess()) {
+                System.out.println("connect server  成功---------");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
+    }
+    public void close() {
+        group.shutdownGracefully();
     }
 
     public static void main(String[] args) throws Exception {
-
-        new VideoClient("127.0.0.1", 9999).start();
+        VideoClient client = new VideoClient("127.0.0.1", 9999);
+        client.start();
+        TimeUnit.SECONDS.sleep(2);
+        NettyClientHandler.writeContent(Unpooled.copiedBuffer("Netty rocks!6666", CharsetUtil.UTF_8));
+        TimeUnit.SECONDS.sleep(2);
+        NettyClientHandler.writeContent(Unpooled.copiedBuffer("Netty rocks!6666", CharsetUtil.UTF_8));
+        TimeUnit.SECONDS.sleep(2);
+        client.close();
     }
 }

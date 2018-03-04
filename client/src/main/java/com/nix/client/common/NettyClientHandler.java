@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;
 
@@ -14,22 +15,33 @@ import io.netty.util.CharsetUtil;
 /**
  * @author 11723
  */
-public class NettyClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
+public class NettyClientHandler extends ChannelInboundHandlerAdapter {
+    private static ChannelHandlerContext context;
+
+
+    /**
+     * context写入数据
+     * */
+    public static void writeContent(ByteBuf content) {
+        context.writeAndFlush(content);
+    }
 
     /**
      *此方法会在连接到服务器后被调用
      * */
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        ctx.writeAndFlush(Unpooled.copiedBuffer("Netty rocks!", CharsetUtil.UTF_8));
+        context = ctx;
+//        writeContent(Unpooled.copiedBuffer("Netty rocks!25151515", CharsetUtil.UTF_8));
     }
     /**
      *此方法会在接收到服务器数据后调用
      * */
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, ByteBuf in) {
-        System.out.println("Client received: " + ByteBufUtil.hexDump(in.readBytes(in.readableBytes())));
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        System.out.println("server return data :" + msg);
     }
+
     /**
      *捕捉到异常
      * */

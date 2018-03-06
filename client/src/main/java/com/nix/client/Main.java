@@ -38,6 +38,7 @@ public class Main extends Application {
             @Override
             public void exeImage(BufferedImage javaImage) {
                 imageView.setImage(SwingFXUtils.toFXImage(javaImage,new WritableImage(100,100)));
+
             }
         });
 

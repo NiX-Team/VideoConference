@@ -19,7 +19,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     /**
      * context写入数据
      * */
-    public void writeContent(ByteBuf content) {
+    public void writeContent(Object content) {
         context.writeAndFlush(content);
     }
 

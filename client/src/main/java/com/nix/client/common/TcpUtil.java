@@ -2,9 +2,11 @@ package com.nix.client.common;
 
 import com.nix.client.nio.ClientHandler;
 import com.nix.client.nio.VideoClient;
+import com.nix.message.ImageMessage;
 import io.netty.buffer.Unpooled;
 import io.netty.util.CharsetUtil;
 
+import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -16,19 +18,16 @@ import java.util.concurrent.TimeUnit;
  * byte数组信息有没帧图片获取时间戳 图片宽高
  */
 public class TcpUtil {
+    private final static VideoClient CLIENT = VideoClient.getClient("127.0.0.1", 9999, new VideoClientHandler());
 
     public static void main(String[] args) throws InterruptedException {
-        VideoClient client = VideoClient.getClient("127.0.0.1", 9999, new ClientHandler() {
-            @Override
-            public void read(Object msg) {
-                System.out.println(msg);
-            }
-        });
+        VideoClient client = CLIENT;
         client.start();
+        ImageMessage imageMessage = new ImageMessage();
+        imageMessage.setRgb(new byte[]{1,2,3});
         TimeUnit.SECONDS.sleep(2);
-        client.sendMsg(Unpooled.copiedBuffer("Netty rocks!25151515", CharsetUtil.UTF_8));
+        client.sendMsg(imageMessage);
         TimeUnit.SECONDS.sleep(2);
         client.close();
-
     }
 }

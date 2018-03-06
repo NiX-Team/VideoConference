@@ -15,9 +15,14 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         //写回数据，
         ctx.writeAndFlush(msg);
     }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+    }
+
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         cause.printStackTrace();//捕捉异常信息
-        ctx.close();//出现异常时关闭channel
+//        ctx.close();//出现异常时关闭channel
     }
 }

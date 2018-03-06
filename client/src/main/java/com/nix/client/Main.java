@@ -1,7 +1,10 @@
 package com.nix.client;
 
+import com.nix.client.common.TcpUtil;
 import com.nix.client.common.VideoThread;
+import com.nix.client.util.ImageUtil;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,20 +15,24 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 11723
  */
 public class Main extends Application {
 
-    private Parent root;
-
+    private static Parent root;
+    private static Main main;
+    private int i = 0;
     @Override
     public void start(Stage primaryStage) throws Exception{
+        main = this;
         root = FXMLLoader.load(getClass().getResource("controller/sample.fxml"));
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
+        System.out.println("start");
         openVideo();
     }
 
@@ -33,12 +40,25 @@ public class Main extends Application {
      * 显示自己摄像头视频
      * */
     private void openVideo() {
-        final ImageView imageView = (ImageView) getNodeById(root,"video_box");
         VideoThread.start(new VideoThread.Exe() {
             @Override
             public void exeImage(BufferedImage javaImage) {
-                imageView.setImage(SwingFXUtils.toFXImage(javaImage,new WritableImage(100,100)));
+//                i++;
+//                if (i % 5 ==  0 ) {
+//                    System.out.println("发送");
+//                }
+                TcpUtil.sendImageMessage(ImageUtil.imageToImageMessage(javaImage));
+            }
+        });
+    }
 
+    public static void setImage(BufferedImage javaImage) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                final ImageView imageView = (ImageView) main.getNodeById(root,"video_box");
+                System.out.println("设置图片");
+                imageView.setImage(SwingFXUtils.toFXImage(javaImage,new WritableImage(100,100)));
             }
         });
 

@@ -2,26 +2,22 @@ package com.nix.client.nio;
 import com.nix.message.ImageMessageDecode;
 import com.nix.message.ImageMessageEncode;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
-import io.netty.handler.codec.LineBasedFrameDecoder;
-import io.netty.handler.codec.string.StringDecoder;
-import io.netty.handler.codec.string.StringEncoder;
 
+import java.io.Serializable;
 import java.net.InetSocketAddress;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 11723
  * NIO客户端
  * 单例
  */
-public class VideoClient {
+public class VideoClient<M extends Serializable> {
     /**
      * 服务器host
      * */
@@ -74,6 +70,8 @@ public class VideoClient {
 
                 @Override
                 public void initChannel(SocketChannel ch) {
+                    ch.pipeline().addLast("framedecoder",new LengthFieldBasedFrameDecoder(1024*1024, 0, 4,0,4));
+                    ch.pipeline().addLast("encoder", new LengthFieldPrepender(4, false));
                     ch.pipeline().addLast(new ImageMessageDecode());
                     ch.pipeline().addLast(new ImageMessageEncode());
                     ch.pipeline().addLast(nettyClientHandler);
@@ -111,7 +109,7 @@ public class VideoClient {
     /**
      * 写数据到服务器
      * */
-    public void sendMsg(Object msg) {
+    public void sendMsg(M msg) {
         nettyClientHandler.writeContent(msg);
     }
 

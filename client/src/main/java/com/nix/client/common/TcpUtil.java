@@ -5,6 +5,8 @@ import com.nix.client.nio.VideoClient;
 import com.nix.message.ImageMessage;
 import io.netty.buffer.Unpooled;
 import io.netty.util.CharsetUtil;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
 
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
@@ -19,15 +21,17 @@ import java.util.concurrent.TimeUnit;
  */
 public class TcpUtil {
     private final static VideoClient CLIENT = VideoClient.getClient("127.0.0.1", 9999, new VideoClientHandler());
-
+    static {
+        CLIENT.start();
+    }
     public static void main(String[] args) throws InterruptedException {
-        VideoClient client = CLIENT;
-        client.start();
         ImageMessage imageMessage = new ImageMessage();
-        imageMessage.setRgb(new byte[]{1,2,3});
         TimeUnit.SECONDS.sleep(2);
-        client.sendMsg(imageMessage);
+        sendImageMessage(imageMessage);
         TimeUnit.SECONDS.sleep(2);
-        client.close();
+        CLIENT.close();
+    }
+    public static void sendImageMessage(ImageMessage message) {
+        CLIENT.sendMsg(message);
     }
 }

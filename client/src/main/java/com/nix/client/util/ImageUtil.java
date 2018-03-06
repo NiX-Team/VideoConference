@@ -1,35 +1,37 @@
 package com.nix.client.util;
 
 import com.nix.message.ImageMessage;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * @author 11723
  */
 public class ImageUtil {
     public static ImageMessage imageToImageMessage(BufferedImage image) {
-        int width = image.getWidth();
-        int height = image.getHeight();
-        int[][] rgb = new int[height][width];
-        ImageMessage message = new ImageMessage();
-        message.setWidth(width);
-        message.setHeight(height);
-        for (int i = 0;i < height;i ++) {
-            for (int j = 0;j < width;j ++) {
-                rgb[i][j] = (byte) image.getRGB(j,i);
-            }
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image,"jpg",outputStream);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
         }
-        message.setRgb(rgb);
+        ImageMessage message = new ImageMessage();
+        message.setBytes(outputStream.toByteArray());
         return message;
     }
     public static BufferedImage messageToBufferedImage(ImageMessage message) {
-        BufferedImage image = new BufferedImage(message.getWidth(),message.getHeight(),BufferedImage.TYPE_INT_ARGB);
-        int[][] rgb = message.getRgb();
-        for (int i = 0;i < rgb.length;i ++) {
-            for (int j = 0;j < rgb[i].length;j ++) {
-                image.setRGB(j,i,rgb[i][j]);
-            }
+        ByteArrayInputStream in = new ByteArrayInputStream(message.getBytes());
+        try {
+            BufferedImage image = ImageIO.read(in);
+            return image;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return image;
+        return null;
     }
 }

@@ -57,7 +57,6 @@ public class Main extends Application {
             @Override
             public void run() {
                 final ImageView imageView = (ImageView) main.getNodeById(root,"video_box");
-                System.out.println("设置图片");
                 imageView.setImage(SwingFXUtils.toFXImage(javaImage,new WritableImage(100,100)));
             }
         });

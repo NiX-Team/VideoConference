@@ -1,14 +1,12 @@
 package com.nix.message;
 
-import javafx.scene.image.WritableImage;
-
 import java.io.Serializable;
 
 /**
  * @author 11723
  */
 public class ImageMessage implements Serializable{
-    private int[][] rgb;
+    private byte[] bytes;
     private int width;
     private int height;
 
@@ -28,16 +26,11 @@ public class ImageMessage implements Serializable{
         this.height = height;
     }
 
-    public int[][] getRgb() {
-        return rgb;
+    public byte[] getBytes() {
+        return bytes;
     }
 
-    public void setRgb(int[][] rgb) {
-        this.rgb = rgb;
-    }
-
-    @Override
-    public String toString() {
-        return "rgb:" + rgb.length;
+    public void setBytes(byte[] bytes) {
+        this.bytes = bytes;
     }
 }

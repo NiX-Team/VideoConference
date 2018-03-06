@@ -1,8 +1,11 @@
 package com.nix;
 
-import java.util.*;
+import org.aspectj.weaver.ast.Or;
 
-public class AppTest{
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
+
+public class AppTest1{
     /** 请完成下面这个函数，实现题目要求的功能 **/
     /** 当然，你也可以不按照这个模板来作答，完全按照自己的想法来 ^-^  **/
     public static void main(String[] args) {
@@ -34,6 +37,7 @@ public class AppTest{
         }
         in.close();
         Map<String, Integer> res = resolve(order, boms);
+
         System.out.println("match result:");
         for(String key : res.keySet()){
             System.out.println(key+"*"+res.get(key));
@@ -54,25 +58,24 @@ public class AppTest{
     public static boolean result(List<Integer> order, Map<String, List<Integer>> boms,Map<String, Integer> result,List<Map<String, Integer>> results) {
         Map<String, List<Integer>> nextBom = new HashMap<>();
         nextBom.putAll(boms);
-        for (Map.Entry<String, List<Integer>> entry:boms.entrySet()) {
-            for (int i = 0;;i ++) {
+        Map<String, List<Integer>> map = getOneMatch(order,boms);
+        for (Map.Entry<String, List<Integer>> entry:map.entrySet()) {
+            for (int i = 0;i < entry.getValue().size();i ++) {
                 Map<String, Integer> newResult = new HashMap<>();
                 newResult.putAll(result);
                 ArrayList<Integer> list = new ArrayList<>();
                 for (int j = 0;j < order.size();j ++) {
-                    list.add(i * boms.get(entry.getKey()).get(j));
+                    list.add(entry.getValue().get(i) * boms.get(entry.getKey()).get(j));
                 }
-                newResult.put(entry.getKey(),i);
+                newResult.put(entry.getKey(),entry.getValue().get(i));
                 List<Integer> newOrder = new ArrayList<>();
                 newOrder.addAll(order);
                 getNewOrder(newOrder,list);
-                if (checkOrderIsOK(newOrder)) {
+                if (checkOrderIsOK(newOrder,newResult)) {
                     results.add(newResult);
                     newResult = new HashMap<>();
                     newResult.putAll(result);
-                    newResult.put(entry.getKey(),i);
-                }else {
-                    break;
+                    newResult.put(entry.getKey(),entry.getValue().get(i));
                 }
                 nextBom.remove(entry.getKey());
                 result(newOrder,nextBom,newResult,results);
@@ -213,7 +216,14 @@ public class AppTest{
      * @param order 剩余订单
      * @return
      * */
-    private static boolean checkOrderIsOK(List<Integer> order) {
+    private static boolean checkOrderIsOK(List<Integer> order,Map<String, Integer> result) {
+        int sum = 0;
+        for (String key:result.keySet()) {
+            sum += result.get(key);
+        }
+        if (sum == 0) {
+            return false;
+        }
         for (Integer num:order) {
             if (num < 0) {
                 return false;
@@ -230,6 +240,30 @@ public class AppTest{
         for (int i = 0;i < oldOrder.size();i ++) {
             oldOrder.set(i,oldOrder.get(i) - subtractionNum.get(i));
         }
+    }
+
+
+    /**
+     * 获取每组bom的合法数目
+     * */
+    private static Map<String, List<Integer>> getOneMatch(List<Integer> order,Map<String, List<Integer>> boms) {
+        Map<String, List<Integer>> map = new HashMap<>();
+        for (Map.Entry<String, List<Integer>> entry:boms.entrySet()) {
+            List<Integer> list = new ArrayList<>();
+            all:for (int i = 0;;i++) {
+                int j = 0;
+                for (;j < order.size();j++) {
+                    if (entry.getValue().get(j) * i > order.get(j)) {
+                        break all;
+                    }
+                }
+                if (j == order.size()) {
+                    list.add(new Integer(i));
+                }
+            }
+            map.put(entry.getKey(),list);
+        }
+        return map;
     }
 }
 

@@ -1,4 +1,12 @@
 package com.nix.client.common;
+
+import com.nix.client.nio.ClientHandler;
+import com.nix.client.nio.VideoClient;
+import io.netty.buffer.Unpooled;
+import io.netty.util.CharsetUtil;
+
+import java.util.concurrent.TimeUnit;
+
 /**
  * @author 11723
  * Tcp工具
@@ -9,4 +17,18 @@ package com.nix.client.common;
  */
 public class TcpUtil {
 
+    public static void main(String[] args) throws InterruptedException {
+        VideoClient client = VideoClient.getClient("127.0.0.1", 9999, new ClientHandler() {
+            @Override
+            public void read(Object msg) {
+                System.out.println(msg);
+            }
+        });
+        client.start();
+        TimeUnit.SECONDS.sleep(2);
+        client.sendMsg(Unpooled.copiedBuffer("Netty rocks!25151515", CharsetUtil.UTF_8));
+        TimeUnit.SECONDS.sleep(2);
+        client.close();
+
+    }
 }

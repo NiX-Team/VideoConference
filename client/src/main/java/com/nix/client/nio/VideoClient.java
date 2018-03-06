@@ -1,32 +1,55 @@
-package com.nix.client.common;
+package com.nix.client.nio;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.util.CharsetUtil;
-
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author 11723
  * NIO客户端
+ * 单例
  */
 public class VideoClient {
+    /**
+     * 服务器host
+     * */
     private final String host;
+    /**
+     * 服务器端口
+     * */
     private final int port;
+    /**
+     * nio客户端socket句柄
+     * */
     private final EventLoopGroup group = new NioEventLoopGroup();
+    /**
+     * {@link VideoClient} 单例模式
+     * */
+    private static VideoClient client;
+    /**
+     * videoClient客户端的handler
+     * */
+    private final ClientHandler clientHandler;
+    /**
+     * netty客户端handler
+     * */
+    private final NettyClientHandler nettyClientHandler = new NettyClientHandler();
 
-    public VideoClient(String host, int port) {
+    private VideoClient(String host, int port,ClientHandler clientHandler) {
         this.host = host;
         this.port = port;
+        this.clientHandler = clientHandler;
     }
-
-    public void start() throws Exception {
+    /**
+     * 客户端启动方法
+     * */
+    public void start() {
+        nettyClientHandler.setClientHandler(clientHandler);
         try {
             Bootstrap b = new Bootstrap();
             b.group(group)
@@ -44,7 +67,7 @@ public class VideoClient {
 
                 @Override
                 public void initChannel(SocketChannel ch) {
-                    ch.pipeline().addLast(new NettyClientHandler());
+                    ch.pipeline().addLast(nettyClientHandler);
                 }
             });
             ChannelFuture f = b.connect().sync();
@@ -68,18 +91,34 @@ public class VideoClient {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 客户端关闭方法
+     * */
     public void close() {
         group.shutdownGracefully();
     }
 
-    public static void main(String[] args) throws Exception {
-        VideoClient client = new VideoClient("127.0.0.1", 9999);
-        client.start();
-        TimeUnit.SECONDS.sleep(2);
-        NettyClientHandler.writeContent(Unpooled.copiedBuffer("Netty rocks!6666", CharsetUtil.UTF_8));
-        TimeUnit.SECONDS.sleep(2);
-        NettyClientHandler.writeContent(Unpooled.copiedBuffer("Netty rocks!6666", CharsetUtil.UTF_8));
-        TimeUnit.SECONDS.sleep(2);
-        client.close();
+    /**
+     * 写数据到服务器
+     * */
+    public void sendMsg(ByteBuf msg) {
+        nettyClientHandler.writeContent(msg);
+    }
+
+    /**
+     * 获取nio客户端单例
+     * @param host 服务器host
+     * @param port 服务器端口
+     * */
+    public static VideoClient getClient(String host, int port,ClientHandler handler) {
+        if (client == null) {
+            synchronized (VideoClient.class) {
+                if (client == null) {
+                    client = new VideoClient(host,port,handler);
+                }
+            }
+        }
+        return client;
     }
 }

@@ -12,13 +12,15 @@ import java.net.InetSocketAddress;
  */
 public class VideoServer {
     private static final int port = 9999;
+    /**
+    * 通过nio方式来接收连接和处理连接
+    */
+    private static final EventLoopGroup GROUP = new NioEventLoopGroup();
     public void start() throws InterruptedException {
         // 引导辅助程序
         ServerBootstrap b = new ServerBootstrap();
-        // 通过nio方式来接收连接和处理连接
-        EventLoopGroup group = new NioEventLoopGroup();
         try {
-            b.group(group)
+            b.group(GROUP)
                     .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
                     //发包缓冲区，单位多少？
                     .option(ChannelOption.SO_SNDBUF, 1024*256)
@@ -37,7 +39,7 @@ public class VideoServer {
                 @Override
                 protected void initChannel(SocketChannel ch) {
                     // pipeline管理channel中的Handler，在channel队列中添加一个handler来处理业务
-                    ch.pipeline().addLast("myHandler", new NettyServerHandler());
+                    ch.pipeline().addLast(new NettyServerHandler());
                 }
             });
 
@@ -49,6 +51,9 @@ public class VideoServer {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public void close() {
+        GROUP.shutdownGracefully();
     }
     public static void main(String[] args) {
         try {

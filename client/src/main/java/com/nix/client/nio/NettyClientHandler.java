@@ -1,28 +1,25 @@
-package com.nix.client.common;
-
+package com.nix.client.nio;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.timeout.IdleStateEvent;
-
-import com.alibaba.fastjson.JSON;
 import io.netty.util.CharsetUtil;
 
 /**
  * @author 11723
  */
 public class NettyClientHandler extends ChannelInboundHandlerAdapter {
-    private static ChannelHandlerContext context;
+    private ChannelHandlerContext context;
+    private ClientHandler clientHandler;
 
+    public void setClientHandler(ClientHandler clientHandler) {
+        this.clientHandler = clientHandler;
+    }
 
     /**
      * context写入数据
      * */
-    public static void writeContent(ByteBuf content) {
+    public void writeContent(ByteBuf content) {
         context.writeAndFlush(content);
     }
 
@@ -32,14 +29,13 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         context = ctx;
-//        writeContent(Unpooled.copiedBuffer("Netty rocks!25151515", CharsetUtil.UTF_8));
     }
     /**
      *此方法会在接收到服务器数据后调用
      * */
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        System.out.println("server return data :" + msg);
+        clientHandler.read(msg);
     }
 
     /**

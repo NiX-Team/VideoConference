@@ -20,16 +20,26 @@ import java.util.concurrent.TimeUnit;
  * byte数组信息有没帧图片获取时间戳 图片宽高
  */
 public class TcpUtil {
-    private final static VideoClient CLIENT = VideoClient.getClient("127.0.0.1", 9999, new VideoClientHandler());
+//    private final static VideoClient CLIENT = VideoClient.getClient("127.0.0.1", 9999, new VideoClientHandler());
+    private final static VideoClient CLIENT = VideoClient.getClient("127.0.0.1", 9999, new ClientHandler() {
+    @Override
+    public void read(Object msg) {
+        System.out.println(new String(((ImageMessage)msg).getBytes()));
+    }
+});
     static {
         CLIENT.start();
     }
     public static void main(String[] args) throws InterruptedException {
         ImageMessage imageMessage = new ImageMessage();
+        imageMessage.setHello(true);
+        imageMessage.setRoomId("test");
+        imageMessage.setBytes("hello".getBytes());
         TimeUnit.SECONDS.sleep(2);
         sendImageMessage(imageMessage);
         TimeUnit.SECONDS.sleep(2);
-        CLIENT.close();
+        imageMessage.setHello(false);
+        sendImageMessage(imageMessage);
     }
     public static void sendImageMessage(ImageMessage message) {
         CLIENT.sendMsg(message);

@@ -42,10 +42,10 @@ public class VideoServer {
                 @Override
                 protected void initChannel(SocketChannel ch) {
                     // pipeline管理channel中的Handler，在channel队列中添加一个handler来处理业务
-//                    ch.pipeline().addLast(new ImageMessageDecode());
-//                    ch.pipeline().addLast(new ImageMessageEncode());
                     ch.pipeline().addLast("framedecoder",new LengthFieldBasedFrameDecoder(1024*1024, 0, 4,0,4));
                     ch.pipeline().addLast("encoder", new LengthFieldPrepender(4, false));
+                    ch.pipeline().addLast(new ImageMessageDecode());
+                    ch.pipeline().addLast(new ImageMessageEncode());
                     ch.pipeline().addLast(new NettyServerHandler());
                 }
             });

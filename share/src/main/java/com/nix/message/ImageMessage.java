@@ -1,5 +1,7 @@
 package com.nix.message;
 
+import util.ZipUtil;
+
 import java.io.Serializable;
 
 /**
@@ -7,30 +9,30 @@ import java.io.Serializable;
  */
 public class ImageMessage implements Serializable{
     private byte[] bytes;
-    private int width;
-    private int height;
+    private boolean hello = false;
+    private String roomId;
 
-    public int getWidth() {
-        return width;
+    public boolean isHello() {
+        return hello;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void setHello(boolean hello) {
+        this.hello = hello;
     }
 
-    public int getHeight() {
-        return height;
+    public String getRoomId() {
+        return roomId;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
     }
 
     public byte[] getBytes() {
-        return bytes;
+        return ZipUtil.unZip(bytes);
     }
 
     public void setBytes(byte[] bytes) {
-        this.bytes = bytes;
+        this.bytes = ZipUtil.zip(bytes);
     }
 }

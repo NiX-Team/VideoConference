@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * byte数组信息有没帧图片获取时间戳 图片宽高
  */
 public class TcpUtil {
-    private final static VideoClient CLIENT = VideoClient.getClient("127.0.0.1", 9999, new VideoClientHandler());
+    private final static VideoClient CLIENT = VideoClient.getClient("192.168.0.100", 9999, new VideoClientHandler());
     private static String roomId;
     private static String userId;
     static {
@@ -51,6 +51,9 @@ public class TcpUtil {
         LogKit.info("向服务器发送hello包:" + imageMessage);
     }
 
+    public static void close() {
+        CLIENT.close();
+    }
     public static void sendImageMessage(ImageMessage message) {
         message.setUserId(userId);
         message.setRoomId(roomId);

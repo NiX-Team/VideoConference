@@ -43,12 +43,11 @@ public class ScreenVideoThread extends VideoThread{
                         exe.exeImage(image);
                         Thread.sleep(1000/DEFAULT_FRAME);
                     }catch(Exception e){
-                        e.printStackTrace();
                         try {
                             fos.close();
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
+                        } catch (Exception e1) {
                         }
+                        return;
                     }
                 }
             }

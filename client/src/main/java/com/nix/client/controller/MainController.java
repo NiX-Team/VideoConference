@@ -87,4 +87,9 @@ public class MainController {
             Main.main.openScreenVideo();
         }
     }
+
+    public void close() {
+        TcpUtil.close();
+        clientConsumers.close();
+    }
 }

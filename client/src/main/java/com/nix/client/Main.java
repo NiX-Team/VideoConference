@@ -43,6 +43,13 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
         mainController = fxmlLoader.getController();
+        primaryStage.setOnCloseRequest(e -> {
+            try {
+                mainController.close();
+                cameraVideoThread.stop();
+                screenVideoThread.stop();
+            }catch (Exception e1){}
+        });
     }
 
     /**

@@ -1,13 +1,7 @@
 package com.nix.client.common;
-
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 11723
@@ -17,7 +11,6 @@ public class ScreenVideoThread extends VideoThread{
     private Rectangle rectangle;
     private Robot robot;
     private final static int DEFAULT_FRAME = 30;
-    private JPEGImageEncoder encoder;
 
     public ScreenVideoThread(Exe exe) {
         super(exe);

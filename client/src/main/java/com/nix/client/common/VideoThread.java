@@ -1,6 +1,5 @@
 package com.nix.client.common;
 
-import com.xuggle.xuggler.*;
 
 import java.awt.image.BufferedImage;
 

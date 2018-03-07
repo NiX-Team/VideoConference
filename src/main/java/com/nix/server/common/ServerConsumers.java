@@ -22,7 +22,7 @@ public class ServerConsumers extends Consumers{
         EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
-                while (shudown.get()) {
+                while (!shudown.get()) {
                     final ImageMessage message = MessageContainer.getMessage();
                     if (message != null) {
                         EXECUTOR.execute(new Runnable() {

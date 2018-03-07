@@ -8,12 +8,15 @@ import com.nix.client.controller.MainController;
 import com.nix.client.util.ImageUtil;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
 import java.awt.image.BufferedImage;
 
 /**
@@ -43,12 +46,15 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
         mainController = fxmlLoader.getController();
-        primaryStage.setOnCloseRequest(e -> {
-            try {
-                mainController.close();
-                cameraVideoThread.stop();
-                screenVideoThread.stop();
-            }catch (Exception e1){}
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    mainController.close();
+                    cameraVideoThread.stop();
+                    screenVideoThread.stop();
+                }catch (Exception e1){}
+            }
         });
     }
 

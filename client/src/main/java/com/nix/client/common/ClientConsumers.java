@@ -22,7 +22,7 @@ public class ClientConsumers extends Consumers{
         EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
-                while (shudown.get()) {
+                while (!shudown.get()) {
                     final ImageMessage message = MessageContainer.getMessage();
                     if (message != null) {
                         LogKit.info("get消息" + message);

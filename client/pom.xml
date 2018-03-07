@@ -51,7 +51,7 @@
             <version>5.4</version>
             <scope>system</scope>
             <!--本地jar的路径,相对或者绝对都可以-->
-            <systemPath>G:/IDEA/VideoConference/client/lib/xuggle-xuggler-5.4.jar</systemPath>
+            <systemPath>${basedir}/lib/xuggle-xuggler-5.4.jar</systemPath>
         </dependency>
     </dependencies>
     <build>

@@ -1,13 +1,8 @@
 package com.nix.client.common;
 
-import com.nix.client.nio.ClientHandler;
 import com.nix.client.nio.VideoClient;
-import com.nix.message.ImageMessage;
-import io.netty.buffer.Unpooled;
-import io.netty.util.CharsetUtil;
-import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
-import util.log.LogKit;
+import com.nix.share.message.ImageMessage;
+import com.nix.share.util.log.LogKit;
 
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;

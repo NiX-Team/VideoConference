@@ -4,7 +4,7 @@
 *.jar
 *.war
 *.ear
-
+*.log
 # Idea Project Files #
 *.iml
 *gitignore

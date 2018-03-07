@@ -1,6 +1,5 @@
-package com.nix.client.common;
+package com.nix.server.common;
 
-import com.nix.client.Main;
 import com.nix.share.message.Consumers;
 import com.nix.share.message.ImageMessage;
 import com.nix.share.message.MessageContainer;
@@ -12,9 +11,10 @@ import java.util.concurrent.ThreadFactory;
 /**
  * @author 11723
  */
-public class ClientConsumers extends Consumers{
-    public ClientConsumers(int minPool, int maxPool, ThreadFactory threadFactory) {
-        super(minPool, maxPool, threadFactory);
+public class ServerConsumers extends Consumers{
+
+    public ServerConsumers(int minPool, int maxPool, ThreadFactory threadFactory) {
+        super(minPool,maxPool,threadFactory);
     }
 
     @Override
@@ -25,11 +25,15 @@ public class ClientConsumers extends Consumers{
                 while (!shudown.get()) {
                     final ImageMessage message = MessageContainer.getMessage();
                     if (message != null) {
-                        LogKit.info("get消息" + message);
                         EXECUTOR.execute(new Runnable() {
                             @Override
                             public void run() {
-                                Main.main.mainController.setAFriend(message);
+                                for (ChannelHandlerContext context : ClientContainer.getRoomClients(message.getRoomId())) {
+                                    if (context != message.getContext()) {
+                                        LogKit.info("发送消息给" + message.getUserId());
+                                        context.writeAndFlush(message);
+                                    }
+                                }
                             }
                         });
                     }

@@ -1,14 +1,8 @@
 package com.nix.client.common;
 
-import com.nix.client.Main;
 import com.nix.client.nio.ClientHandler;
-import com.nix.client.util.ImageUtil;
-import com.nix.message.ImageMessage;
-import com.nix.message.MessageContainer;
-import io.netty.buffer.ByteBuf;
-
-import java.awt.image.BufferedImage;
-import java.io.UnsupportedEncodingException;
+import com.nix.share.message.ImageMessage;
+import com.nix.share.message.MessageContainer;
 
 /**
  * @author 11723

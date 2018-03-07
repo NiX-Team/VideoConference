@@ -1,6 +1,6 @@
 package com.nix.client.nio;
-import com.nix.message.ImageMessageDecode;
-import com.nix.message.ImageMessageEncode;
+import com.nix.share.message.ImageMessageDecode;
+import com.nix.share.message.ImageMessageEncode;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;

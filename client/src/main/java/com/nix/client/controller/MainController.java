@@ -4,7 +4,7 @@ import com.nix.client.Main;
 import com.nix.client.common.ClientConsumers;
 import com.nix.client.common.TcpUtil;
 import com.nix.client.util.ImageUtil;
-import com.nix.message.ImageMessage;
+import com.nix.share.message.ImageMessage;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -15,7 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import util.log.LogKit;
+import com.nix.share.util.log.LogKit;
 
 import java.util.concurrent.ThreadFactory;
 

@@ -1,6 +1,6 @@
 package com.nix.client.util;
 
-import com.nix.message.ImageMessage;
+import com.nix.share.message.ImageMessage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

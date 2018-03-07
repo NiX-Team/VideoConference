@@ -8,6 +8,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
+<?import javafx.scene.layout.FlowPane?>
 <GridPane alignment="center" hgap="10" prefHeight="614.0" prefWidth="810.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nix.client.controller.MainController">
    <columnConstraints>
       <ColumnConstraints />
@@ -20,15 +21,15 @@
    <children>
       <Pane maxHeight="600.0" maxWidth="800.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
-            <Pane layoutX="200.0" prefHeight="600.0" prefWidth="600.0">
+            <FlowPane fx:id="otherVideoPane" layoutX="200.0" prefHeight="600.0" prefWidth="600.0">
                <children>
                </children>
-            </Pane>
+            </FlowPane>
             <Pane prefHeight="600.0" prefWidth="200.0">
                <children>
                   <TextField layoutX="20.0" layoutY="26.0" />
                   <TextField layoutX="20.0" layoutY="75.0" />
-                  <Button layoutX="73.0" layoutY="125.0" mnemonicParsing="false" text="登录" />
+                  <Button fx:id="button" layoutX="73.0" layoutY="125.0" mnemonicParsing="false" text="登录" />
                   <ImageView fx:id="video_box" fitHeight="150.0" fitWidth="200.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </Pane>

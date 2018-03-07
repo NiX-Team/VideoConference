@@ -1,5 +1,6 @@
 package com.nix.message;
 
+import io.netty.channel.ChannelHandlerContext;
 import util.ZipUtil;
 
 import java.io.Serializable;
@@ -11,6 +12,25 @@ public class ImageMessage implements Serializable{
     private byte[] bytes;
     private boolean hello = false;
     private String roomId;
+    private String userId;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    private ChannelHandlerContext context;
+
+    public ChannelHandlerContext getContext() {
+        return context;
+    }
+
+    public void setContext(ChannelHandlerContext context) {
+        this.context = context;
+    }
 
     public boolean isHello() {
         return hello;
@@ -34,5 +54,13 @@ public class ImageMessage implements Serializable{
 
     public void setBytes(byte[] bytes) {
         this.bytes = ZipUtil.zip(bytes);
+    }
+
+    @Override
+    public String toString() {
+        return "ImageMessage{" +
+                "hello=" + hello +
+                ", roomId='" + roomId + '\'' +
+                '}';
     }
 }

@@ -14,6 +14,7 @@ import java.io.IOException;
 public class ImageMessageEncode extends MessageToByteEncoder<ImageMessage> {
     @Override
     protected void encode(ChannelHandlerContext ctx, ImageMessage msg, ByteBuf out) throws IOException {
+        msg.setContext(null);
         out.writeBytes(Unpooled.copiedBuffer(ObjectAndByteUtil.toByteArray(msg)));
 
     }

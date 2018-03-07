@@ -47,6 +47,10 @@ public class ClientContainer {
      * */
     public static List<ChannelHandlerContext> getRoomClients(String roomId) {
         //返回容器里的副本 不允许外界直接操作容器
+        List list = CLIENT_CONTEXT.get(roomId);
+        if (list == null) {
+            return new ArrayList<>();
+        }
         return new CopyOnWriteArrayList<>(CLIENT_CONTEXT.get(roomId));
     }
 

@@ -20,15 +20,12 @@ import java.util.concurrent.TimeUnit;
  * byte数组信息有没帧图片获取时间戳 图片宽高
  */
 public class TcpUtil {
-//    private final static VideoClient CLIENT = VideoClient.getClient("127.0.0.1", 9999, new VideoClientHandler());
-    private final static VideoClient CLIENT = VideoClient.getClient("127.0.0.1", 9999, new ClientHandler() {
-    @Override
-    public void read(Object msg) {
-        System.out.println(new String(((ImageMessage)msg).getBytes()));
-    }
-});
+    private final static VideoClient CLIENT = VideoClient.getClient("127.0.0.1", 9999, new VideoClientHandler());
+    private static String roomId = "test";
+    private static String userId = "花開2";
     static {
         CLIENT.start();
+        connectServer();
     }
     public static void main(String[] args) throws InterruptedException {
         ImageMessage imageMessage = new ImageMessage();
@@ -41,7 +38,38 @@ public class TcpUtil {
         imageMessage.setHello(false);
         sendImageMessage(imageMessage);
     }
+
+    /**
+     * 第一次连接服务器发送hello包
+     * */
+    private static void connectServer() {
+        ImageMessage imageMessage = new ImageMessage();
+        imageMessage.setHello(true);
+        imageMessage.setRoomId(roomId);
+        imageMessage.setUserId(userId);
+        CLIENT.sendMsg(imageMessage);
+    }
+
     public static void sendImageMessage(ImageMessage message) {
+        message.setUserId(userId);
+        message.setRoomId(roomId);
+        message.setHello(false);
         CLIENT.sendMsg(message);
+    }
+
+    public static String getRoomId() {
+        return roomId;
+    }
+
+    public static void setRoomId(String roomId) {
+        TcpUtil.roomId = roomId;
+    }
+
+    public static String getUserId() {
+        return userId;
+    }
+
+    public static void setUserId(String userId) {
+        TcpUtil.userId = userId;
     }
 }

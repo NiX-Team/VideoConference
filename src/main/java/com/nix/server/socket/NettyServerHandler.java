@@ -1,12 +1,10 @@
 package com.nix.server.socket;
 import com.nix.message.ImageMessage;
 import com.nix.server.common.ClientContainer;
-import io.netty.buffer.ByteBuf;
+import com.nix.message.MessageContainer;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import util.log.LogKit;
-
-import java.nio.charset.Charset;
 
 /**
  * @author 11723
@@ -20,11 +18,8 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             ClientContainer.addClient(ctx,message.getRoomId());
             return;
         }
-        for (ChannelHandlerContext context: ClientContainer.getRoomClients(message.getRoomId())) {
-            if (context != ctx) {
-                context.writeAndFlush(msg);
-            }
-        }
+        message.setContext(ctx);
+        MessageContainer.addMessage((ImageMessage) msg);
     }
 
     @Override

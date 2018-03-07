@@ -1,6 +1,7 @@
 package com.nix.server.socket;
 import com.nix.message.ImageMessageDecode;
 import com.nix.message.ImageMessageEncode;
+import com.nix.server.common.ServerConsumers;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -10,6 +11,8 @@ import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.ThreadFactory;
+
 /**
  * @author 11723
  */
@@ -65,6 +68,15 @@ public class VideoServer {
     public static void main(String[] args) {
         try {
             new VideoServer().start();
+            new ServerConsumers(100,100,new ThreadFactory(){
+
+                @Override
+                public Thread newThread(Runnable r) {
+                    Thread t = new Thread(r);
+                    t.setName("server-consumers");
+                    return t;
+                }
+            }).start();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

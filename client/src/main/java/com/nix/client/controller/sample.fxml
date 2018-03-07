@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
 
-<?import javafx.scene.layout.FlowPane?>
 <GridPane alignment="center" hgap="10" prefHeight="614.0" prefWidth="810.0" vgap="10" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.nix.client.controller.MainController">
    <columnConstraints>
       <ColumnConstraints />
@@ -27,10 +29,14 @@
             </FlowPane>
             <Pane prefHeight="600.0" prefWidth="200.0">
                <children>
-                  <TextField layoutX="20.0" layoutY="26.0" />
-                  <TextField layoutX="20.0" layoutY="75.0" />
-                  <Button fx:id="button" layoutX="73.0" layoutY="125.0" mnemonicParsing="false" text="登录" />
-                  <ImageView fx:id="video_box" fitHeight="150.0" fitWidth="200.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true" />
+                  <Text layoutY="42.0" text="房间号" wrappingWidth="40.000000298023224" />
+                  <TextField fx:id="roomId" layoutX="40.0" layoutY="26.0" prefHeight="23.0" prefWidth="141.0" />
+                  <TextField fx:id="userId" layoutX="40.0" layoutY="75.0" prefHeight="23.0" prefWidth="141.0" />
+                  <Button fx:id="button" layoutX="80.0" layoutY="173.0" mnemonicParsing="false" onMouseClicked="#sign" text="登录" />
+                  <ImageView fx:id="video_box" fitHeight="150.0" fitWidth="200.0" layoutY="238.0" pickOnBounds="true" preserveRatio="true" />
+                  <Text layoutX="3.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="用户id" />
+                  <CheckBox fx:id="boolOpenCamera" layoutX="60.0" layoutY="112.0" mnemonicParsing="false" text="打开摄像头" />
+                  <CheckBox fx:id="boolOpenScreen" layoutX="61.0" layoutY="138.0" mnemonicParsing="false" text="录制屏幕" />
                </children>
             </Pane>
          </children>

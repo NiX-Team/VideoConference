@@ -40,11 +40,6 @@ public class NettyClientHandler<M extends Serializable> extends ChannelInboundHa
         clientHandler.read(msg);
     }
 
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        super.channelReadComplete(ctx);
-    }
-
     /**
      *捕捉到异常
      * */

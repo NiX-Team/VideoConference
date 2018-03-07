@@ -1,33 +1,39 @@
 package com.nix.client;
 
+import com.nix.client.common.CameraVideoThread;
+import com.nix.client.common.ScreenVideoThread;
 import com.nix.client.common.TcpUtil;
 import com.nix.client.common.VideoThread;
 import com.nix.client.controller.MainController;
 import com.nix.client.util.ImageUtil;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import java.awt.image.BufferedImage;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 11723
  */
 public class Main extends Application {
-
+    private final VideoThread.Exe exe = new VideoThread.Exe() {
+        @Override
+        public void exeImage(BufferedImage javaImage) {
+            //在本地窗口显示自己的视频
+            setImage(javaImage);
+            //上传录制视频到服务器
+            TcpUtil.sendImageMessage(ImageUtil.imageToImageMessage(javaImage));
+        }
+    };
+    private final CameraVideoThread cameraVideoThread = new CameraVideoThread(exe);
+    private final ScreenVideoThread screenVideoThread = new ScreenVideoThread(exe);
     private static Parent root;
     public static Main main;
     public MainController mainController;
-    private int i = 0;
     @Override
     public void start(Stage primaryStage) throws Exception{
         main = this;
@@ -37,25 +43,20 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 800, 600));
         primaryStage.show();
         mainController = fxmlLoader.getController();
-        TcpUtil.getRoomId();
-//        openVideo();
     }
-
-
 
     /**
      * 显示自己摄像头视频
      * */
-    private void openVideo() {
-        VideoThread.start(new VideoThread.Exe() {
-            @Override
-            public void exeImage(BufferedImage javaImage) {
-                //在本地窗口显示自己的视频
-                mainController.setImage(SwingFXUtils.toFXImage(javaImage,new WritableImage(100,100)));
-                //上传录制视频到服务器
-                TcpUtil.sendImageMessage(ImageUtil.imageToImageMessage(javaImage));
-            }
-        });
+    public void openCameraVideo() {
+        cameraVideoThread.start();
+    }
+
+    /**
+     * 显示屏幕录制视频
+     * */
+    public void openScreenVideo() {
+        screenVideoThread.start();
     }
 
     /**

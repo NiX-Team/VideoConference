@@ -7,6 +7,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.util.CharsetUtil;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import util.log.LogKit;
 
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
@@ -21,11 +22,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class TcpUtil {
     private final static VideoClient CLIENT = VideoClient.getClient("127.0.0.1", 9999, new VideoClientHandler());
-    private static String roomId = "test";
-    private static String userId = "花開2";
+    private static String roomId;
+    private static String userId;
     static {
         CLIENT.start();
-        connectServer();
     }
     public static void main(String[] args) throws InterruptedException {
         ImageMessage imageMessage = new ImageMessage();
@@ -42,12 +42,13 @@ public class TcpUtil {
     /**
      * 第一次连接服务器发送hello包
      * */
-    private static void connectServer() {
+    public static void connectServer() {
         ImageMessage imageMessage = new ImageMessage();
         imageMessage.setHello(true);
         imageMessage.setRoomId(roomId);
         imageMessage.setUserId(userId);
         CLIENT.sendMsg(imageMessage);
+        LogKit.info("向服务器发送hello包:" + imageMessage);
     }
 
     public static void sendImageMessage(ImageMessage message) {

@@ -61,6 +61,7 @@ public class ImageMessage implements Serializable{
         return "ImageMessage{" +
                 "hello=" + hello +
                 ", roomId='" + roomId + '\'' +
+                ", userId='" + userId + '\'' +
                 '}';
     }
 }

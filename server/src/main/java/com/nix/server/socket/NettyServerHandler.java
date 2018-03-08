@@ -13,10 +13,13 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ImageMessage message = (ImageMessage)msg;
+        if (message.isBye()) {
+            ClientContainer.removeClient(ctx);
+            return;
+        }
         message.setContext(ctx);
         if (message.isHello()) {
             LogKit.info("新建客户端" + ctx + "，房间id：" + message.getRoomId());
-            System.out.println("新建：" + message.getContext().hashCode());
             ClientContainer.addClient(message,message.getRoomId());
             return;
         }
@@ -30,7 +33,8 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        System.out.println("连接关闭一个：" + ctx.hashCode());
+        LogKit.info("异常连接关闭一个：" + ctx.hashCode());
+        ClientContainer.removeClient(ctx);
         ctx.close();//出现异常时关闭channel
     }
 }

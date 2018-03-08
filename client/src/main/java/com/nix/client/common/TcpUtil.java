@@ -42,9 +42,7 @@ public class TcpUtil {
             client = VideoClient.getClient(host, port, new VideoClientHandler());
             ImageMessage imageMessage = new ImageMessage();
             imageMessage.setHello(true);
-            imageMessage.setRoomId(roomId);
-            imageMessage.setUserId(userId);
-            client.sendMsg(imageMessage);
+            sendImageMessage(imageMessage);
             LogKit.info("向服务器发送hello包:" + imageMessage);
         }catch (Exception e) {
             return false;
@@ -53,12 +51,19 @@ public class TcpUtil {
     }
 
     public static void close() {
+        ImageMessage message = new ImageMessage();
+        message.setBye(true);
+        sendImageMessage(message);
+        try {
+            TimeUnit.MILLISECONDS.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         client.close();
     }
     public static void sendImageMessage(ImageMessage message) {
         message.setUserId(userId);
         message.setRoomId(roomId);
-        message.setHello(false);
         client.sendMsg(message);
     }
 

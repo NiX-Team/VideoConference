@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class ImageMessage implements Serializable{
     private byte[] bytes;
     private boolean hello = false;
+    private boolean bye = false;
     private String roomId;
     private String userId;
 
@@ -56,10 +57,19 @@ public class ImageMessage implements Serializable{
         this.bytes = ZipUtil.zip(bytes);
     }
 
+    public boolean isBye() {
+        return bye;
+    }
+
+    public void setBye(boolean bye) {
+        this.bye = bye;
+    }
+
     @Override
     public String toString() {
         return "ImageMessage{" +
                 "hello=" + hello +
+                ", bye=" + bye +
                 ", roomId='" + roomId + '\'' +
                 ", userId='" + userId + '\'' +
                 '}';

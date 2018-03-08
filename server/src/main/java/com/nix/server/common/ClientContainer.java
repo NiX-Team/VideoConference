@@ -14,7 +14,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * 客户端通道容器
  */
 public class ClientContainer {
+    /**
+     * 房间号-房间的所有客户端的hello包信息
+     * */
     private final static ConcurrentHashMap<String,List<ImageMessage>> CLIENT_CONTEXT = new ConcurrentHashMap<>();
+    /**
+     * 客户端通道-客户端的hello包
+     * */
+    private final static ConcurrentHashMap<ChannelHandlerContext,ImageMessage> USER_CONTEXT = new ConcurrentHashMap<>();
     private final static Object clock = new Object();
     /**
      * 添加一个客户端连接
@@ -30,14 +37,17 @@ public class ClientContainer {
             }
         }
         LogKit.info("添加客户端" + message + "，roomId=" + roomId);
+        USER_CONTEXT.put(message.getContext(),message);
         CLIENT_CONTEXT.get(roomId).add(message);
     }
     /**
-     * 移除一个客户端
+     * 根据{@link ChannelHandlerContext}客户端通道移除一个客户端
      * */
-    public static void removeClient(String roomId,ImageMessage message) {
-        LogKit.info("房间" + roomId + "移除用户" + message.getUserId());
-        CLIENT_CONTEXT.get(roomId).remove(message);
+    public static void removeClient(ChannelHandlerContext ctx) {
+        ImageMessage message = USER_CONTEXT.get(ctx);
+        LogKit.info("房间" + message.getRoomId() + "移除用户" + message.getUserId());
+        CLIENT_CONTEXT.get(message.getRoomId()).remove(message);
+        USER_CONTEXT.remove(message.getContext());
     }
 
     /**

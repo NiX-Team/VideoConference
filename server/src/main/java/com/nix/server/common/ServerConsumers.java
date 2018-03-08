@@ -3,7 +3,6 @@ package com.nix.server.common;
 import com.nix.share.message.Consumers;
 import com.nix.share.message.ImageMessage;
 import com.nix.share.message.MessageContainer;
-import io.netty.channel.ChannelHandlerContext;
 import com.nix.share.util.log.LogKit;
 
 import java.util.concurrent.ThreadFactory;
@@ -28,13 +27,13 @@ public class ServerConsumers extends Consumers{
                         EXECUTOR.execute(new Runnable() {
                             @Override
                             public void run() {
-                                for (ChannelHandlerContext context : ClientContainer.getRoomClients(message.getRoomId())) {
-                                    if (context != message.getContext()) {
+                                for (ImageMessage message : ClientContainer.getRoomClients(message.getRoomId())) {
+                                    if (message.getContext() != message.getContext()) {
                                         LogKit.info("发送消息给" + message.getUserId());
-                                        if (context.isRemoved()) {
-                                            ClientContainer.removeClient(message.getRoomId(),context);
+                                        if (message.getContext().isRemoved()) {
+                                            ClientContainer.removeClient(message.getRoomId(),message);
                                         }else {
-                                            context.writeAndFlush(message);
+                                            message.getContext().writeAndFlush(message);
                                         }
                                     }
                                 }

@@ -16,12 +16,9 @@ import java.util.concurrent.TimeUnit;
  * byte数组信息有没帧图片获取时间戳 图片宽高
  */
 public class TcpUtil {
-    private final static VideoClient CLIENT = VideoClient.getClient("192.168.0.100", 9999, new VideoClientHandler());
+    private static VideoClient client;
     private static String roomId;
     private static String userId;
-    static {
-        CLIENT.start();
-    }
     public static void main(String[] args) throws InterruptedException {
         ImageMessage imageMessage = new ImageMessage();
         imageMessage.setHello(true);
@@ -37,23 +34,29 @@ public class TcpUtil {
     /**
      * 第一次连接服务器发送hello包
      * */
-    public static void connectServer() {
-        ImageMessage imageMessage = new ImageMessage();
-        imageMessage.setHello(true);
-        imageMessage.setRoomId(roomId);
-        imageMessage.setUserId(userId);
-        CLIENT.sendMsg(imageMessage);
-        LogKit.info("向服务器发送hello包:" + imageMessage);
+    public static boolean connectServer(String host,int port) {
+        try {
+            client = VideoClient.getClient(host, port, new VideoClientHandler());
+            ImageMessage imageMessage = new ImageMessage();
+            imageMessage.setHello(true);
+            imageMessage.setRoomId(roomId);
+            imageMessage.setUserId(userId);
+            client.sendMsg(imageMessage);
+            LogKit.info("向服务器发送hello包:" + imageMessage);
+        }catch (Exception e) {
+            return false;
+        }
+        return true;
     }
 
     public static void close() {
-        CLIENT.close();
+        client.close();
     }
     public static void sendImageMessage(ImageMessage message) {
         message.setUserId(userId);
         message.setRoomId(roomId);
         message.setHello(false);
-        CLIENT.sendMsg(message);
+        client.sendMsg(message);
     }
 
     public static String getRoomId() {

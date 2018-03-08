@@ -62,6 +62,7 @@ public class Main extends Application {
      * 显示自己摄像头视频
      * */
     public void openCameraVideo() {
+        screenVideoThread.stop();
         cameraVideoThread.start();
     }
 
@@ -69,6 +70,7 @@ public class Main extends Application {
      * 显示屏幕录制视频
      * */
     public void openScreenVideo() {
+        cameraVideoThread.stop();
         screenVideoThread.start();
     }
 

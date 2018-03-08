@@ -2,6 +2,7 @@ package com.nix.client.controller;
 
 import com.nix.client.Main;
 import com.nix.client.common.ClientConsumers;
+import com.nix.client.common.HttpsClient;
 import com.nix.client.common.TcpUtil;
 import com.nix.client.util.ImageUtil;
 import com.nix.share.message.ImageMessage;
@@ -16,6 +17,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import com.nix.share.util.log.LogKit;
+import javafx.scene.text.Text;
 
 import java.util.concurrent.ThreadFactory;
 
@@ -36,6 +38,12 @@ public class MainController {
     private CheckBox boolOpenCamera;
     @FXML
     private CheckBox boolOpenScreen;
+    @FXML
+    private Text error;
+    @FXML
+    private TextField serverHost;
+    @FXML
+    private TextField serverPort;
 
     private ClientConsumers clientConsumers;
     /**
@@ -66,6 +74,18 @@ public class MainController {
     }
 
     public void sign(MouseEvent mouseEvent) {
+        if (roomId.getText() == null || roomId.getText().isEmpty()) {
+            setError("房间号不能为空");
+            return;
+        }
+        if (userId.getText() == null || userId.getText().isEmpty()) {
+            setError("用户id不能为空");
+            return;
+        }
+        if (Boolean.parseBoolean(HttpsClient.doGet("http://" + serverHost.getText() + "/server/" + roomId + "/" + userId,null))) {
+            setError("用户名已存在");
+            return;
+        }
         if (clientConsumers == null) {
             clientConsumers = new ClientConsumers(100, 100, new ThreadFactory() {
                 @Override
@@ -79,7 +99,17 @@ public class MainController {
         }
         TcpUtil.setRoomId(roomId.getText());
         TcpUtil.setUserId(userId.getText());
-        TcpUtil.connectServer();
+        int port;
+        try {
+            port = Integer.parseInt(serverPort.getText());
+        }catch (Exception e) {
+            setError("端口错误");
+            return;
+        }
+        if (!TcpUtil.connectServer(serverHost.getText(), port)) {
+            setError("服务器不存在");
+            return;
+        }
         if (boolOpenCamera.isSelected()) {
             Main.main.openCameraVideo();
         }
@@ -88,6 +118,9 @@ public class MainController {
         }
     }
 
+    public void setError(String errorMsg) {
+        error.setText(errorMsg);
+    }
     public void close() {
         TcpUtil.close();
         clientConsumers.close();

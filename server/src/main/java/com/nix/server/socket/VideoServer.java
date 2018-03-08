@@ -2,6 +2,7 @@ package com.nix.server.socket;
 import com.nix.share.message.ImageMessageDecode;
 import com.nix.share.message.ImageMessageEncode;
 import com.nix.server.common.ServerConsumers;
+import com.nix.share.util.log.LogKit;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -22,7 +23,7 @@ public class VideoServer {
     * 通过nio方式来接收连接和处理连接
     */
     private static final EventLoopGroup GROUP = new NioEventLoopGroup();
-    public void start() throws InterruptedException {
+    private void accept() throws InterruptedException {
         // 引导辅助程序
         ServerBootstrap b = new ServerBootstrap();
         try {
@@ -56,7 +57,7 @@ public class VideoServer {
             // 配置完成，开始绑定server，通过调用sync同步方法阻塞直到绑定成功
             ChannelFuture f= b.bind(port).sync();
             if(f.isSuccess()){
-                System.out.println("server start---------------");
+                LogKit.info("server start---------------");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,11 +66,10 @@ public class VideoServer {
     public void close() {
         GROUP.shutdownGracefully();
     }
-    public static void main(String[] args) {
+    public static void start() {
         try {
-            new VideoServer().start();
+            new VideoServer().accept();
             new ServerConsumers(100,100,new ThreadFactory(){
-
                 @Override
                 public Thread newThread(Runnable r) {
                     Thread t = new Thread(r);

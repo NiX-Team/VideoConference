@@ -22,7 +22,7 @@
       <RowConstraints maxHeight="389.0" minHeight="389.0" prefHeight="389.0" />
    </rowConstraints>
    <children>
-      <Pane maxHeight="1080.0" maxWidth="1920.0" minHeight="720.0" minWidth="725.0" prefHeight="733.0" prefWidth="725.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+      <Pane maxHeight="736.0" maxWidth="1666.0" minHeight="736.0" minWidth="1666.0" prefHeight="736.0" prefWidth="1666.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
          <children>
             <FlowPane fx:id="otherVideoPane" layoutX="300.0" prefHeight="736.0" prefWidth="1366.0">
                <children>
@@ -30,20 +30,29 @@
             </FlowPane>
             <Pane prefHeight="736.0" prefWidth="300.0">
                <children>
-                  <Text layoutX="10.0" layoutY="44.0" text="房间号" wrappingWidth="72.00000029802322">
+                  <Text layoutX="12.0" layoutY="137.0" text="房间号" wrappingWidth="66.00000029802322">
                      <font>
                         <Font size="19.0" />
                      </font></Text>
-                  <TextField fx:id="roomId" layoutX="80.0" layoutY="26.0" prefHeight="23.0" prefWidth="200.0" />
-                  <TextField fx:id="userId" layoutX="82.0" layoutY="75.0" prefHeight="23.0" prefWidth="200.0" />
-                  <Button fx:id="button" layoutX="130.0" layoutY="179.0" mnemonicParsing="false" onMouseClicked="#sign" text="登录" />
-                  <ImageView fx:id="video_box" fitHeight="230.0" fitWidth="300.0" layoutY="253.0" pickOnBounds="true" preserveRatio="true" />
-                  <Text layoutX="10.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="用户id">
+                  <TextField fx:id="roomId" layoutX="80.0" layoutY="119.0" prefHeight="23.0" prefWidth="200.0" />
+                  <TextField fx:id="userId" layoutX="80.0" layoutY="160.0" prefHeight="23.0" prefWidth="200.0" />
+                  <Button fx:id="button" layoutX="130.0" layoutY="257.0" mnemonicParsing="false" onMouseClicked="#sign" text="登录" />
+                  <ImageView fx:id="video_box" fitHeight="230.0" fitWidth="300.0" layoutX="2.0" layoutY="492.0" pickOnBounds="true" preserveRatio="true" />
+                  <Text layoutX="12.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="用户id">
                      <font>
                         <Font size="19.0" />
                      </font></Text>
-                  <CheckBox fx:id="boolOpenCamera" layoutX="120.0" layoutY="112.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="94.0" text="打开摄像头" />
-                  <CheckBox fx:id="boolOpenScreen" layoutX="120.0" layoutY="138.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="103.0" text="录制屏幕" />
+                  <CheckBox fx:id="boolOpenCamera" layoutX="119.0" layoutY="201.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="94.0" text="打开摄像头" />
+                  <CheckBox fx:id="boolOpenScreen" layoutX="119.0" layoutY="231.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="103.0" text="录制屏幕" />
+                  <Text fx:id="error" fill="#c92007" layoutX="23.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="253.240234375">
+                     <font>
+                        <Font size="21.0" />
+                     </font>
+                  </Text>
+                  <Text layoutX="76.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="服务器" wrappingWidth="36.0" />
+                  <Text layoutX="234.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="端口" />
+                  <TextField fx:id="serverHost" layoutX="14.0" layoutY="64.0" text="192.168.0.100" />
+                  <TextField fx:id="serverPort" layoutX="202.0" layoutY="64.0" prefHeight="23.0" prefWidth="77.0" text="9999" />
                </children>
             </Pane>
          </children>

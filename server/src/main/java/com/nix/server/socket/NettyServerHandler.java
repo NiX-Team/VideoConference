@@ -13,13 +13,15 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ImageMessage message = (ImageMessage)msg;
+        message.setContext(ctx);
         if (message.isHello()) {
             LogKit.info("新建客户端" + ctx + "，房间id：" + message.getRoomId());
-            ClientContainer.addClient(ctx,message.getRoomId());
+            System.out.println("新建：" + message.getContext().hashCode());
+            ClientContainer.addClient(message,message.getRoomId());
             return;
         }
-        message.setContext(ctx);
-        MessageContainer.addMessage((ImageMessage) msg);
+        System.out.println("通信：" + message.getContext().hashCode());
+        MessageContainer.addMessage(message);
     }
 
     @Override

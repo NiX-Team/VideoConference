@@ -31,7 +31,11 @@ public class ServerConsumers extends Consumers{
                                 for (ChannelHandlerContext context : ClientContainer.getRoomClients(message.getRoomId())) {
                                     if (context != message.getContext()) {
                                         LogKit.info("发送消息给" + message.getUserId());
-                                        context.writeAndFlush(message);
+                                        if (context.isRemoved()) {
+                                            ClientContainer.removeClient(message.getRoomId(),context);
+                                        }else {
+                                            context.writeAndFlush(message);
+                                        }
                                     }
                                 }
                             }

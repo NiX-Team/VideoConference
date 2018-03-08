@@ -55,8 +55,8 @@ public class MainController {
                 if (view == null) {
                     view = new ImageView();
                     view.setId(imageMessage.getUserId());
-                    view.setFitWidth(600);
-                    view.setFitHeight(400);
+                    view.setFitWidth(1366);
+                    view.setFitHeight(736);
                     otherVideoPane.getChildren().add(view);
                     LogKit.info("新增加一名用户：" + imageMessage);
                 }

@@ -123,6 +123,7 @@ public class VideoClient<M extends Serializable> {
             synchronized (VideoClient.class) {
                 if (client == null) {
                     client = new VideoClient(host,port,handler);
+                    client.start();
                 }
             }
         }

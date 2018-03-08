@@ -20,7 +20,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             ClientContainer.addClient(message,message.getRoomId());
             return;
         }
-        System.out.println("通信：" + message.getContext().hashCode());
         MessageContainer.addMessage(message);
     }
 
@@ -31,7 +30,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();//捕捉异常信息
+        System.out.println("连接关闭一个：" + ctx.hashCode());
         ctx.close();//出现异常时关闭channel
     }
 }

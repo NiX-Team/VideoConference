@@ -78,13 +78,6 @@ public class Main extends Application {
      * 设置本地视频窗口视频
      * */
     public static void setImage(BufferedImage javaImage) {
-//        Platform.runLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                final ImageView imageView = (ImageView) main.getNodeById(root,"video_box");
-//                imageView.setImage(SwingFXUtils.toFXImage(javaImage,new WritableImage(100,100)));
-//            }
-//        });
         main.mainController.setImage(SwingFXUtils.toFXImage(javaImage,new WritableImage(100,100)));
     }
 

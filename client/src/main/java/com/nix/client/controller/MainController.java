@@ -2,7 +2,7 @@ package com.nix.client.controller;
 
 import com.nix.client.Main;
 import com.nix.client.common.ClientConsumers;
-import com.nix.client.common.HttpsClient;
+import com.nix.client.common.HttpClient;
 import com.nix.client.common.TcpUtil;
 import com.nix.client.util.ImageUtil;
 import com.nix.share.message.ImageMessage;
@@ -82,7 +82,7 @@ public class MainController {
             setError("用户id不能为空");
             return;
         }
-        if (Boolean.parseBoolean(HttpsClient.doGet("http://" + serverHost.getText() + "/server/" + roomId + "/" + userId,null))) {
+        if (Boolean.parseBoolean(HttpClient.doGet("http://" + serverHost.getText() + "/server/" + roomId.getText() + "/" + userId.getText(),null))) {
             setError("用户名已存在");
             return;
         }
@@ -113,8 +113,10 @@ public class MainController {
         if (boolOpenCamera.isSelected()) {
             Main.main.openCameraVideo();
         }
-        if (boolOpenScreen.isSelected()) {
-            Main.main.openScreenVideo();
+        else{
+            if (boolOpenScreen.isSelected()) {
+                Main.main.openScreenVideo();
+            }
         }
     }
 

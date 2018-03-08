@@ -21,7 +21,7 @@ import java.security.cert.X509Certificate;
 /**
  * @author 11723
  */
-public class HttpsClient {
+public class HttpClient {
     private static class TrustAnyTrustManager implements X509TrustManager {
 
         @Override
@@ -53,22 +53,15 @@ public class HttpsClient {
         try {
             String urlStr = url + getParamStr(keyValueParams);
             System.out.println("GET请求的URL为："+urlStr);
-            SSLContext sc = SSLContext.getInstance("SSL");
-            sc.init(null, new TrustManager[] { new TrustAnyTrustManager() },
-                    new java.security.SecureRandom());
             URL realUrl = new URL(urlStr);
             // 打开和URL之间的连接
-            HttpsURLConnection connection = (HttpsURLConnection) realUrl.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
             //设置https相关属性
-            connection.setSSLSocketFactory(sc.getSocketFactory());
-            connection.setHostnameVerifier(new TrustAnyHostnameVerifier());
             connection.setDoOutput(true);
-
-            // 设置通用的请求属性
-            connection.setRequestProperty("accept", "*/*");
-            connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("user-agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            // 设置接收数据的格式
+            connection.setRequestProperty("Accept", "application/json");
+            // 设置发送数据的格式
+            connection.setRequestProperty("Content-Type", "application/json");
             // 建立实际的连接
             connection.connect();
 
@@ -80,6 +73,7 @@ public class HttpsClient {
             }
             System.out.println("获取的结果为："+result);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
         finally {
@@ -153,7 +147,7 @@ public class HttpsClient {
     private static String getParamStr(Map<String, String> params)
     {
         if (params == null || params.size() == 0) {
-            return null;
+            return "";
         }
         String paramStr="?";
         for (String key : params.keySet()) {

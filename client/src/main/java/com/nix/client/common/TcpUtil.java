@@ -35,6 +35,9 @@ public class TcpUtil {
      * 第一次连接服务器发送hello包
      * */
     public static boolean connectServer(String host,int port) {
+        if (client != null) {
+            return true;
+        }
         try {
             client = VideoClient.getClient(host, port, new VideoClientHandler());
             ImageMessage imageMessage = new ImageMessage();

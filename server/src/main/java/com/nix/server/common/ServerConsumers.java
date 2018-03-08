@@ -27,14 +27,9 @@ public class ServerConsumers extends Consumers{
                         EXECUTOR.execute(new Runnable() {
                             @Override
                             public void run() {
-                                for (ImageMessage message : ClientContainer.getRoomClients(message.getRoomId())) {
-                                    if (message.getContext() != message.getContext()) {
-                                        LogKit.info("发送消息给" + message.getUserId());
-                                        if (message.getContext().isRemoved()) {
-                                            ClientContainer.removeClient(message.getRoomId(),message);
-                                        }else {
-                                            message.getContext().writeAndFlush(message);
-                                        }
+                                for (ImageMessage msg : ClientContainer.getRoomClients(message.getRoomId())) {
+                                    if (msg.getContext() != message.getContext()) {
+                                        msg.getContext().writeAndFlush(message);
                                     }
                                 }
                             }

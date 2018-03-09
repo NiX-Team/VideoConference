@@ -8,16 +8,25 @@ import com.nix.client.util.ImageUtil;
 import com.nix.share.message.ImageMessage;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import com.nix.share.util.log.LogKit;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.util.concurrent.ThreadFactory;
 
@@ -50,27 +59,75 @@ public class MainController {
      * 宽高比
      * */
     private final float widthHeigth = 1.2F;
+    private Pane maxPane;
+
     @FXML
     public void setImage(Image image) {
         video_box.setImage(image);
     }
     @FXML
     public void setAFriend(ImageMessage imageMessage) {
+//        Platform.runLater(new Runnable() {
+//            @Override
+//            public void run() {
+//                ImageView view = (ImageView) otherVideoPane.lookup("#" + imageMessage.getUserId());
+//                if (view == null) {
+//                    view = new ImageView();
+//                    view.setId(imageMessage.getUserId());
+//                    view.setFitWidth(1366);
+//                    view.setFitHeight(736);
+//                    otherVideoPane.getChildren().add(view);
+//                    LogKit.info("新增加一名用户：" + imageMessage);
+//                }
+//                view.setImage(SwingFXUtils.toFXImage(ImageUtil.messageToBufferedImage(imageMessage),new WritableImage(100,100)));
+//            }
+//        });
+        addAClient(imageMessage);
+    }
+
+    private void addAClient(ImageMessage imageMessage) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                ImageView view = (ImageView) otherVideoPane.lookup("#" + imageMessage.getUserId());
-                if (view == null) {
-                    view = new ImageView();
-                    view.setId(imageMessage.getUserId());
-                    view.setFitWidth(1366);
-                    view.setFitHeight(736);
-                    otherVideoPane.getChildren().add(view);
+                if (maxPane != null && maxPane.getId().equals(imageMessage.getRoomId() + "-" + imageMessage.getUserId())) {
+                    ((ImageView)maxPane.lookup("#video")).setImage(SwingFXUtils.toFXImage(ImageUtil.messageToBufferedImage(imageMessage),new WritableImage(320,240)));
+                }
+                Pane pane = (Pane) otherVideoPane.lookup("#" + imageMessage.getUserId());
+                ImageView view;
+                if (pane == null) {
+                    pane = getClientPane(imageMessage,320,240,true);
+                    otherVideoPane.getChildren().add(pane);
                     LogKit.info("新增加一名用户：" + imageMessage);
                 }
-                view.setImage(SwingFXUtils.toFXImage(ImageUtil.messageToBufferedImage(imageMessage),new WritableImage(100,100)));
+                view = (ImageView) pane.lookup("#video");
+                view.setImage(SwingFXUtils.toFXImage(ImageUtil.messageToBufferedImage(imageMessage),new WritableImage(320,240)));
             }
         });
+    }
+    private Pane getClientPane(ImageMessage imageMessage,double width,double height,boolean haveMax) {
+        Pane pane = new Pane();
+        pane.setId(imageMessage.getUserId());
+        pane.setPrefWidth(width);
+        pane.setPrefHeight(height);
+        ImageView view = new ImageView();
+        view.setId("video");
+        view.setFitWidth(width);
+        view.setFitHeight(height);
+        pane.getChildren().addAll(view);
+        if (haveMax) {
+            ImageView max = new ImageView(new Image(String.valueOf(getClass().getResource("/max.jpg"))));
+            max.setFitWidth(30);
+            max.setFitHeight(30);
+            max.setLayoutX(width - 40);
+            max.setLayoutY(height - 40);
+            max.setOnMouseClicked(event -> {
+                if (maxPane == null) {
+                    showMaxVideo(imageMessage);
+                }
+            });
+            pane.getChildren().add(max);
+        }
+        return pane;
     }
 
     public void sign(MouseEvent mouseEvent) {
@@ -82,7 +139,7 @@ public class MainController {
             setError("用户id不能为空");
             return;
         }
-        if (Boolean.parseBoolean(HttpClient.doGet("http://" + serverHost.getText() + "/server/" + roomId.getText() + "/" + userId.getText(),null))) {
+        if (Boolean.parseBoolean(HttpClient.doGet("http://" + serverHost.getText() + "/server/" + roomId.getText() + "/" + userId.getText(),null)) && clientConsumers == null) {
             setError("用户名已存在");
             return;
         }
@@ -96,19 +153,19 @@ public class MainController {
                 }
             });
             clientConsumers.start();
-        }
-        TcpUtil.setRoomId(roomId.getText());
-        TcpUtil.setUserId(userId.getText());
-        int port;
-        try {
-            port = Integer.parseInt(serverPort.getText());
-        }catch (Exception e) {
-            setError("端口错误");
-            return;
-        }
-        if (!TcpUtil.connectServer(serverHost.getText(), port)) {
-            setError("服务器不存在");
-            return;
+            TcpUtil.setRoomId(roomId.getText());
+            TcpUtil.setUserId(userId.getText());
+            int port;
+            try {
+                port = Integer.parseInt(serverPort.getText());
+            }catch (Exception e) {
+                setError("端口错误");
+                return;
+            }
+            if (!TcpUtil.connectServer(serverHost.getText(), port)) {
+                setError("服务器不存在");
+                return;
+            }
         }
         if (boolOpenCamera.isSelected()) {
             Main.main.openCameraVideo();
@@ -118,6 +175,34 @@ public class MainController {
                 Main.main.openScreenVideo();
             }
         }
+    }
+
+    /**
+     * 新建一个最大化窗口
+     * */
+    private void showMaxVideo(ImageMessage message) {
+        Stage stage = new Stage();
+        stage.setTitle(message.getRoomId() + "-" + message.getUserId());
+        Screen screen = Screen.getPrimary();
+        Rectangle2D bounds = screen.getBounds();
+        Pane pane = getClientPane(message,bounds.getMaxX(),bounds.getMaxY(),false);
+        maxPane = pane;
+        maxPane.setId(message.getRoomId() + "-" + message.getUserId());
+        stage.setScene(new Scene(pane));
+        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                maxPane = null;
+            }
+        });
+        stage.addEventHandler(KeyEvent.ANY, event -> {
+            if (event.getCode() == KeyCode.ESCAPE) {
+                maxPane = null;
+                stage.close();
+            }
+        });
+        stage.setFullScreen(true);
+        stage.show();
     }
 
     public void setError(String errorMsg) {

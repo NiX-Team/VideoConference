@@ -81,6 +81,10 @@ public class ImageMessage implements Serializable{
         return message;
     }
 
+    public String getId() {
+        return roomId + "_" + userId;
+    }
+
     @Override
     public String toString() {
         return "ImageMessage{" +

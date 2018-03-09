@@ -28,7 +28,7 @@ public class ServerConsumers extends Consumers{
                             @Override
                             public void run() {
                                 for (ImageMessage msg : ClientContainer.getRoomClients(message.getRoomId())) {
-                                    if (msg.getContext() != message.getContext()) {
+                                    if (!msg.getId().equals(message.getId())) {
                                         msg.getContext().writeAndFlush(message);
                                     }
                                 }

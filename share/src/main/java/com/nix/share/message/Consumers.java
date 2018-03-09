@@ -1,5 +1,7 @@
 package com.nix.share.message;
 
+import com.nix.share.util.log.LogKit;
+
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -25,6 +27,7 @@ public abstract class Consumers {
     public void close() {
         EXECUTOR.shutdown();
         shudown.set(true);
+        LogKit.info("消费者关闭");
     }
 
     /**

@@ -58,6 +58,7 @@ public class TcpUtil {
             e.printStackTrace();
         }
         client.close();
+        LogKit.info("客户端通道关闭");
     }
     public static void sendImageMessage(ImageMessage message) {
         message.setUserId(userId);

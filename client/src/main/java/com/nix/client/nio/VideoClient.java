@@ -1,6 +1,8 @@
 package com.nix.client.nio;
+import com.nix.share.message.ImageMessage;
 import com.nix.share.message.ImageMessageDecode;
 import com.nix.share.message.ImageMessageEncode;
+import com.nix.share.util.log.LogKit;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -31,7 +33,7 @@ public class VideoClient<M extends Serializable> {
     /**
      * nio客户端socket句柄
      * */
-    private final EventLoopGroup group = new NioEventLoopGroup();
+    private static final EventLoopGroup group = new NioEventLoopGroup();
     /**
      * {@link VideoClient} 单例模式
      * */
@@ -39,13 +41,14 @@ public class VideoClient<M extends Serializable> {
     /**
      * videoClient客户端的handler
      * */
-    private final ClientHandler clientHandler;
+    private final ClientHandler<ImageMessage> clientHandler;
     /**
      * netty客户端handler
      * */
-    private final NettyClientHandler nettyClientHandler = new NettyClientHandler();
+    private static final NettyClientHandler nettyClientHandler = new NettyClientHandler();
+    private static final  Bootstrap bootstrap = new Bootstrap();
 
-    private VideoClient(String host, int port,ClientHandler clientHandler) {
+    private VideoClient(String host, int port,ClientHandler<ImageMessage> clientHandler) {
         this.host = host;
         this.port = port;
         this.clientHandler = clientHandler;
@@ -56,8 +59,7 @@ public class VideoClient<M extends Serializable> {
     public void start() {
         nettyClientHandler.setClientHandler(clientHandler);
         try {
-            Bootstrap b = new Bootstrap();
-            b.group(group)
+            bootstrap.group(group)
                     .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
                     //发包缓冲区，单位多少？
                     .option(ChannelOption.SO_SNDBUF, 1024*256)
@@ -66,9 +68,9 @@ public class VideoClient<M extends Serializable> {
                     //TCP立即发包
                     .option(ChannelOption.TCP_NODELAY, true)
                     .option(ChannelOption.SO_KEEPALIVE,true);
-            b.channel(NioSocketChannel.class);
-            b.remoteAddress(new InetSocketAddress(host, port));
-            b.handler(new ChannelInitializer<SocketChannel>() {
+            bootstrap.channel(NioSocketChannel.class);
+            bootstrap.remoteAddress(new InetSocketAddress(host, port));
+            bootstrap.handler(new ChannelInitializer<SocketChannel>() {
 
                 @Override
                 public void initChannel(SocketChannel ch) {
@@ -80,7 +82,22 @@ public class VideoClient<M extends Serializable> {
                     ch.pipeline().addLast(nettyClientHandler);
                 }
             });
-            ChannelFuture f = b.connect().sync();
+            if (connect()) {
+                LogKit.info("服务器连接成功");
+            }else {
+                LogKit.info("服务器连接失败");
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 客户端连接
+     * */
+    private boolean connect() {
+        ChannelFuture f = null;
+        try {
+            f = bootstrap.connect().sync();
             f.addListener(new ChannelFutureListener() {
 
                 @Override
@@ -95,11 +112,20 @@ public class VideoClient<M extends Serializable> {
                 }
             });
             if (f.isSuccess()) {
-                System.out.println("connect server  成功---------");
+                return true;
             }
-        } catch (Exception e){
+            return false;
+        } catch (InterruptedException e) {
+            LogKit.error("客户端连接异常");
             e.printStackTrace();
+            return false;
         }
+    }
+    /**
+     * 客户端重新连接
+     * */
+    public boolean againConnect() {
+        return client.connect();
     }
 
     /**
@@ -121,7 +147,7 @@ public class VideoClient<M extends Serializable> {
      * @param host 服务器host
      * @param port 服务器端口
      * */
-    public static VideoClient getClient(String host, int port,ClientHandler handler) {
+    public static VideoClient getClient(String host, int port,ClientHandler<ImageMessage> handler) {
         if (client == null) {
             synchronized (VideoClient.class) {
                 if (client == null) {

@@ -4,6 +4,7 @@ import com.nix.client.nio.VideoClient;
 import com.nix.share.message.ImageMessage;
 import com.nix.share.util.log.LogKit;
 
+import javax.net.ssl.HostnameVerifier;
 import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +31,9 @@ public class TcpUtil {
         imageMessage.setHello(false);
         sendImageMessage(imageMessage);
     }
-
+    public static boolean isConnect() {
+        return client != null;
+    }
     /**
      * 第一次连接服务器发送hello包
      * */
@@ -47,6 +50,21 @@ public class TcpUtil {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 客户端重新连接
+     * */
+    public static boolean againConnect() {
+        if (client.againConnect()) {
+            ImageMessage imageMessage = ImageMessage.getHelloMessage();
+            sendImageMessage(imageMessage);
+            LogKit.info("重新向服务器发送hello包:" + imageMessage);
+            return true;
+        }else {
+            client.close();
+            return false;
+        }
     }
 
     public static void close() {

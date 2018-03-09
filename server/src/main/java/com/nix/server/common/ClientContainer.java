@@ -1,6 +1,7 @@
 package com.nix.server.common;
 
 import com.nix.share.message.ImageMessage;
+import com.nix.share.message.MessageContainer;
 import io.netty.channel.ChannelHandlerContext;
 import com.nix.share.util.log.LogKit;
 import java.util.ArrayList;
@@ -48,6 +49,9 @@ public class ClientContainer {
         LogKit.info("房间" + message.getRoomId() + "移除用户" + message.getUserId());
         CLIENT_CONTEXT.get(message.getRoomId()).remove(message);
         USER_CONTEXT.remove(message.getContext());
+        //将消息改为bye包 让消费者通知相应的客户端移除这个客户端
+        message.setBye(true);
+        MessageContainer.addMessage(message);
     }
 
     /**

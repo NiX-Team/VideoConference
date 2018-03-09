@@ -17,14 +17,20 @@ import java.util.Map;
  * @author 11723
  */
 public class NettyServerHandler extends ChannelInboundHandlerAdapter {
-    private static final int MAX_LEAVE_TIME = 20;
+    private static final int MAX_LEAVE_TIME = 2;
 
     private final Map<ChannelHandlerContext,Integer> heartbeat = new HashMap<>();
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ImageMessage message = (ImageMessage)msg;
+        message.setContext(ctx);
+        //如果是心跳包 直接回复
         if (message.isBye() && message.isHello()) {
+            if (heartbeat.containsKey(ctx)) {
+                heartbeat.put(ctx,new Integer(0));
+            }
+            ctx.writeAndFlush(message);
             return;
         }
         if (message.isBye()) {
@@ -32,7 +38,6 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             ctx.close();
             return;
         }
-        message.setContext(ctx);
         if (message.isHello()) {
             LogKit.info("新建客户端" + ctx + "，房间id：" + message.getRoomId());
             ClientContainer.addClient(message,message.getRoomId());

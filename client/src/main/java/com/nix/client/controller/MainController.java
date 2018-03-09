@@ -59,6 +59,7 @@ public class MainController {
      * 宽高比
      * */
     private final float widthHeigth = 1.2F;
+    private Stage maxStage;
     private Pane maxPane;
 
     @FXML
@@ -66,23 +67,12 @@ public class MainController {
         video_box.setImage(image);
     }
     @FXML
-    public void setAFriend(ImageMessage imageMessage) {
-//        Platform.runLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                ImageView view = (ImageView) otherVideoPane.lookup("#" + imageMessage.getUserId());
-//                if (view == null) {
-//                    view = new ImageView();
-//                    view.setId(imageMessage.getUserId());
-//                    view.setFitWidth(1366);
-//                    view.setFitHeight(736);
-//                    otherVideoPane.getChildren().add(view);
-//                    LogKit.info("新增加一名用户：" + imageMessage);
-//                }
-//                view.setImage(SwingFXUtils.toFXImage(ImageUtil.messageToBufferedImage(imageMessage),new WritableImage(100,100)));
-//            }
-//        });
-        addAClient(imageMessage);
+    public void exeMessage(ImageMessage imageMessage) {
+        if (imageMessage.isBye()) {
+            removeClient(imageMessage);
+        }else {
+            addAClient(imageMessage);
+        }
     }
 
     private void addAClient(ImageMessage imageMessage) {
@@ -104,6 +94,20 @@ public class MainController {
             }
         });
     }
+
+    private void removeClient(ImageMessage imageMessage) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                if (maxPane != null && maxPane.getId().equals(imageMessage.getRoomId() + "-" + imageMessage.getUserId())) {
+                    maxStage.close();
+                }
+                Pane pane = (Pane) otherVideoPane.lookup("#" + imageMessage.getUserId());
+                otherVideoPane.getChildren().removeAll(pane);
+            }
+        });
+    }
+
     private Pane getClientPane(ImageMessage imageMessage,double width,double height,boolean haveMax) {
         Pane pane = new Pane();
         pane.setId(imageMessage.getUserId());
@@ -131,6 +135,7 @@ public class MainController {
     }
 
     public void sign(MouseEvent mouseEvent) {
+        setError("");
         if (roomId.getText() == null || roomId.getText().isEmpty()) {
             setError("房间号不能为空");
             return;
@@ -153,6 +158,8 @@ public class MainController {
                 }
             });
             clientConsumers.start();
+        }
+        if (!TcpUtil.isConnect()) {
             TcpUtil.setRoomId(roomId.getText());
             TcpUtil.setUserId(userId.getText());
             int port;
@@ -182,6 +189,7 @@ public class MainController {
      * */
     private void showMaxVideo(ImageMessage message) {
         Stage stage = new Stage();
+        maxStage = stage;
         stage.setTitle(message.getRoomId() + "-" + message.getUserId());
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getBounds();

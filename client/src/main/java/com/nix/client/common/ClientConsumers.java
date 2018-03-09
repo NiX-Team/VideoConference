@@ -29,7 +29,7 @@ public class ClientConsumers extends Consumers{
                         EXECUTOR.execute(new Runnable() {
                             @Override
                             public void run() {
-                                Main.main.mainController.setAFriend(message);
+                                Main.main.mainController.exeMessage(message);
                             }
                         });
                     }

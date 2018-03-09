@@ -64,6 +64,22 @@ public class ImageMessage implements Serializable{
     public void setBye(boolean bye) {
         this.bye = bye;
     }
+    public static ImageMessage getHelloMessage() {
+        ImageMessage message = new ImageMessage();
+        message.setHello(true);
+        return message;
+    }
+    public static ImageMessage getByeMessage() {
+        ImageMessage message = new ImageMessage();
+        message.setBye(true);
+        return message;
+    }
+    public static ImageMessage getPingMessage() {
+        ImageMessage message = new ImageMessage();
+        message.setBye(true);
+        message.setHello(true);
+        return message;
+    }
 
     @Override
     public String toString() {

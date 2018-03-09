@@ -40,8 +40,7 @@ public class TcpUtil {
         }
         try {
             client = VideoClient.getClient(host, port, new VideoClientHandler());
-            ImageMessage imageMessage = new ImageMessage();
-            imageMessage.setHello(true);
+            ImageMessage imageMessage = ImageMessage.getHelloMessage();
             sendImageMessage(imageMessage);
             LogKit.info("向服务器发送hello包:" + imageMessage);
         }catch (Exception e) {
@@ -51,8 +50,7 @@ public class TcpUtil {
     }
 
     public static void close() {
-        ImageMessage message = new ImageMessage();
-        message.setBye(true);
+        ImageMessage message = ImageMessage.getByeMessage();
         sendImageMessage(message);
         try {
             TimeUnit.MILLISECONDS.sleep(100);

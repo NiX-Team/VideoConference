@@ -20,6 +20,7 @@
 *.gif
 /.idea/
 /bin/
+*.gz
 
 /jfinalshop-4.0-pay/src/test/
 target/

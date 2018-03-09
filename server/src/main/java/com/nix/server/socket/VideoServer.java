@@ -10,9 +10,11 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.timeout.IdleStateHandler;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 11723
@@ -48,6 +50,7 @@ public class VideoServer {
                     // pipeline管理channel中的Handler，在channel队列中添加一个handler来处理业务
                     ch.pipeline().addLast("framedecoder",new LengthFieldBasedFrameDecoder(1024*1024, 0, 4,0,4));
                     ch.pipeline().addLast("encoder", new LengthFieldPrepender(4, false));
+                    ch.pipeline().addLast(new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS));
                     ch.pipeline().addLast(new ImageMessageDecode());
                     ch.pipeline().addLast(new ImageMessageEncode());
                     ch.pipeline().addLast(new NettyServerHandler());

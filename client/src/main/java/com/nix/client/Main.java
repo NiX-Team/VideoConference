@@ -6,6 +6,7 @@ import com.nix.client.common.TcpUtil;
 import com.nix.client.common.VideoThread;
 import com.nix.client.controller.MainController;
 import com.nix.client.util.ImageUtil;
+import com.nix.share.util.log.LogKit;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;

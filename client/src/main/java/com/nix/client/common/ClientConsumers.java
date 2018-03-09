@@ -25,7 +25,6 @@ public class ClientConsumers extends Consumers{
                 while (!shudown.get()) {
                     final ImageMessage message = MessageContainer.getMessage();
                     if (message != null) {
-                        LogKit.info("get消息" + message);
                         EXECUTOR.execute(new Runnable() {
                             @Override
                             public void run() {

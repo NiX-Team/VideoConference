@@ -51,6 +51,7 @@ public class ClientContainer {
         USER_CONTEXT.remove(message.getContext());
         //将消息改为bye包 让消费者通知相应的客户端移除这个客户端
         message.setBye(true);
+        message.setHello(false);
         MessageContainer.addMessage(message);
     }
 

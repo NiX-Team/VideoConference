@@ -27,6 +27,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import sun.rmi.runtime.Log;
 
 import java.util.concurrent.ThreadFactory;
 
@@ -104,6 +105,7 @@ public class MainController {
                 }
                 Pane pane = (Pane) otherVideoPane.lookup("#" + imageMessage.getUserId());
                 otherVideoPane.getChildren().removeAll(pane);
+                LogKit.info("移除面板" + imageMessage);
             }
         });
     }

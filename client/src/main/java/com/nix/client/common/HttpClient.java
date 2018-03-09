@@ -4,6 +4,8 @@ package com.nix.client.common;
 /**
  * Created by 11723 on 2017/1/20.
  */
+import com.nix.share.util.log.LogKit;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -52,7 +54,7 @@ public class HttpClient {
         BufferedReader in = null;
         try {
             String urlStr = url + getParamStr(keyValueParams);
-            System.out.println("GET请求的URL为："+urlStr);
+            LogKit.info("GET请求的URL为："+urlStr);
             URL realUrl = new URL(urlStr);
             // 打开和URL之间的连接
             HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
@@ -71,7 +73,7 @@ public class HttpClient {
             while ((line = in.readLine()) != null) {
                 result += line;
             }
-            System.out.println("获取的结果为："+result);
+            LogKit.info("获取的结果为："+result);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

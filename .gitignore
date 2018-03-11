@@ -18,7 +18,6 @@
 *.jpg
 *.png
 *.gif
-/.idea/
 /bin/
 *.gz
 *.log.*

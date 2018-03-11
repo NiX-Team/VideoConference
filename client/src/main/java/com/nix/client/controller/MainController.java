@@ -13,7 +13,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,7 +29,6 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import sun.rmi.runtime.Log;
 
 import java.util.concurrent.ThreadFactory;
 
@@ -228,9 +226,6 @@ public class MainController {
     }
 
     public void camera(MouseEvent mouseEvent) {
-        if (!TcpUtil.isConnect()) {
-            return;
-        }
         if (openCamera.getText().equals("打开摄像头")) {
             Main.main.openCameraVideo();
             openCamera.setText("关闭摄像头");
@@ -243,9 +238,6 @@ public class MainController {
     }
 
     public void screen(MouseEvent mouseEvent) {
-        if (!TcpUtil.isConnect()) {
-            return;
-        }
         if (openScreen.getText().equals("打开屏幕分享")) {
             Main.main.openScreenVideo();
             openScreen.setText("关闭屏幕分享");

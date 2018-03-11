@@ -1,25 +1,14 @@
 package com.nix.client.nio;
 import com.nix.client.Main;
 import com.nix.client.common.TcpUtil;
-import com.nix.client.common.VideoThread;
-import com.nix.client.controller.MainController;
 import com.nix.share.message.ImageMessage;
 import com.nix.share.util.log.LogKit;
 import com.xuggle.ferry.AtomicInteger;
-import com.xuggle.xuggler.IMetaData;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.CharsetUtil;
-
-import javax.swing.text.html.ImageView;
 import java.io.Serializable;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * @author 11723

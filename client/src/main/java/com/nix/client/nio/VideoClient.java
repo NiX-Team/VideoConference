@@ -11,8 +11,6 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
-
-import java.io.Serializable;
 import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * NIO客户端
  * 单例
  */
-public class VideoClient<M extends Serializable> {
+public class VideoClient {
     /**
      * 服务器host
      * */
@@ -33,7 +31,7 @@ public class VideoClient<M extends Serializable> {
     /**
      * nio客户端socket句柄
      * */
-    private static final EventLoopGroup group = new NioEventLoopGroup();
+    private EventLoopGroup group = new NioEventLoopGroup();
     /**
      * {@link VideoClient} 单例模式
      * */
@@ -41,12 +39,12 @@ public class VideoClient<M extends Serializable> {
     /**
      * videoClient客户端的handler
      * */
-    private final ClientHandler<ImageMessage> clientHandler;
+    private ClientHandler<ImageMessage> clientHandler;
     /**
      * netty客户端handler
      * */
-    private static final NettyClientHandler nettyClientHandler = new NettyClientHandler();
-    private static final  Bootstrap bootstrap = new Bootstrap();
+    private NettyClientHandler nettyClientHandler = new NettyClientHandler();
+    private Bootstrap bootstrap = new Bootstrap();
 
     private VideoClient(String host, int port,ClientHandler<ImageMessage> clientHandler) {
         this.host = host;
@@ -56,7 +54,7 @@ public class VideoClient<M extends Serializable> {
     /**
      * 客户端启动方法
      * */
-    public void start() {
+    public boolean start() {
         nettyClientHandler.setClientHandler(clientHandler);
         try {
             bootstrap.group(group)
@@ -84,12 +82,14 @@ public class VideoClient<M extends Serializable> {
             });
             if (connect()) {
                 LogKit.info("服务器连接成功");
+                return true;
             }else {
                 LogKit.info("服务器连接失败");
             }
         } catch (Exception e){
             e.printStackTrace();
         }
+        return false;
     }
     /**
      * 客户端连接
@@ -114,18 +114,11 @@ public class VideoClient<M extends Serializable> {
             if (f.isSuccess()) {
                 return true;
             }
-            return false;
         } catch (InterruptedException e) {
             LogKit.error("客户端连接异常");
             e.printStackTrace();
-            return false;
         }
-    }
-    /**
-     * 客户端重新连接
-     * */
-    public boolean againConnect() {
-        return client.connect();
+        return false;
     }
 
     /**
@@ -138,7 +131,7 @@ public class VideoClient<M extends Serializable> {
     /**
      * 写数据到服务器
      * */
-    public void sendMsg(M msg) {
+    public void sendMsg(ImageMessage msg) {
         nettyClientHandler.writeContent(msg);
     }
 
@@ -147,12 +140,23 @@ public class VideoClient<M extends Serializable> {
      * @param host 服务器host
      * @param port 服务器端口
      * */
-    public static VideoClient getClient(String host, int port,ClientHandler<ImageMessage> handler) {
+    public static VideoClient getClient(String host, int port,ClientHandler<ImageMessage> handler,boolean re) {
+        if (re) {
+            if (client != null) {
+                client.close();
+            }
+            client = new VideoClient(host,port,handler);
+            if (!client.start()) {
+                return null;
+            }
+        }
         if (client == null) {
             synchronized (VideoClient.class) {
                 if (client == null) {
                     client = new VideoClient(host,port,handler);
-                    client.start();
+                    if (!client.start()) {
+                        return null;
+                    }
                 }
             }
         }

@@ -4,8 +4,6 @@ import com.nix.client.Main;
 import com.nix.share.message.Consumers;
 import com.nix.share.message.ImageMessage;
 import com.nix.share.message.MessageContainer;
-import io.netty.channel.ChannelHandlerContext;
-import com.nix.share.util.log.LogKit;
 
 import java.util.concurrent.ThreadFactory;
 

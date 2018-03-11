@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.springframework:spring-webmvc:5.0.5.BUILD-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://D:/server/repository/org/springframework/spring-webmvc/5.0.5.BUILD-SNAPSHOT/spring-webmvc-5.0.5.BUILD-20180311.092724-75.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/server/repository/org/springframework/spring-webmvc/5.0.5.BUILD-SNAPSHOT/spring-webmvc-5.0.5.BUILD-20180311.092724-75-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/server/repository/org/springframework/spring-webmvc/5.0.5.BUILD-SNAPSHOT/spring-webmvc-5.0.5.BUILD-20180311.092724-75-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

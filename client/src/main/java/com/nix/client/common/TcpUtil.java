@@ -3,9 +3,6 @@ package com.nix.client.common;
 import com.nix.client.nio.VideoClient;
 import com.nix.share.message.ImageMessage;
 import com.nix.share.util.log.LogKit;
-
-import javax.net.ssl.HostnameVerifier;
-import java.nio.charset.Charset;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,6 +17,8 @@ public class TcpUtil {
     private static VideoClient client;
     private static String roomId;
     private static String userId;
+    private static String host;
+    private static int port;
     public static void main(String[] args) throws InterruptedException {
         ImageMessage imageMessage = new ImageMessage();
         imageMessage.setHello(true);
@@ -38,11 +37,16 @@ public class TcpUtil {
      * 第一次连接服务器发送hello包
      * */
     public static boolean connectServer(String host,int port) {
+        if (!host.equals(TcpUtil.host) || port != TcpUtil.port) {
+            client = null;
+        }
         if (client != null) {
             return true;
         }
+        TcpUtil.host = host;
+        TcpUtil.port = port;
         try {
-            client = VideoClient.getClient(host, port, new VideoClientHandler());
+            client = VideoClient.getClient(host, port, new VideoClientHandler(),false);
             ImageMessage imageMessage = ImageMessage.getHelloMessage();
             sendImageMessage(imageMessage);
             LogKit.info("向服务器发送hello包:" + imageMessage);
@@ -56,12 +60,14 @@ public class TcpUtil {
      * 客户端重新连接
      * */
     public static boolean againConnect() {
-        if (client.againConnect()) {
+        client = VideoClient.getClient(host, port, new VideoClientHandler(),true);
+        if (client != null) {
             ImageMessage imageMessage = ImageMessage.getHelloMessage();
             sendImageMessage(imageMessage);
             LogKit.info("重新向服务器发送hello包:" + imageMessage);
             return true;
         }else {
+            LogKit.info("重新连接失败");
             client.close();
             return false;
         }
@@ -79,6 +85,9 @@ public class TcpUtil {
         LogKit.info("客户端通道关闭");
     }
     public static void sendImageMessage(ImageMessage message) {
+        if (client == null) {
+            return;
+        }
         message.setUserId(userId);
         message.setRoomId(roomId);
         client.sendMsg(message);

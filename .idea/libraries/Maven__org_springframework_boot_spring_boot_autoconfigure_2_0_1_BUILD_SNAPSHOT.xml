@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.springframework.boot:spring-boot-autoconfigure:2.0.1.BUILD-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://D:/server/repository/org/springframework/boot/spring-boot-autoconfigure/2.0.1.BUILD-SNAPSHOT/spring-boot-autoconfigure-2.0.1.BUILD-20180310.102740-45.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://D:/server/repository/org/springframework/boot/spring-boot-autoconfigure/2.0.1.BUILD-SNAPSHOT/spring-boot-autoconfigure-2.0.1.BUILD-20180310.102740-45-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://D:/server/repository/org/springframework/boot/spring-boot-autoconfigure/2.0.1.BUILD-SNAPSHOT/spring-boot-autoconfigure-2.0.1.BUILD-20180310.102740-45-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

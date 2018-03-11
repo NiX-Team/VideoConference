@@ -21,6 +21,7 @@
 /.idea/
 /bin/
 *.gz
+*.log.*
 
 /jfinalshop-4.0-pay/src/test/
 target/

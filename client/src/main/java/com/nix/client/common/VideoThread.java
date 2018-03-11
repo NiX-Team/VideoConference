@@ -27,12 +27,14 @@ public abstract class VideoThread{
     }
     public VideoThread(Exe exe) {
         this.exe = exe;
-        setThread();
     }
     public void start() {
+        setThread();
         thread.start();
     }
     public void stop() {
-        thread.interrupt();
+        if (thread != null) {
+            thread.interrupt();
+        }
     }
 }

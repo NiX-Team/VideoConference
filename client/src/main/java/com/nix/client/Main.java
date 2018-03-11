@@ -49,7 +49,7 @@ public class Main extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("controller/sample.fxml"));
         root = fxmlLoader.load();
         primaryStage.setTitle("客户端");
-        primaryStage.setScene(new Scene(root, 1666, 736));
+        primaryStage.setScene(new Scene(root, 950, 736));
         primaryStage.show();
         mainController = fxmlLoader.getController();
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
@@ -68,18 +68,24 @@ public class Main extends Application {
      * 显示自己摄像头视频
      * */
     public void openCameraVideo() {
-        screenVideoThread.stop();
         cameraVideoThread.start();
+    }
+    /**
+     * 关闭
+     * */
+    public void closeCameraVideo() {
+        cameraVideoThread.stop();
     }
 
     /**
      * 显示屏幕录制视频
      * */
     public void openScreenVideo() {
-        cameraVideoThread.stop();
         screenVideoThread.start();
     }
-
+    public void closeScreenVideo() {
+        screenVideoThread.stop();
+    }
     /**
      * 设置本地视频窗口视频
      * */

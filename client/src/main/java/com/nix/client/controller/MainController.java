@@ -12,6 +12,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -23,7 +24,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
 import com.nix.share.util.log.LogKit;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -45,9 +48,9 @@ public class MainController {
     @FXML
     private TextField userId;
     @FXML
-    private CheckBox boolOpenCamera;
+    private Button openCamera;
     @FXML
-    private CheckBox boolOpenScreen;
+    private Button openScreen;
     @FXML
     private Text error;
     @FXML
@@ -114,12 +117,19 @@ public class MainController {
         Pane pane = new Pane();
         pane.setId(imageMessage.getUserId());
         pane.setPrefWidth(width);
-        pane.setPrefHeight(height);
+        pane.setPrefHeight(height + 25);
+        Text text = new Text(imageMessage.getId());
+        text.setLayoutX(0);
+        text.setLayoutY(17);
+        text.setFont(Font.font(20));
+        text.setWrappingWidth(width);
+        text.setTextAlignment(TextAlignment.CENTER);
         ImageView view = new ImageView();
+        view.setLayoutY(25);
         view.setId("video");
         view.setFitWidth(width);
         view.setFitHeight(height);
-        pane.getChildren().addAll(view);
+        pane.getChildren().addAll(text,view);
         if (haveMax) {
             ImageView max = new ImageView(new Image(String.valueOf(getClass().getResource("/max.jpg"))));
             max.setFitWidth(30);
@@ -176,15 +186,9 @@ public class MainController {
                 return;
             }
         }
-        if (boolOpenCamera.isSelected()) {
-            Main.main.openCameraVideo();
-        }
-        else{
-            if (boolOpenScreen.isSelected()) {
-                Main.main.openScreenVideo();
-            }
-        }
     }
+
+
 
     /**
      * 新建一个最大化窗口
@@ -221,5 +225,35 @@ public class MainController {
     public void close() {
         TcpUtil.close();
         clientConsumers.close();
+    }
+
+    public void camera(MouseEvent mouseEvent) {
+        if (!TcpUtil.isConnect()) {
+            return;
+        }
+        if (openCamera.getText().equals("打开摄像头")) {
+            Main.main.openCameraVideo();
+            openCamera.setText("关闭摄像头");
+            openScreen.setText("打开屏幕分享");
+            Main.main.closeScreenVideo();
+        }else {
+            openCamera.setText("打开摄像头");
+            Main.main.closeCameraVideo();
+        }
+    }
+
+    public void screen(MouseEvent mouseEvent) {
+        if (!TcpUtil.isConnect()) {
+            return;
+        }
+        if (openScreen.getText().equals("打开屏幕分享")) {
+            Main.main.openScreenVideo();
+            openScreen.setText("关闭屏幕分享");
+            openCamera.setText("打开摄像头");
+            Main.main.closeCameraVideo();
+        }else {
+            openScreen.setText("打开屏幕分享");
+            Main.main.closeScreenVideo();
+        }
     }
 }

@@ -68,7 +68,6 @@ public class TcpUtil {
             return true;
         }else {
             LogKit.info("重新连接失败");
-            client.close();
             return false;
         }
     }
@@ -78,10 +77,9 @@ public class TcpUtil {
         sendImageMessage(message);
         try {
             TimeUnit.MILLISECONDS.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            client.close();
+        } catch (Exception e) {
         }
-        client.close();
         LogKit.info("客户端通道关闭");
     }
     public static void sendImageMessage(ImageMessage message) {

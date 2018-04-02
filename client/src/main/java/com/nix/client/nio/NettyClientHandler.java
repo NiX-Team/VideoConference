@@ -6,6 +6,7 @@ import com.nix.share.util.log.LogKit;
 import com.xuggle.ferry.AtomicInteger;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import java.io.Serializable;
@@ -13,7 +14,7 @@ import java.io.Serializable;
 /**
  * @author 11723
  */
-public class NettyClientHandler<M extends Serializable> extends ChannelInboundHandlerAdapter {
+public class NettyClientHandler<M extends Serializable> extends SimpleChannelInboundHandler<ImageMessage> {
     private ChannelHandlerContext context;
     private ClientHandler<ImageMessage> clientHandler;
     private final AtomicInteger num = new AtomicInteger(0);
@@ -34,17 +35,17 @@ public class NettyClientHandler<M extends Serializable> extends ChannelInboundHa
     }
 
     /**
-     *此方法会在连接到服务器后被调用
+     * 此方法会在连接到服务器后被调用
      * */
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
         context = ctx;
     }
     /**
-     *此方法会在接收到服务器数据后调用
+     * 此方法会在接收到服务器数据后调用
      * */
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    public void channelRead0(ChannelHandlerContext ctx, ImageMessage msg) {
         ImageMessage imageMessage = (ImageMessage) msg;
         //如果是服务器回复的心跳包
         if (imageMessage.isBye() && imageMessage.isHello()) {
@@ -80,7 +81,7 @@ public class NettyClientHandler<M extends Serializable> extends ChannelInboundHa
     }
 
     /**
-     *捕捉到异常
+     * 捕捉到异常
      * */
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {

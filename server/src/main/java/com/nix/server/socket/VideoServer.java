@@ -72,7 +72,7 @@ public class VideoServer {
     public static void start() {
         try {
             new VideoServer().accept();
-            new ServerConsumers(100,100,new ThreadFactory(){
+            new ServerConsumers(200,200,new ThreadFactory(){
                 @Override
                 public Thread newThread(Runnable r) {
                     Thread t = new Thread(r);

@@ -47,5 +47,4 @@ public class ScreenVideoThread extends VideoThread{
         };
         setThread(thread);
     }
-
 }

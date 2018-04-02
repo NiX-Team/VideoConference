@@ -8,6 +8,7 @@
 # Idea Project Files #
 *.iml
 *gitignore
+/.idea/
 /out/
 *.sql
 *.classpath

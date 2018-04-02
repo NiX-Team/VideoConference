@@ -21,40 +21,19 @@ import java.util.concurrent.TimeUnit;
  */
 public class VideoClient {
     /**
-     * 服务器host
-     * */
-    private final String host;
-    /**
-     * 服务器端口
-     * */
-    private final int port;
-    /**
-     * nio客户端socket句柄
-     * */
-    private EventLoopGroup group = new NioEventLoopGroup();
-    /**
      * {@link VideoClient} 单例模式
      * */
     private static VideoClient client;
-    /**
-     * videoClient客户端的handler
-     * */
-    private ClientHandler<ImageMessage> clientHandler;
-    /**
-     * netty客户端handler
-     * */
-    private NettyClientHandler nettyClientHandler = new NettyClientHandler();
-    private Bootstrap bootstrap = new Bootstrap();
 
-    private VideoClient(String host, int port,ClientHandler<ImageMessage> clientHandler) {
-        this.host = host;
-        this.port = port;
-        this.clientHandler = clientHandler;
-    }
+    private EventLoopGroup group;
+    private NettyClientHandler nettyClientHandler;
     /**
      * 客户端启动方法
      * */
-    public boolean start() {
+    public boolean start(String host, int port,ClientHandler<ImageMessage> clientHandler) {
+        Bootstrap bootstrap = new Bootstrap();
+        group = new NioEventLoopGroup();
+         nettyClientHandler = new NettyClientHandler();
         nettyClientHandler.setClientHandler(clientHandler);
         try {
             bootstrap.group(group)
@@ -72,7 +51,7 @@ public class VideoClient {
 
                 @Override
                 public void initChannel(SocketChannel ch) {
-                    ch.pipeline().addLast("framedecoder",new LengthFieldBasedFrameDecoder(1024*1024, 0, 4,0,4));
+                    ch.pipeline().addLast("frameDecoder",new LengthFieldBasedFrameDecoder(1024*1024, 0, 4,0,4));
                     ch.pipeline().addLast("encoder", new LengthFieldPrepender(4, false));
                     ch.pipeline().addLast("ping", new IdleStateHandler(0, 4, 0, TimeUnit.SECONDS));
                     ch.pipeline().addLast(new ImageMessageDecode());
@@ -80,24 +59,7 @@ public class VideoClient {
                     ch.pipeline().addLast(nettyClientHandler);
                 }
             });
-            if (connect()) {
-                LogKit.info("服务器连接成功");
-                return true;
-            }else {
-                LogKit.info("服务器连接失败");
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        return false;
-    }
-    /**
-     * 客户端连接
-     * */
-    private boolean connect() {
-        ChannelFuture f = null;
-        try {
-            f = bootstrap.connect().sync();
+            ChannelFuture f = bootstrap.connect().sync();
             f.addListener(new ChannelFutureListener() {
 
                 @Override
@@ -112,10 +74,12 @@ public class VideoClient {
                 }
             });
             if (f.isSuccess()) {
+                LogKit.info("服务器连接成功");
                 return true;
+            }else {
+                LogKit.info("服务器连接失败");
             }
-        } catch (InterruptedException e) {
-            LogKit.error("客户端连接异常");
+        } catch (Exception e){
             e.printStackTrace();
         }
         return false;
@@ -145,16 +109,16 @@ public class VideoClient {
             if (client != null) {
                 client.close();
             }
-            client = new VideoClient(host,port,handler);
-            if (!client.start()) {
+            client = new VideoClient();
+            if (!client.start(host,port,handler)) {
                 return null;
             }
         }
         if (client == null) {
             synchronized (VideoClient.class) {
                 if (client == null) {
-                    client = new VideoClient(host,port,handler);
-                    if (!client.start()) {
+                    client = new VideoClient();
+                    if (!client.start(host,port,handler)) {
                         return null;
                     }
                 }

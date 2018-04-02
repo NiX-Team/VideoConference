@@ -6,6 +6,7 @@ import com.sun.xml.internal.txw2.TXW;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import com.nix.share.util.log.LogKit;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import io.netty.handler.timeout.IdleStateHandler;
@@ -16,14 +17,14 @@ import java.util.Map;
 /**
  * @author 11723
  */
-public class NettyServerHandler extends ChannelInboundHandlerAdapter {
-    private static final int MAX_LEAVE_TIME = 2;
+public class NettyServerHandler extends SimpleChannelInboundHandler<ImageMessage> {
+    private static final int MAX_LEAVE_TIME = 1;
 
     private final Map<ChannelHandlerContext,Integer> heartbeat = new HashMap<>();
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        ImageMessage message = (ImageMessage)msg;
+    public void channelRead0(ChannelHandlerContext ctx, ImageMessage msg) {
+        ImageMessage message = msg;
         message.setContext(ctx);
         //如果是心跳包 直接回复
         if (message.isBye() && message.isHello()) {
@@ -51,13 +52,14 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent event = (IdleStateEvent) evt;
             if (!heartbeat.containsKey(ctx)) {
-                heartbeat.put(ctx,new Integer(0));
+                heartbeat.put(ctx,0);
             }
             if (event.state() == IdleState.READER_IDLE) {
                 heartbeat.put(ctx,heartbeat.get(ctx) + 1);
                 if (heartbeat.get(ctx) > MAX_LEAVE_TIME) {
                     heartbeat.remove(ctx);
                     LogKit.info("心跳测试关闭连接" + ctx);
+                    ClientContainer.removeClient(ctx);
                     ctx.channel().close();
                 }
             }

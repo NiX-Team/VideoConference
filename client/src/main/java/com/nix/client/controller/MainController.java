@@ -3,7 +3,7 @@ package com.nix.client.controller;
 import com.nix.client.Main;
 import com.nix.client.common.ClientConsumers;
 import com.nix.client.common.HttpClient;
-import com.nix.client.common.TcpUtil;
+import com.nix.client.common.TCPUtil;
 import com.nix.client.util.ImageUtil;
 import com.nix.share.message.ImageMessage;
 import javafx.application.Platform;
@@ -169,9 +169,9 @@ public class MainController {
             });
             clientConsumers.start();
         }
-        if (!TcpUtil.isConnect()) {
-            TcpUtil.setRoomId(roomId.getText());
-            TcpUtil.setUserId(userId.getText());
+        if (!TCPUtil.isConnect()) {
+            TCPUtil.setRoomId(roomId.getText());
+            TCPUtil.setUserId(userId.getText());
             int port;
             try {
                 port = Integer.parseInt(serverPort.getText());
@@ -179,7 +179,7 @@ public class MainController {
                 setError("端口错误");
                 return;
             }
-            if (!TcpUtil.connectServer(serverHost.getText(), port)) {
+            if (!TCPUtil.connectTcpServer(serverHost.getText(), port)) {
                 setError("服务器不存在");
                 return;
             }
@@ -221,7 +221,7 @@ public class MainController {
         error.setText(errorMsg);
     }
     public void close() {
-        TcpUtil.close();
+        TCPUtil.close();
         clientConsumers.close();
     }
 

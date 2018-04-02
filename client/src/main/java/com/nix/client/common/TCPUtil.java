@@ -1,5 +1,7 @@
 package com.nix.client.common;
 
+import com.nix.client.nio.TcpNettyClientHandler;
+import com.nix.client.nio.TcpVideoClient;
 import com.nix.client.nio.VideoClient;
 import com.nix.share.message.ImageMessage;
 import com.nix.share.util.log.LogKit;
@@ -13,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  * 上传直播视频运用传输每帧图片（图片使用rgb矩阵byte数组）
  * byte数组信息有没帧图片获取时间戳 图片宽高
  */
-public class TcpUtil {
+public class TCPUtil {
     private static VideoClient client;
     private static String roomId;
     private static String userId;
@@ -37,16 +39,16 @@ public class TcpUtil {
      * 第一次连接服务器发送hello包
      * */
     public static boolean connectServer(String host,int port) {
-        if (!host.equals(TcpUtil.host) || port != TcpUtil.port) {
+        if (!host.equals(TCPUtil.host) || port != TCPUtil.port) {
             client = null;
         }
         if (client != null) {
             return true;
         }
-        TcpUtil.host = host;
-        TcpUtil.port = port;
+        TCPUtil.host = host;
+        TCPUtil.port = port;
         try {
-            client = VideoClient.getClient(host, port, new VideoClientHandler(),false);
+            client = TcpVideoClient.getClient(host, port, new TcpNettyClientHandler<ImageMessage>());
             ImageMessage imageMessage = ImageMessage.getHelloMessage();
             sendImageMessage(imageMessage);
             LogKit.info("向服务器发送hello包:" + imageMessage);
@@ -60,7 +62,7 @@ public class TcpUtil {
      * 客户端重新连接
      * */
     public static boolean againConnect() {
-        client = VideoClient.getClient(host, port, new VideoClientHandler(),true);
+        client = TcpVideoClient.getClient(host, port, new TcpNettyClientHandler<ImageMessage>());
         if (client != null) {
             ImageMessage imageMessage = ImageMessage.getHelloMessage();
             sendImageMessage(imageMessage);
@@ -88,7 +90,7 @@ public class TcpUtil {
         }
         message.setUserId(userId);
         message.setRoomId(roomId);
-        client.sendMsg(message);
+        client.sendMessage(message);
     }
 
     public static String getRoomId() {
@@ -96,7 +98,7 @@ public class TcpUtil {
     }
 
     public static void setRoomId(String roomId) {
-        TcpUtil.roomId = roomId;
+        TCPUtil.roomId = roomId;
     }
 
     public static String getUserId() {
@@ -104,6 +106,6 @@ public class TcpUtil {
     }
 
     public static void setUserId(String userId) {
-        TcpUtil.userId = userId;
+        TCPUtil.userId = userId;
     }
 }

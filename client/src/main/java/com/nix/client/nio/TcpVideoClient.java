@@ -1,7 +1,7 @@
 package com.nix.client.nio;
-import com.nix.share.message.ImageMessage;
-import com.nix.share.message.ImageMessageDecode;
-import com.nix.share.message.ImageMessageEncode;
+import com.nix.share.message.AbstractMessage;
+import com.nix.share.message.decode.ImageMessageDecode;
+import com.nix.share.message.encode.ImageMessageEncode;
 import com.nix.share.util.log.LogKit;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
@@ -19,17 +19,17 @@ import java.util.concurrent.TimeUnit;
  * NIO客户端
  * 单例
  */
-public class TcpVideoClient implements VideoClient<ImageMessage>{
+public class TcpVideoClient implements VideoClient<AbstractMessage>{
     /**
      * {@link TcpVideoClient} 单例模式
      * */
     private volatile static TcpVideoClient client;
     private final String host;
     private final int port;
-    private final ClientHandler<ImageMessage> clientHandler;
+    private final AbstractClientHandler<AbstractMessage> clientHandler;
     private EventLoopGroup group;
 
-    public TcpVideoClient(String host, int port, ClientHandler<ImageMessage> clientHandler) {
+    public TcpVideoClient(String host, int port, AbstractClientHandler<AbstractMessage> clientHandler) {
         this.host = host;
         this.port = port;
         this.clientHandler = clientHandler;
@@ -62,8 +62,8 @@ public class TcpVideoClient implements VideoClient<ImageMessage>{
                     ch.pipeline().addLast("frameDecoder",new LengthFieldBasedFrameDecoder(1024*1024, 0, 4,0,4));
                     ch.pipeline().addLast("encoder", new LengthFieldPrepender(4, false));
                     ch.pipeline().addLast("ping", new IdleStateHandler(0, 4, 0, TimeUnit.SECONDS));
-                    ch.pipeline().addLast(new ImageMessageDecode());
                     ch.pipeline().addLast(new ImageMessageEncode());
+                    ch.pipeline().addLast(new ImageMessageDecode());
                     ch.pipeline().addLast(clientHandler);
                 }
             });
@@ -92,7 +92,7 @@ public class TcpVideoClient implements VideoClient<ImageMessage>{
      * 写数据到服务器
      * */
     @Override
-    public void sendMessage(ImageMessage msg) {
+    public void sendMessage(AbstractMessage msg) {
         clientHandler.sendMsg(msg);
     }
 
@@ -100,8 +100,8 @@ public class TcpVideoClient implements VideoClient<ImageMessage>{
      * 重连
      */
     @Override
-    public void againConnect() {
-         start();
+    public boolean againConnect() {
+         return start();
     }
 
     /**
@@ -109,7 +109,7 @@ public class TcpVideoClient implements VideoClient<ImageMessage>{
      * @param host 服务器host
      * @param port 服务器端口
      * */
-    public static TcpVideoClient getClient(String host, int port, ClientHandler<ImageMessage> handler) {
+    public static TcpVideoClient getClient(String host, int port, AbstractClientHandler<AbstractMessage> handler) {
         if (client == null) {
             synchronized (TcpVideoClient.class) {
                 if (client == null) {

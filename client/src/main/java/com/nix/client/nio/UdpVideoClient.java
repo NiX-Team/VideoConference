@@ -1,32 +1,26 @@
 package com.nix.client.nio;
-
-import com.nix.share.message.ImageMessage;
-import com.nix.share.message.ImageMessageDecode;
-import com.nix.share.message.ImageMessageEncode;
+import com.nix.share.message.AbstractMessage;
+import com.nix.share.message.impl.UdpImageMessage;
 import com.nix.share.util.log.LogKit;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramChannel;
-import io.netty.channel.socket.DatagramPacket;
-import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
-
-import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 
-public class UdpVideoClient implements VideoClient<DatagramPacket>{
+/**
+ * @author 11723
+ */
+public class UdpVideoClient implements VideoClient<UdpImageMessage>{
     private volatile static UdpVideoClient client;
-    private final String host;
-    private final int port;
-    private final ClientHandler<DatagramPacket> clientHandler;
+    private final AbstractClientHandler<UdpImageMessage> clientHandler;
     private EventLoopGroup group;
 
-    public UdpVideoClient(String host, int port, ClientHandler<DatagramPacket> clientHandler) {
-        this.host = host;
-        this.port = port;
+    public UdpVideoClient(AbstractClientHandler<UdpImageMessage> clientHandler) {
         this.clientHandler = clientHandler;
     }
 
@@ -40,24 +34,18 @@ public class UdpVideoClient implements VideoClient<DatagramPacket>{
         group = new NioEventLoopGroup();
         try {
             bootstrap.group(group)
-                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
-                    //发包缓冲区，单位多少？
-                    .option(ChannelOption.SO_SNDBUF, 1024*256)
-                    //收包换成区，单位多少？
-                    .option(ChannelOption.SO_RCVBUF, 1024*256)
-                    .option(ChannelOption.SO_KEEPALIVE,true);
-            bootstrap.channel(DatagramChannel.class);
-            bootstrap.remoteAddress(new InetSocketAddress(host, port));
-            bootstrap.handler(new ChannelInitializer<SocketChannel>() {
+                    .option(ChannelOption.SO_BROADCAST, true);
+            bootstrap.channel(NioDatagramChannel.class);
+            bootstrap.handler(new ChannelInitializer<DatagramChannel>() {
                 @Override
-                public void initChannel(SocketChannel ch) {
+                public void initChannel(DatagramChannel ch) {
                     ch.pipeline().addLast("frameDecoder",new LengthFieldBasedFrameDecoder(1024*1024, 0, 4,0,4));
                     ch.pipeline().addLast("encoder", new LengthFieldPrepender(4, false));
                     ch.pipeline().addLast("ping", new IdleStateHandler(0, 4, 0, TimeUnit.SECONDS));
                     ch.pipeline().addLast(clientHandler);
                 }
             });
-            ChannelFuture f = bootstrap.bind().sync();
+            ChannelFuture f = bootstrap.bind(0).sync();
             if (f.isSuccess()) {
                 LogKit.info("服务器连接成功");
                 return true;
@@ -65,6 +53,7 @@ public class UdpVideoClient implements VideoClient<DatagramPacket>{
                 LogKit.info("服务器连接失败");
             }
         } catch (Exception e){
+            e.printStackTrace();
         }
         return false;
     }
@@ -83,7 +72,7 @@ public class UdpVideoClient implements VideoClient<DatagramPacket>{
      * @param message
      */
     @Override
-    public void sendMessage(DatagramPacket message) {
+    public void sendMessage(UdpImageMessage message) {
         clientHandler.sendMsg(message);
     }
 
@@ -91,18 +80,19 @@ public class UdpVideoClient implements VideoClient<DatagramPacket>{
      * 重连
      */
     @Override
-    public void againConnect() {
-        start();
+    public boolean againConnect() {
+        return start();
     }
 
-    public static VideoClient getClieent(String host, int port, ClientHandler<DatagramPacket> handler) {
+    public static VideoClient getClient(AbstractClientHandler<UdpImageMessage> clientHandler) {
         if (client == null) {
             synchronized (UdpVideoClient.class) {
                 if (client == null) {
-                    client = new UdpVideoClient(host,port,handler);
+                    client = new UdpVideoClient(clientHandler);
                 }
             }
         }
         return client;
     }
+
 }

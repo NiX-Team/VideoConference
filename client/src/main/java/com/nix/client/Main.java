@@ -2,7 +2,6 @@ package com.nix.client;
 
 import com.nix.client.common.CameraVideoThread;
 import com.nix.client.common.ScreenVideoThread;
-import com.nix.client.common.TCPUtil;
 import com.nix.client.common.VideoThread;
 import com.nix.client.controller.MainController;
 import com.nix.client.util.ImageUtil;
@@ -29,7 +28,7 @@ public class Main extends Application {
             //在本地窗口显示自己的视频
             setImage(javaImage);
             //上传录制视频到服务器
-            TCPUtil.sendImageMessage(ImageUtil.imageToImageMessage(javaImage));
+//            TCPUtil.sendImageMessage(ImageUtil.imageToImageMessage(javaImage));
         }
     };
     private final CameraVideoThread cameraVideoThread = new CameraVideoThread(exe);

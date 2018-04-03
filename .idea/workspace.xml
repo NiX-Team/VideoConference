@@ -7,18 +7,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6a0663f3-959f-478a-ac47-5455000e4b2d" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/NetworkUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpVideoClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpVideoClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/AbstractNetworkUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/Config.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/UdpUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpNettyClientHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/UdpServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/AbstractMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/impl/ImageMessage.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/impl/UdpImageMessage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TcpUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TcpUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TCPUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/VideoClientHandler.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/ClientConsumers.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/ClientConsumers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/NetworkUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TCPUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TcpUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/ClientHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/NettyClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpNettyClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/AbstractClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpNettyClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpNettyClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpVideoClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpVideoClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpVideoClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpVideoClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/VideoClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/VideoClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/com/nix/client/util/ImageUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/com/nix/client/util/ImageUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ClientContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ClientContainer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ServerConsumers.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ServerConsumers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/NettyServerHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/NettyServerHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/VideoServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/VideoServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/main/java/com/nix/server/web/ServerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/com/nix/server/web/ServerController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/Consumers.java" beforeDir="false" afterPath="$PROJECT_DIR$/share/src/main/java/com/nix/share/Consumers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/ImageMessage.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/ImageMessageDecode.java" beforeDir="false" afterPath="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/decode/ImageMessageDecode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/ImageMessageEncode.java" beforeDir="false" afterPath="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/encode/ImageMessageEncode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/MessageContainer.java" beforeDir="false" afterPath="$PROJECT_DIR$/share/src/main/java/com/nix/share/MessageContainer.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/client/target/" />
     <ignored path="$PROJECT_DIR$/share/target/" />
@@ -53,114 +71,100 @@
       <file leaf-file-name="TcpVideoClient.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpVideoClient.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="820">
-              <caret line="94" column="27" selection-start-line="94" selection-start-column="16" selection-end-line="94" selection-end-column="27" />
-              <folding>
-                <element signature="method#start#0;class#TcpVideoClient#0" />
-                <element signature="e#3330#3331#0" expanded="true" />
-                <element signature="e#3354#3355#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="292">
+              <caret line="111" column="38" selection-start-line="111" selection-start-column="38" selection-end-line="111" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TCPUtil.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TCPUtil.java">
+      <file leaf-file-name="UdpNettyClientHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpNettyClientHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="797">
-              <caret line="109" column="5" lean-forward="true" selection-start-line="37" selection-start-column="4" selection-end-line="109" selection-end-column="5" />
-              <folding>
-                <element signature="method#main#0;class#TcpUtil#0" />
-                <element signature="e#1020#1021#0" expanded="true" />
-                <element signature="e#1057#1058#0" expanded="true" />
-                <element signature="e#2962#2963#0" expanded="true" />
-                <element signature="e#2991#2992#0" expanded="true" />
-                <element signature="e#2898#2899#0" expanded="true" />
-                <element signature="e#2937#2938#0" expanded="true" />
-                <element signature="e#3125#3126#0" expanded="true" />
-                <element signature="e#3154#3155#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NetworkUtil.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/NetworkUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="22" column="5" lean-forward="true" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
-              <folding>
-                <element signature="e#1849#1850#0" expanded="true" />
-                <element signature="e#1878#1879#0" expanded="true" />
-                <element signature="e#1929#1930#0" expanded="true" />
-                <element signature="e#1968#1969#0" expanded="true" />
-                <element signature="e#2008#2009#0" expanded="true" />
-                <element signature="e#2037#2038#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="VideoThread.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/VideoThread.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="UdpVideoClient.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpVideoClient.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1020">
-              <caret line="85" column="27" selection-start-line="85" selection-start-column="16" selection-end-line="85" selection-end-column="27" />
+            <state relative-caret-position="400">
+              <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#start#0;class#UdpVideoClient#0" />
-                <element signature="e#3051#3052#0" expanded="true" />
-                <element signature="e#3074#3075#0" expanded="true" />
+                <element signature="e#522#523#0" expanded="true" />
+                <element signature="e#556#557#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/Main.java">
+      <file leaf-file-name="TcpUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TcpUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="31" column="36" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="36" />
+            <state relative-caret-position="360">
+              <caret line="29" column="24" lean-forward="true" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MainController.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/controller/MainController.java">
+      <file leaf-file-name="AbstractNetworkUtil.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/AbstractNetworkUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="219" column="41" selection-start-line="219" selection-start-column="41" selection-end-line="219" selection-end-column="41" />
-              <folding>
-                <element signature="method#addAClient#0;class#MainController#0" />
-                <element signature="method#removeClient#0;class#MainController#0" />
-                <element signature="method#getClientPane#0;class#MainController#0" />
-                <element signature="method#sign#0;class#MainController#0" />
-                <element signature="method#showMaxVideo#0;class#MainController#0" />
-                <element signature="method#close#0;class#MainController#0" />
-                <element signature="method#camera#0;class#MainController#0" />
-                <element signature="method#screen#0;class#MainController#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClientHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/ClientHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
+            <state relative-caret-position="20">
+              <caret line="24" column="10" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="10" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UdpImageMessage.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/impl/UdpImageMessage.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#3749#3750#0" expanded="true" />
+                <element signature="e#3778#3779#0" expanded="true" />
+                <element signature="e#3833#3834#0" expanded="true" />
+                <element signature="e#3869#3870#0" expanded="true" />
+                <element signature="e#3916#3917#0" expanded="true" />
+                <element signature="e#3948#3949#0" expanded="true" />
+                <element signature="e#4009#4010#0" expanded="true" />
+                <element signature="e#4051#4052#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="UdpUtil.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/UdpUtil.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="460">
+              <caret line="35" column="30" lean-forward="true" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AbstractClientHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/AbstractClientHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="232">
+              <caret line="20" column="23" lean-forward="true" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#723#724#0" expanded="true" />
+                <element signature="e#753#754#0" expanded="true" />
+                <element signature="e#1511#1512#0" expanded="true" />
+                <element signature="e#1553#1554#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClientContainer.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ClientContainer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
             </state>
           </provider>
         </entry>
@@ -168,21 +172,23 @@
       <file leaf-file-name="TcpNettyClientHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpNettyClientHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1460">
-              <caret line="88" column="24" selection-start-line="88" selection-start-column="24" selection-end-line="88" selection-end-column="24" />
+            <state relative-caret-position="460">
+              <caret line="23" column="44" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="44" />
               <folding>
-                <element signature="e#2300#2301#0" expanded="true" />
-                <element signature="e#2348#2349#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SimpleChannelInboundHandler.java" pinned="false" current-in-tab="false">
-        <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/channel/SimpleChannelInboundHandler.java">
+      <file leaf-file-name="NettyServerHandler.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/NettyServerHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="560">
-              <caret line="43" column="36" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
+            <state relative-caret-position="20">
+              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -192,10 +198,23 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>tcpUtil</find>
+      <find>ImageMessage</find>
+      <find>send(</find>
+      <find>write(</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>networkUtil</replace>
+      <replace>IMessage</replace>
+      <replace>AbstractMessage</replace>
+    </replaceStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -206,20 +225,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/util/ImageUtil.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/com/nix/server/ServerApplication.java" />
-        <option value="$PROJECT_DIR$/server/src/main/resources/log4j.yml" />
-        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/util/HttpUtil.java" />
-        <option value="$PROJECT_DIR$/clientJar/src/main/java/com/nix/App.java" />
         <option value="$PROJECT_DIR$/clientJar/src/main/java/com/nix/ClientMain.java" />
         <option value="$PROJECT_DIR$/clientJar/pom.xml" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/HttpsClient.java" />
         <option value="$PROJECT_DIR$/server/src/main/resources/application.yml" />
-        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/ImageMessageEncode.java" />
         <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/Consumers.java" />
-        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/ImageMessage.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ClientContainer.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ServerConsumers.java" />
         <option value="$PROJECT_DIR$/client/pom.xml" />
         <option value="$PROJECT_DIR$/share/pom.xml" />
         <option value="$PROJECT_DIR$/client/src/main/resources/log.txt" />
@@ -227,27 +237,45 @@
         <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/HttpClient.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/controller/sample.fxml" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/VideoThread.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/com/nix/server/web/ServerController.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/ClientConsumers.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/Main.java" />
-        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/MessageContainer.java" />
         <option value="$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/VideoServer.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/ScreenVideoThread.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/ImageTest.java" />
-        <option value="$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/NettyServerHandler.java" />
         <option value="$PROJECT_DIR$/server/pom.xml" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/VideoClient.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/VideoClientHandler.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/ClientHandler.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/NettyClientHandler.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpVideoClient.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpNettyClientHandler.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpVideoClient.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TcpUtil.java" />
-        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/controller/MainController.java" />
+        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/ImageMessage.java" />
+        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/MessageContainer.java" />
+        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/ImageMessageEncode.java" />
+        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/TcpMessage.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/util/ImageUtil.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TCPUtil.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/Config.java" />
         <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/NetworkUtil.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpVideoClient.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/ClientConsumers.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/controller/MainController.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/ClientHandler.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpNettyClientHandler.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/AbstractNetworkUtil.java" />
+        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/IMessage.java" />
+        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/AbstractMessage.java" />
+        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/impl/TcpMessage.java" />
+        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/impl/UdpMessage.java" />
+        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/impl/ImageMessage.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TcpUtil.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/Main.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/NettyServerHandler.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ClientContainer.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ServerConsumers.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/nix/server/web/ServerController.java" />
+        <option value="$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/UdpServer.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/VideoClient.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpVideoClient.java" />
+        <option value="$PROJECT_DIR$/share/src/main/java/com/nix/share/message/impl/UdpImageMessage.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpNettyClientHandler.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/AbstractClientHandler.java" />
+        <option value="$PROJECT_DIR$/client/src/main/java/com/nix/client/common/UdpUtil.java" />
       </list>
     </option>
   </component>
@@ -310,7 +338,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -381,17 +408,168 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="nio" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="client" type="462c0819:PsiDirectoryNode" />
               <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="server" type="462c0819:PsiDirectoryNode" />
+              <item name="socket" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+              <item name="decode" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+              <item name="encode" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+              <item name="impl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="VideoConference" type="b2602c69:ProjectViewProjectNode" />
+              <item name="VideoConference" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="share" type="462c0819:PsiDirectoryNode" />
+              <item name="message" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -413,15 +591,15 @@
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="G:\IDEA\VideoConference\client\src\main\java" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="G:\IDEA\VideoConference\server" />
       <recent name="G:\IDEA\VideoConference\server\src\main" />
       <recent name="G:\IDEA\VideoConference\client\src\main\java" />
       <recent name="G:\IDEA\VideoConference\client\target\classes" />
       <recent name="G:\IDEA\VideoConference\client\src\main\resources" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="G:\IDEA\VideoConference\client\src\main\java" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -436,7 +614,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.ServerApplication">
+  <component name="RunManager" selected="Application.UdpVideoClient">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
     </configuration>
@@ -447,6 +625,39 @@
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.nix.client.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+    </configuration>
+    <configuration name="UdpServer" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.nix.server.socket.UdpServer" />
+      <module name="server" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nix.server.socket.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+    </configuration>
+    <configuration name="UdpUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.nix.client.common.UdpUtil" />
+      <module name="client" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nix.client.common.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+    </configuration>
+    <configuration name="UdpVideoClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.nix.client.nio.UdpVideoClient" />
+      <module name="client" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.nix.client.nio.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -513,7 +724,17 @@
     <list>
       <item itemvalue="Application.Main" />
       <item itemvalue="Spring Boot.ServerApplication" />
+      <item itemvalue="Application.UdpUtil" />
+      <item itemvalue="Application.UdpServer" />
+      <item itemvalue="Application.UdpVideoClient" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.UdpVideoClient" />
+        <item itemvalue="Application.UdpServer" />
+        <item itemvalue="Application.UdpUtil" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -584,6 +805,8 @@
       <workItem from="1522582027706" duration="12000" />
       <workItem from="1522658964985" duration="5860000" />
       <workItem from="1522669100140" duration="1068000" />
+      <workItem from="1522741762087" duration="15000" />
+      <workItem from="1522746842146" duration="10681000" />
     </task>
     <task id="LOCAL-00001" summary="连接自然断开">
       <created>1520522904161</created>
@@ -596,7 +819,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="78339000" />
+    <option name="totallyTimeSpent" value="89035000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
@@ -605,26 +828,26 @@
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="FindBugs-IDEA" order="7" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.08629989" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info anchor="bottom" id="Java Enterprise" order="7" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" sideWeight="0.4936306" weight="0.21108742" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.53821313" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.7255113" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.38727078" />
       <window_info anchor="bottom" id="Spring" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21908316" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49946064" visible="true" weight="0.28944564" />
       <window_info anchor="right" id="Bean Validation" order="3" />
       <window_info id="Web" order="2" side_tool="true" />
       <window_info anchor="right" id="Database" order="3" weight="0.32995737" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Structure" order="1" sideWeight="0.50053936" side_tool="true" weight="0.22121535" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
       <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.23681378" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.3229279" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.35814455" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="right" id="Coverage" order="4" sideWeight="0.5063694" side_tool="true" weight="0.3033049" />
@@ -646,7 +869,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="18" />
+      <option name="time" value="22" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -709,230 +932,10 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/Consumers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpNettyClientHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="16" column="91" selection-start-line="16" selection-start-column="64" selection-end-line="16" selection-end-column="91" />
-          <folding>
-            <element signature="e#2300#2301#0" expanded="true" />
-            <element signature="e#2348#2349#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/MessageContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="28" column="7" selection-start-line="28" selection-start-column="7" selection-end-line="28" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/channel/ChannelOutboundInvoker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="229" column="18" selection-start-line="229" selection-start-column="18" selection-end-line="229" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/util/concurrent/Future.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2680">
-          <caret line="167" column="73" selection-start-line="167" selection-start-column="57" selection-end-line="167" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/client/lib/xuggle-xuggler-5.4.jar!/com/xuggle/ferry/AtomicInteger.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="75" column="15" selection-start-line="75" selection-start-column="15" selection-end-line="75" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/log4j.properties">
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/channel/SimpleChannelInboundHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="560">
-          <caret line="40" column="28" selection-start-line="40" selection-start-column="28" selection-end-line="40" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/debug.log">
-      <provider selected="true" editor-type-id="LogFileEditorProvider">
-        <state relative-caret-position="-840" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/info.log">
-      <provider selected="true" editor-type-id="LogFileEditorProvider">
-        <state relative-caret-position="520">
-          <caret line="266" lean-forward="true" selection-start-line="266" selection-end-line="266" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/HttpClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1039">
-          <caret line="56" column="23" selection-start-line="56" selection-start-column="23" selection-end-line="56" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="42" column="48" selection-start-line="42" selection-start-column="48" selection-end-line="42" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/util/Map.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4900">
-          <caret line="271" column="6" selection-start-line="271" selection-start-column="6" selection-end-line="271" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/util/concurrent/LinkedBlockingQueue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6700">
-          <caret line="383" column="32" selection-start-line="383" selection-start-column="27" selection-end-line="383" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ClientContainer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="863">
-          <caret line="58" column="20" selection-start-line="58" selection-start-column="20" selection-end-line="58" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/ImageMessageDecode.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/CameraVideoThread.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/awt/Graphics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="920" column="28" selection-start-line="920" selection-start-column="28" selection-end-line="920" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/util/ImageUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="27" column="79" lean-forward="true" selection-start-line="27" selection-start-column="8" selection-end-line="27" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/ClientConsumers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="28" column="63" selection-start-line="28" selection-start-column="63" selection-end-line="28" selection-end-column="63" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/awt/Image.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="198" column="28" selection-start-line="198" selection-start-column="28" selection-end-line="198" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/awt/Robot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="446" column="41" lean-forward="true" selection-start-line="446" selection-start-column="41" selection-end-line="446" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/ImageTest.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/javax/swing/text/html/ImageView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="135" column="11" selection-start-line="135" selection-start-column="11" selection-end-line="135" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/VideoServer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="53" column="36" selection-start-line="53" selection-start-column="36" selection-end-line="53" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.22.Final/netty-all-4.1.22.Final.jar!/io/netty/channel/ChannelInboundHandlerAdapter.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="80">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/buffer/ByteBuf.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4440">
-          <caret line="248" column="46" selection-start-line="248" selection-start-column="46" selection-end-line="248" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/util/ReferenceCounted.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/ImageMessage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="640">
-          <caret line="52" column="29" selection-start-line="52" selection-start-column="29" selection-end-line="52" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/web/ServerController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/util/ZipUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3100">
-          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/Consumers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="23" column="7" selection-start-line="23" selection-start-column="7" selection-end-line="23" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/share/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="27" column="27" selection-start-line="27" selection-start-column="27" selection-end-line="27" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ServerConsumers.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
+          <caret line="43" column="36" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -943,52 +946,63 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/pom.xml">
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/CameraVideoThread.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="16" column="30" selection-start-line="16" selection-start-column="30" selection-end-line="16" selection-end-column="30" />
+        <state relative-caret-position="140">
+          <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/ServerApplication.java">
+    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/decode/ImageMessageDecode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/NettyServerHandler.java">
+    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/MessageContainer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="19" column="67" selection-start-line="19" selection-start-column="40" selection-end-line="19" selection-end-column="67" />
+        <state relative-caret-position="140">
+          <caret line="11" column="19" selection-start-line="11" selection-start-column="19" selection-end-line="11" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/MessageContainer.java">
+    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/Consumers.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="39" column="1" selection-start-line="39" selection-start-column="1" selection-end-line="39" selection-end-column="1" />
+        <state relative-caret-position="140">
+          <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/buffer/ByteBufHolder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="9" column="10" selection-start-line="9" selection-start-column="10" selection-end-line="9" selection-end-column="10" />
+        <state relative-caret-position="700">
+          <caret line="49" column="18" selection-start-line="49" selection-start-column="18" selection-end-line="49" selection-end-column="18" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/VideoClient.java">
+    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/impl/UdpMessage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+        <state relative-caret-position="480">
+          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1093#1094#0" expanded="true" />
+            <element signature="e#1134#1135#0" expanded="true" />
+            <element signature="e#1740#1741#0" expanded="true" />
+            <element signature="e#1767#1768#0" expanded="true" />
+            <element signature="e#1890#1891#0" expanded="true" />
+            <element signature="e#1917#1918#0" expanded="true" />
+            <element signature="e#2099#2100#0" expanded="true" />
+            <element signature="e#2126#2127#0" expanded="true" />
+            <element signature="e#2367#2368#0" expanded="true" />
+            <element signature="e#2394#2395#0" expanded="true" />
+            <element signature="e#3310#3311#0" expanded="true" />
+            <element signature="e#3379#3380#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/VideoClientHandler.java" />
     <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/VideoThread.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="320">
@@ -996,112 +1010,414 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/ClientHandler.java">
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/controller/MainController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="552">
+          <caret line="58" column="64" selection-start-line="58" selection-start-column="54" selection-end-line="58" selection-end-column="64" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/channel/SimpleChannelInboundHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="560">
-          <caret line="43" column="36" selection-start-line="43" selection-start-column="36" selection-end-line="43" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpNettyClientHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1460">
-          <caret line="88" column="24" selection-start-line="88" selection-start-column="24" selection-end-line="88" selection-end-column="24" />
-          <folding>
-            <element signature="e#2300#2301#0" expanded="true" />
-            <element signature="e#2348#2349#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpVideoClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1020">
-          <caret line="85" column="27" selection-start-line="85" selection-start-column="16" selection-end-line="85" selection-end-column="27" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#start#0;class#UdpVideoClient#0" />
-            <element signature="e#3051#3052#0" expanded="true" />
-            <element signature="e#3074#3075#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpVideoClient.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="820">
-          <caret line="94" column="27" selection-start-line="94" selection-start-column="16" selection-end-line="94" selection-end-column="27" />
-          <folding>
-            <element signature="method#start#0;class#TcpVideoClient#0" />
-            <element signature="e#3330#3331#0" expanded="true" />
-            <element signature="e#3354#3355#0" expanded="true" />
+            <element signature="method#removeClient#0;class#MainController#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/Main.java">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="31" column="9" lean-forward="true" selection-start-line="31" selection-start-column="9" selection-end-line="31" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/web/ServerController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="23" column="13" lean-forward="true" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/ClientConsumers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ServerConsumers.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="29" column="89" selection-start-line="29" selection-start-column="89" selection-end-line="29" selection-end-column="89" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/VideoServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="710">
+          <caret line="77" column="30" selection-start-line="77" selection-start-column="30" selection-end-line="77" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/channel/ChannelOutboundInvoker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="229" column="18" selection-start-line="229" selection-start-column="18" selection-end-line="229" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/channel/AddressedEnvelope.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="28" column="17" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/nio/channels/DatagramChannel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="462" column="24" selection-start-line="462" selection-start-column="24" selection-end-line="462" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/channel/nio/AbstractNioChannel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="113" column="17" selection-start-line="113" selection-start-column="15" selection-end-line="113" selection-end-column="17" />
+          <folding>
+            <element signature="e#4070#4071#0" expanded="true" />
+            <element signature="e#4095#4096#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/channel/socket/nio/NioDatagramChannel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1442">
+          <caret line="275" column="35" selection-start-line="275" selection-start-column="28" selection-end-line="275" selection-end-column="35" />
+          <folding>
+            <element signature="e#5740#5741#0" expanded="true" />
+            <element signature="e#5771#5772#0" expanded="true" />
+            <element signature="e#6335#6336#0" expanded="true" />
+            <element signature="e#6395#6396#0" expanded="true" />
+            <element signature="e#6456#6457#0" expanded="true" />
+            <element signature="e#6525#6526#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/channel/DefaultAddressedEnvelope.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-940">
+          <caret line="40" column="68" selection-start-line="40" selection-start-column="62" selection-end-line="40" selection-end-column="68" />
+          <folding>
+            <element signature="e#2027#2028#0" expanded="true" />
+            <element signature="e#2057#2058#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/channel/socket/DatagramPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="27" column="29" selection-start-line="27" selection-start-column="29" selection-end-line="27" selection-end-column="29" />
+          <folding>
+            <element signature="e#1252#1253#0" expanded="true" />
+            <element signature="e#1290#1291#0" expanded="true" />
+            <element signature="e#1631#1632#0" expanded="true" />
+            <element signature="e#1679#1680#0" expanded="true" />
+            <element signature="e#1734#1735#0" expanded="true" />
+            <element signature="e#1787#1788#0" expanded="true" />
+            <element signature="e#1850#1851#0" expanded="true" />
+            <element signature="e#1911#1912#0" expanded="true" />
+            <element signature="e#1979#1980#0" expanded="true" />
+            <element signature="e#2052#2053#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.22.Final/netty-all-4.1.22.Final.jar!/io/netty/channel/socket/DatagramPacket.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/buffer/ByteBuf.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="248" column="22" selection-start-line="248" selection-start-column="22" selection-end-line="248" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.22.Final/netty-all-4.1.22.Final-sources.jar!/io/netty/util/ReferenceCounted.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/encode/ImageMessageEncode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="18" column="44" lean-forward="true" selection-start-line="18" selection-start-column="23" selection-end-line="18" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/util/ImageUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
-          <caret line="31" column="36" selection-start-line="31" selection-start-column="20" selection-end-line="31" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/controller/MainController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="219" column="41" selection-start-line="219" selection-start-column="41" selection-end-line="219" selection-end-column="41" />
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
           <folding>
-            <element signature="method#addAClient#0;class#MainController#0" />
-            <element signature="method#removeClient#0;class#MainController#0" />
-            <element signature="method#getClientPane#0;class#MainController#0" />
-            <element signature="method#sign#0;class#MainController#0" />
-            <element signature="method#showMaxVideo#0;class#MainController#0" />
-            <element signature="method#close#0;class#MainController#0" />
-            <element signature="method#camera#0;class#MainController#0" />
-            <element signature="method#screen#0;class#MainController#0" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TCPUtil.java">
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.22.Final/netty-all-4.1.22.Final-sources.jar!/io/netty/util/ReferenceCountUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="797">
-          <caret line="109" column="5" lean-forward="true" selection-start-line="37" selection-start-column="4" selection-end-line="109" selection-end-column="5" />
+        <state relative-caret-position="-920">
+          <caret line="24" column="19" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.22.Final/netty-all-4.1.22.Final-sources.jar!/io/netty/channel/socket/nio/NioDatagramChannel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="302">
+          <caret line="277" column="35" selection-start-line="277" selection-start-column="28" selection-end-line="277" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/UdpServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="46" column="103" selection-start-line="46" selection-start-column="103" selection-end-line="46" selection-end-column="103" />
           <folding>
-            <element signature="method#main#0;class#TcpUtil#0" />
-            <element signature="e#1020#1021#0" expanded="true" />
-            <element signature="e#1057#1058#0" expanded="true" />
-            <element signature="e#2962#2963#0" expanded="true" />
-            <element signature="e#2991#2992#0" expanded="true" />
-            <element signature="e#2898#2899#0" expanded="true" />
-            <element signature="e#2937#2938#0" expanded="true" />
-            <element signature="e#3125#3126#0" expanded="true" />
-            <element signature="e#3154#3155#0" expanded="true" />
+            <element signature="imports" expanded="true" />
+            <element signature="e#2187#2188#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/NetworkUtil.java">
+    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/impl/ImageMessage.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="440">
-          <caret line="22" column="5" lean-forward="true" selection-start-line="22" selection-start-column="5" selection-end-line="22" selection-end-column="5" />
+          <caret line="22" column="5" lean-forward="true" selection-start-line="8" selection-start-column="4" selection-end-line="22" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/HttpClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="861">
+          <caret line="67" column="20" selection-start-line="67" selection-start-column="20" selection-end-line="67" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/Config.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="9" column="38" lean-forward="true" selection-start-line="9" selection-start-column="38" selection-end-line="9" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.22.Final/netty-all-4.1.22.Final-sources.jar!/io/netty/channel/socket/DatagramPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="33" column="29" selection-start-line="33" selection-start-column="20" selection-end-line="33" selection-end-column="29" />
           <folding>
-            <element signature="e#1849#1850#0" expanded="true" />
-            <element signature="e#1878#1879#0" expanded="true" />
-            <element signature="e#1929#1930#0" expanded="true" />
-            <element signature="e#1968#1969#0" expanded="true" />
-            <element signature="e#2008#2009#0" expanded="true" />
-            <element signature="e#2037#2038#0" expanded="true" />
+            <element signature="e#1252#1253#0" expanded="true" />
+            <element signature="e#1290#1291#0" expanded="true" />
+            <element signature="e#1631#1632#0" expanded="true" />
+            <element signature="e#1679#1680#0" expanded="true" />
+            <element signature="e#1734#1735#0" expanded="true" />
+            <element signature="e#1787#1788#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.22.Final/netty-all-4.1.22.Final-sources.jar!/io/netty/channel/DefaultAddressedEnvelope.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="59" column="37" selection-start-line="59" selection-start-column="33" selection-end-line="59" selection-end-column="37" />
+          <folding>
+            <element signature="e#1941#1942#0" expanded="true" />
+            <element signature="e#1987#1988#0" expanded="true" />
+            <element signature="e#2027#2028#0" expanded="true" />
+            <element signature="e#2057#2058#0" expanded="true" />
+            <element signature="e#2096#2097#0" expanded="true" />
+            <element signature="e#2125#2126#0" expanded="true" />
+            <element signature="e#2167#2168#0" expanded="true" />
+            <element signature="e#2199#2200#0" expanded="true" />
+            <element signature="e#2738#2739#0" expanded="true" />
+            <element signature="e#2796#2797#0" expanded="true" />
+            <element signature="e#2855#2856#0" expanded="true" />
+            <element signature="e#2924#2925#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/VideoClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="22" column="14" selection-start-line="22" selection-start-column="14" selection-end-line="22" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/AbstractMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="20" column="14" lean-forward="true" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/channel/Channel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="130" column="18" selection-start-line="130" selection-start-column="18" selection-end-line="130" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_161/src.zip!/java/net/InetSocketAddress.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="183" column="55" selection-start-line="183" selection-start-column="51" selection-end-line="183" selection-end-column="55" />
+          <folding>
+            <element signature="e#4750#4751#0" expanded="true" />
+            <element signature="e#4807#4808#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://D:/server/repository/io/netty/netty-all/4.1.6.Final/netty-all-4.1.6.Final-sources.jar!/io/netty/bootstrap/AbstractBootstrap.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="251" column="31" lean-forward="true" selection-start-line="251" selection-start-column="31" selection-end-line="251" selection-end-column="31" />
+          <folding>
+            <element signature="e#8761#8762#0" expanded="true" />
+            <element signature="e#8821#8822#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpVideoClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="74" column="43" selection-start-line="74" selection-start-column="43" selection-end-line="74" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1030#1031#0" expanded="true" />
+            <element signature="e#1080#1081#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/TcpUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="29" column="24" lean-forward="true" selection-start-line="29" selection-start-column="24" selection-end-line="29" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/AbstractNetworkUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="24" column="10" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="10" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/common/ClientContainer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="55" lean-forward="true" selection-start-line="55" selection-end-line="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/src/main/java/com/nix/server/socket/NettyServerHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/share/src/main/java/com/nix/share/message/impl/UdpImageMessage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="17" column="5" lean-forward="true" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3749#3750#0" expanded="true" />
+            <element signature="e#3778#3779#0" expanded="true" />
+            <element signature="e#3833#3834#0" expanded="true" />
+            <element signature="e#3869#3870#0" expanded="true" />
+            <element signature="e#3916#3917#0" expanded="true" />
+            <element signature="e#3948#3949#0" expanded="true" />
+            <element signature="e#4009#4010#0" expanded="true" />
+            <element signature="e#4051#4052#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/UdpNettyClientHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="20" column="5" selection-start-line="20" selection-start-column="5" selection-end-line="20" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#522#523#0" expanded="true" />
+            <element signature="e#556#557#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpVideoClient.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="292">
+          <caret line="111" column="38" selection-start-line="111" selection-start-column="38" selection-end-line="111" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/TcpNettyClientHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="23" column="44" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/nio/AbstractClientHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="20" column="23" lean-forward="true" selection-start-line="20" selection-start-column="23" selection-end-line="20" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#723#724#0" expanded="true" />
+            <element signature="e#753#754#0" expanded="true" />
+            <element signature="e#1511#1512#0" expanded="true" />
+            <element signature="e#1553#1554#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/src/main/java/com/nix/client/common/UdpUtil.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="460">
+          <caret line="35" column="30" lean-forward="true" selection-start-line="35" selection-start-column="30" selection-end-line="35" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

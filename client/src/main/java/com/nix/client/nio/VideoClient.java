@@ -1,14 +1,12 @@
 package com.nix.client.nio;
 
-import com.nix.share.message.ImageMessage;
-import io.netty.channel.ChannelInboundHandler;
-
 /**
  * @author 11723
  */
 public interface VideoClient<M> {
     /**
      * 服务启动方法
+     * @return
      * */
     boolean start();
     /**
@@ -17,10 +15,12 @@ public interface VideoClient<M> {
     void close();
     /**
      * 消息传输
+     * @param m
      * */
     void sendMessage(M m);
     /**
      * 重连
+     * @return
      * */
-    void againConnect();
+    boolean againConnect();
 }

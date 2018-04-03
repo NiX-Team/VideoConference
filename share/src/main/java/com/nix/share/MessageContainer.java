@@ -1,5 +1,6 @@
-package com.nix.share.message;
+package com.nix.share;
 
+import com.nix.share.message.AbstractMessage;
 import com.nix.share.util.log.LogKit;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -12,11 +13,11 @@ public final class MessageContainer {
     /**
      * 消息队列
      * */
-    private final static LinkedBlockingQueue<ImageMessage> MESSAGES = new LinkedBlockingQueue<>(500000);
+    private final static LinkedBlockingQueue<AbstractMessage> MESSAGES = new LinkedBlockingQueue<>(500000);
     /**
      * 生产者添加消息
      * */
-    public static void addMessage(ImageMessage message) {
+    public static void addMessage(AbstractMessage message) {
         try {
             //添加消息被阻塞1秒后丢弃添加
             if (!MESSAGES.offer(message,1, TimeUnit.SECONDS)) {
@@ -29,7 +30,7 @@ public final class MessageContainer {
     /**
      * 消费者获取消息
      * */
-    public static ImageMessage getMessage() {
+    public static AbstractMessage getMessage() {
         try {
             return MESSAGES.poll(1,TimeUnit.SECONDS);
         } catch (InterruptedException e) {

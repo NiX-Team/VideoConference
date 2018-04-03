@@ -1,9 +1,8 @@
 package com.nix.server.common;
 
-import com.nix.share.message.Consumers;
-import com.nix.share.message.ImageMessage;
-import com.nix.share.message.MessageContainer;
-import com.nix.share.util.log.LogKit;
+import com.nix.share.Consumers;
+import com.nix.share.message.AbstractMessage;
+import com.nix.share.MessageContainer;
 
 import java.util.concurrent.ThreadFactory;
 
@@ -22,13 +21,13 @@ public class ServerConsumers extends Consumers{
             @Override
             public void run() {
                 while (!shudown.get()) {
-                    final ImageMessage message = MessageContainer.getMessage();
+                    final AbstractMessage message = MessageContainer.getMessage();
                     if (message != null) {
                         EXECUTOR.execute(new Runnable() {
                             @Override
                             public void run() {
-                                for (ImageMessage msg : ClientContainer.getRoomClients(message.getRoomId())) {
-                                    if (!msg.getId().equals(message.getId())) {
+                                for (AbstractMessage msg : ClientContainer.getRoomClients(message.getRoomId())) {
+                                    if (!msg.getMessageId().equals(message.getMessageId())) {
                                         msg.getContext().writeAndFlush(message);
                                     }
                                 }

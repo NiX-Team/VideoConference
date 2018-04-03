@@ -1,9 +1,9 @@
 package com.nix.client.common;
 
 import com.nix.client.Main;
-import com.nix.share.message.Consumers;
-import com.nix.share.message.ImageMessage;
-import com.nix.share.message.MessageContainer;
+import com.nix.share.Consumers;
+import com.nix.share.message.AbstractMessage;
+import com.nix.share.MessageContainer;
 
 import java.util.concurrent.ThreadFactory;
 
@@ -21,7 +21,7 @@ public class ClientConsumers extends Consumers{
             @Override
             public void run() {
                 while (!shudown.get()) {
-                    final ImageMessage message = MessageContainer.getMessage();
+                    final AbstractMessage message = MessageContainer.getMessage();
                     if (message != null) {
                         EXECUTOR.execute(new Runnable() {
                             @Override

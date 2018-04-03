@@ -1,6 +1,7 @@
 package com.nix.client.util;
 
-import com.nix.share.message.ImageMessage;
+import com.nix.share.message.AbstractMessage;
+import com.nix.share.message.impl.ImageMessage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -12,7 +13,7 @@ import java.io.IOException;
  * @author 11723
  */
 public class ImageUtil {
-    public static ImageMessage imageToImageMessage(BufferedImage image) {
+    public static AbstractMessage imageToImageMessage(BufferedImage image) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
             ImageIO.write(image,"jpg",outputStream);
@@ -20,12 +21,12 @@ public class ImageUtil {
             e.printStackTrace();
             return null;
         }
-        ImageMessage message = new ImageMessage();
-        message.setBytes(outputStream.toByteArray());
+        AbstractMessage message = new ImageMessage();
+        message.setContent(outputStream.toByteArray());
         return message;
     }
-    public static BufferedImage messageToBufferedImage(ImageMessage message) {
-        ByteArrayInputStream in = new ByteArrayInputStream(message.getBytes());
+    public static BufferedImage messageToBufferedImage(AbstractMessage message) {
+        ByteArrayInputStream in = new ByteArrayInputStream(message.getContent());
         try {
             BufferedImage image = ImageIO.read(in);
             return image;

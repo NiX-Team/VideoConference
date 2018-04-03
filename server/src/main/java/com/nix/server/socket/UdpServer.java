@@ -1,59 +1,53 @@
 package com.nix.server.socket;
+
+import com.nix.server.common.ServerConsumers;
 import com.nix.share.message.decode.ImageMessageDecode;
 import com.nix.share.message.encode.ImageMessageEncode;
-import com.nix.server.common.ServerConsumers;
 import com.nix.share.util.log.LogKit;
+import io.netty.bootstrap.Bootstrap;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.SocketChannel;
-import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.channel.socket.DatagramChannel;
+import io.netty.channel.socket.DatagramPacket;
+import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
-/**
- * @author 11723
- */
-public class VideoServer {
-    private static final int port = 9999;
+public class UdpServer {
+
+    private static final int port = 8888;
     /**
-    * 通过nio方式来接收连接和处理连接
-    */
+     * 通过nio方式来接收连接和处理连接
+     */
     private static final EventLoopGroup GROUP = new NioEventLoopGroup();
     private void accept() throws InterruptedException {
         // 引导辅助程序
-        ServerBootstrap b = new ServerBootstrap();
+        Bootstrap b = new Bootstrap();
         try {
-            b.group(GROUP)
-                    .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
-                    //发包缓冲区，单位多少？
-                    .option(ChannelOption.SO_SNDBUF, 1024*256)
-                    //收包换成区，单位多少？
-                    .option(ChannelOption.SO_RCVBUF, 1024*256)
-                    //TCP立即发包
-                    .option(ChannelOption.TCP_NODELAY, true)
-                    // 保持长连接
-                    .option(ChannelOption.SO_KEEPALIVE,true);
+            b.group(GROUP);
             // 设置nio类型的channel
-            b.channel(NioServerSocketChannel.class);
+            b.channel(NioDatagramChannel.class);
             // 设置监听端口
             b.localAddress(new InetSocketAddress(port));
             //有连接到达时会创建一个channel
-            b.childHandler(new ChannelInitializer<SocketChannel>() {
+            b.handler(new ChannelInitializer<DatagramChannel>() {
                 @Override
-                protected void initChannel(SocketChannel ch) {
+                protected void initChannel(DatagramChannel ch) {
                     // pipeline管理channel中的Handler，在channel队列中添加一个handler来处理业务
                     ch.pipeline().addLast("framedecoder",new LengthFieldBasedFrameDecoder(1024*1024, 0, 4,0,4));
                     ch.pipeline().addLast("encoder", new LengthFieldPrepender(4, false));
                     ch.pipeline().addLast(new IdleStateHandler(5, 0, 0, TimeUnit.SECONDS));
-                    ch.pipeline().addLast(new ImageMessageDecode());
-                    ch.pipeline().addLast(new ImageMessageEncode());
-                    ch.pipeline().addLast(new NettyServerHandler());
+                    ch.pipeline().addLast(new SimpleChannelInboundHandler<DatagramPacket>() {
+                        @Override
+                        protected void channelRead0(ChannelHandlerContext channelHandlerContext, DatagramPacket s) throws Exception {
+                            System.out.println(s);
+                        }
+                    });
                 }
             });
 
@@ -69,17 +63,9 @@ public class VideoServer {
     public void close() {
         GROUP.shutdownGracefully();
     }
-    public static void start() {
+    public static void main(String[] args) {
         try {
-            new VideoServer().accept();
-            new ServerConsumers(200,200,new ThreadFactory(){
-                @Override
-                public Thread newThread(Runnable r) {
-                    Thread t = new Thread(r);
-                    t.setName("server-consumers");
-                    return t;
-                }
-            }).start();
+            new UdpServer().accept();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -1,4 +1,4 @@
-package com.nix.share.message;
+package com.nix.share;
 
 import com.nix.share.util.log.LogKit;
 

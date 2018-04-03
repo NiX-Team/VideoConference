@@ -1,11 +1,9 @@
 package com.nix.client.controller;
 
 import com.nix.client.Main;
-import com.nix.client.common.ClientConsumers;
-import com.nix.client.common.HttpClient;
-import com.nix.client.common.TCPUtil;
+import com.nix.client.common.*;
 import com.nix.client.util.ImageUtil;
-import com.nix.share.message.ImageMessage;
+import com.nix.share.message.AbstractMessage;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
@@ -57,6 +55,9 @@ public class MainController {
     private TextField serverPort;
 
     private ClientConsumers clientConsumers;
+
+    private AbstractNetworkUtil networkUtil = TcpUtil.getTcpUtil();
+
     /**
      * 宽高比
      * */
@@ -69,15 +70,15 @@ public class MainController {
         video_box.setImage(image);
     }
     @FXML
-    public void exeMessage(ImageMessage imageMessage) {
-        if (imageMessage.isBye()) {
+    public void exeMessage(AbstractMessage imageMessage) {
+        if (imageMessage.getStatus().equals(AbstractMessage.status.bye)) {
             removeClient(imageMessage);
         }else {
             addAClient(imageMessage);
         }
     }
 
-    private void addAClient(ImageMessage imageMessage) {
+    private void addAClient(AbstractMessage imageMessage) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -97,7 +98,7 @@ public class MainController {
         });
     }
 
-    private void removeClient(ImageMessage imageMessage) {
+    private void removeClient(AbstractMessage imageMessage) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -111,12 +112,12 @@ public class MainController {
         });
     }
 
-    private Pane getClientPane(ImageMessage imageMessage,double width,double height,boolean haveMax) {
+    private Pane getClientPane(AbstractMessage imageMessage, double width, double height, boolean haveMax) {
         Pane pane = new Pane();
         pane.setId(imageMessage.getUserId());
         pane.setPrefWidth(width);
         pane.setPrefHeight(height + 25);
-        Text text = new Text(imageMessage.getId());
+        Text text = new Text(imageMessage.getMessageId());
         text.setLayoutX(0);
         text.setLayoutY(17);
         text.setFont(Font.font(20));
@@ -145,6 +146,7 @@ public class MainController {
     }
 
     public void sign(MouseEvent mouseEvent) {
+
         setError("");
         if (roomId.getText() == null || roomId.getText().isEmpty()) {
             setError("房间号不能为空");
@@ -169,17 +171,19 @@ public class MainController {
             });
             clientConsumers.start();
         }
-        if (!TCPUtil.isConnect()) {
-            TCPUtil.setRoomId(roomId.getText());
-            TCPUtil.setUserId(userId.getText());
+        if (!networkUtil.isConnect()) {
             int port;
             try {
+                Config.setRoomId(roomId.getText());
+                Config.setUserId(userId.getText());
+                Config.setServerHost(serverHost.getText());
+                Config.setServerPort(Integer.valueOf(serverPort.getText()));
                 port = Integer.parseInt(serverPort.getText());
             }catch (Exception e) {
                 setError("端口错误");
                 return;
             }
-            if (!TCPUtil.connectTcpServer(serverHost.getText(), port)) {
+            if (!networkUtil.connectServer(serverHost.getText(), port)) {
                 setError("服务器不存在");
                 return;
             }
@@ -191,7 +195,7 @@ public class MainController {
     /**
      * 新建一个最大化窗口
      * */
-    private void showMaxVideo(ImageMessage message) {
+    private void showMaxVideo(AbstractMessage message) {
         Stage stage = new Stage();
         maxStage = stage;
         stage.setTitle(message.getRoomId() + "-" + message.getUserId());
@@ -221,7 +225,7 @@ public class MainController {
         error.setText(errorMsg);
     }
     public void close() {
-        TCPUtil.close();
+        networkUtil.close();
         clientConsumers.close();
     }
 

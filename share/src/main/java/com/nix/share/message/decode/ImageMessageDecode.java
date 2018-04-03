@@ -1,4 +1,4 @@
-package com.nix.share.message;
+package com.nix.share.message.decode;
 
 import com.nix.share.message.util.ObjectAndByteUtil;
 import io.netty.buffer.ByteBuf;

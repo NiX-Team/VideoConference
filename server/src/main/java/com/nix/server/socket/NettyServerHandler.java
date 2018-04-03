@@ -1,15 +1,12 @@
 package com.nix.server.socket;
-import com.nix.share.message.ImageMessage;
 import com.nix.server.common.ClientContainer;
-import com.nix.share.message.MessageContainer;
-import com.sun.xml.internal.txw2.TXW;
+import com.nix.share.MessageContainer;
+import com.nix.share.message.AbstractMessage;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import com.nix.share.util.log.LogKit;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.handler.timeout.IdleStateHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,29 +14,29 @@ import java.util.Map;
 /**
  * @author 11723
  */
-public class NettyServerHandler extends SimpleChannelInboundHandler<ImageMessage> {
+public class NettyServerHandler extends SimpleChannelInboundHandler<AbstractMessage> {
     private static final int MAX_LEAVE_TIME = 1;
 
     private final Map<ChannelHandlerContext,Integer> heartbeat = new HashMap<>();
 
     @Override
-    public void channelRead0(ChannelHandlerContext ctx, ImageMessage msg) {
-        ImageMessage message = msg;
+    public void channelRead0(ChannelHandlerContext ctx, AbstractMessage msg) {
+        AbstractMessage message = msg;
         message.setContext(ctx);
         //如果是心跳包 直接回复
-        if (message.isBye() && message.isHello()) {
+        if (message.getStatus().equals(AbstractMessage.status.heard)) {
             if (heartbeat.containsKey(ctx)) {
                 heartbeat.put(ctx,new Integer(0));
             }
             ctx.writeAndFlush(message);
             return;
         }
-        if (message.isBye()) {
+        if (message.getStatus().equals(AbstractMessage.status.bye)) {
             ClientContainer.removeClient(ctx);
             ctx.close();
             return;
         }
-        if (message.isHello()) {
+        if (message.getStatus().equals(AbstractMessage.status.hello)) {
             LogKit.info("新建客户端" + ctx + "，房间id：" + message.getRoomId());
             ClientContainer.addClient(message,message.getRoomId());
             return;

@@ -20,7 +20,7 @@ public class ServerConsumers extends Consumers{
         EXECUTOR.execute(new Runnable() {
             @Override
             public void run() {
-                while (!shudown.get()) {
+                while (!shutdown.get()) {
                     final AbstractMessage message = MessageContainer.getMessage();
                     if (message != null) {
                         EXECUTOR.execute(new Runnable() {

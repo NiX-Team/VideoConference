@@ -4,6 +4,7 @@ import com.nix.client.common.AbstractNetworkUtil;
 import com.nix.client.common.TcpUtil;
 import com.nix.share.message.AbstractMessage;
 import com.nix.share.MessageContainer;
+import com.nix.share.message.impl.ImageMessage;
 import com.xuggle.ferry.AtomicInteger;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -32,7 +33,7 @@ public abstract class AbstractClientHandler<M extends AbstractMessage> extends S
     /**
      * 连续两次心跳失败视为掉线
      */
-    protected final static int COUNT = 2;
+    protected final static int COUNT = 5;
     /**
      * 此方法会在连接到服务器后被调用
      * */

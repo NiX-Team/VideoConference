@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author 11723
  */
 public abstract class Consumers {
-    protected final AtomicBoolean shudown = new AtomicBoolean(false);
+    protected final AtomicBoolean shutdown = new AtomicBoolean(false);
     public Consumers(int minPool, int maxPool, ThreadFactory threadFactory) {
         EXECUTOR = new ThreadPoolExecutor(minPool, maxPool, 0, TimeUnit.SECONDS, new LinkedBlockingQueue<>(), threadFactory);;
     }
@@ -26,7 +26,7 @@ public abstract class Consumers {
      * */
     public void close() {
         EXECUTOR.shutdown();
-        shudown.set(true);
+        shutdown.set(true);
         LogKit.info("消费者关闭");
     }
 

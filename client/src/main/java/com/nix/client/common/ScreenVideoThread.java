@@ -2,6 +2,7 @@ package com.nix.client.common;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * @author 11723
@@ -36,12 +37,12 @@ public class ScreenVideoThread extends VideoThread{
                         exe.exeImage(image);
                         Thread.sleep(1000/DEFAULT_FRAME);
                     }catch(Exception e){
-                        try {
-                            fos.close();
-                        } catch (Exception e1) {
-                        }
-                        return;
                     }
+                }
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         };

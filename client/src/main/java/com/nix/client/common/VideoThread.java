@@ -9,12 +9,12 @@ import java.awt.image.BufferedImage;
  */
 public abstract class VideoThread{
     protected Thread thread;
-    public interface Exe{
+    public interface Exe {
         /**
          * 抓取到图片后回调方法
          * @param javaImage 抓取的图片
          * */
-        void exeImage(BufferedImage javaImage);
+        void exeImage(BufferedImage javaImage) throws Exception;
     }
     protected Exe exe;
     /**

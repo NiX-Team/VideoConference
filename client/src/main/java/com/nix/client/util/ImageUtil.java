@@ -22,6 +22,7 @@ public class ImageUtil {
             return null;
         }
         AbstractMessage message = new ImageMessage();
+        message.setStatus(ImageMessage.status.data);
         message.setContent(outputStream.toByteArray());
         return message;
     }

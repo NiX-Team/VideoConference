@@ -71,9 +71,10 @@ public class MainController {
     }
     @FXML
     public void exeMessage(AbstractMessage imageMessage) {
+        System.out.println("exeMessage:" + imageMessage);
         if (imageMessage.getStatus().equals(AbstractMessage.status.bye)) {
             removeClient(imageMessage);
-        }else {
+        }else if (imageMessage.getStatus().equals(AbstractMessage.status.data)){
             addAClient(imageMessage);
         }
     }

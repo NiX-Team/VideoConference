@@ -26,7 +26,11 @@ public abstract class AbstractMessage implements Serializable {
         /**
          * 心跳包
          * */
-        heard
+        heard,
+        /**
+         * 数据包
+         * */
+        data
     }
 
     public String getUserId() {
@@ -43,7 +47,7 @@ public abstract class AbstractMessage implements Serializable {
      * @param content
      */
     public void setContent(byte[] content) {
-        this.content = content;
+        this.content = ZipUtil.zip(content);
     }
 
     /**
@@ -83,4 +87,13 @@ public abstract class AbstractMessage implements Serializable {
      * @return
      * */
     public abstract String getMessageId();
+
+    @Override
+    public String toString() {
+        return "AbstractMessage{" +
+                "status=" + status +
+                ", roomId='" + roomId + '\'' +
+                ", userId='" + userId + '\'' +
+                '}';
+    }
 }

@@ -15,7 +15,7 @@ import java.util.Map;
  * @author 11723
  */
 public class NettyServerHandler extends SimpleChannelInboundHandler<AbstractMessage> {
-    private static final int MAX_LEAVE_TIME = 1;
+    private static final int MAX_LEAVE_TIME = 4;
 
     private final Map<ChannelHandlerContext,Integer> heartbeat = new HashMap<>();
 

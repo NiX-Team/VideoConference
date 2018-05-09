@@ -16,7 +16,9 @@ public class ImageMessageEncode extends MessageToByteEncoder<AbstractMessage> {
     @Override
     protected void encode(ChannelHandlerContext ctx, AbstractMessage msg, ByteBuf out) throws IOException {
         msg.setContext(null);
-        out.writeBytes(Unpooled.copiedBuffer(ObjectAndByteUtil.toByteArray(msg)));
+        byte[] bytes = ObjectAndByteUtil.toByteArray(msg);
+        System.out.println("size==" + bytes.length / 1024);
+        out.writeBytes(Unpooled.copiedBuffer(bytes));
 
     }
 }

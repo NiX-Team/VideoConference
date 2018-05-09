@@ -31,10 +31,14 @@ public class TcpUtil extends AbstractNetworkUtil {
         }
         try {
             client = TcpVideoClient.getClient(host,port,new TcpNettyClientHandler<AbstractMessage>());
-            AbstractMessage imageMessage = ImageMessage.getHelloMessage();
-            sendImageMessage(imageMessage);
-            LogKit.info("向服务器发送hello包:" + imageMessage);
+            if (client.start()) {
+                TimeUnit.SECONDS.sleep(1);
+                AbstractMessage imageMessage = ImageMessage.getHelloMessage();
+                sendImageMessage(imageMessage);
+                LogKit.info("向服务器发送hello包:" + imageMessage);
+            }
         }catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
         return true;

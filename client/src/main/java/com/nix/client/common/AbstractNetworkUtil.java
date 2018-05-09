@@ -2,6 +2,7 @@ package com.nix.client.common;
 
 import com.nix.client.nio.VideoClient;
 import com.nix.share.message.AbstractMessage;
+import com.nix.share.util.log.LogKit;
 
 /**
  * @author 11723
@@ -50,5 +51,6 @@ public abstract class AbstractNetworkUtil {
         message.setRoomId(Config.getRoomId());
         message.setUserId(Config.getUserId());
         client.sendMessage(message);
+        LogKit.info("发送数据包：" + message);
     }
 }

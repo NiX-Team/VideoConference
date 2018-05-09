@@ -149,7 +149,10 @@ public class CameraVideoThread extends VideoThread{
                                 }
                                 // Convert the BGR24 to an Java buffered image
                                 BufferedImage javaImage = Utils.videoPictureToImage(newPic);
-                                exe.exeImage(javaImage);
+                                try {
+                                    exe.exeImage(javaImage);
+                                } catch (Exception e) {
+                                }
                             }
                         }
                     } else {

@@ -16,7 +16,7 @@
 */.settings/
 /.settings/
 # Image Files #
-*.jpg
+#*.jpg
 *.png
 *.gif
 /bin/

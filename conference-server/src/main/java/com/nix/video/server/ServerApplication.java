@@ -1,6 +1,6 @@
 package com.nix.video.server;
 
-import com.nix.video.server.socket.VideoServer;
+import com.nix.video.server.socket.VideoRemotingServer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,6 +12,6 @@ public class ServerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ServerApplication.class, args);
-		VideoServer.start();
+		VideoRemotingServer.getServer(9999).start();
 	}
 }

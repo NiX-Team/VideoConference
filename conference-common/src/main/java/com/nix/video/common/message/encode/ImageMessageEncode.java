@@ -1,6 +1,6 @@
 package com.nix.video.common.message.encode;
 import com.nix.video.common.message.AbstractMessage;
-import com.nix.video.common.message.util.ObjectAndByteUtil;
+import com.nix.video.common.util.ObjectAndByteUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
@@ -15,9 +15,7 @@ import java.io.IOException;
 public class ImageMessageEncode extends MessageToByteEncoder<AbstractMessage> {
     @Override
     protected void encode(ChannelHandlerContext ctx, AbstractMessage msg, ByteBuf out) throws IOException {
-        msg.setContext(null);
         byte[] bytes = ObjectAndByteUtil.toByteArray(msg);
-        System.out.println("size==" + bytes.length / 1024);
         out.writeBytes(Unpooled.copiedBuffer(bytes));
 
     }

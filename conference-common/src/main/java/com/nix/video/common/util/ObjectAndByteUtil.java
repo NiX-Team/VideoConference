@@ -1,4 +1,4 @@
-package com.nix.video.common.message.util;
+package com.nix.video.common.util;
 
 import java.io.*;
 

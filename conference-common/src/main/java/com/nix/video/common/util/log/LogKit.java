@@ -30,19 +30,19 @@ public final class LogKit {
     }
 
 
-    public static void debug(Class clazz,String msg){
-        debug("{} : {}",getClassName(clazz),msg);
+    public static void warn(Class clazz,String msg){
+        warn("{} : {}",getClassName(clazz),msg);
     }
 
-    public static void debug(String msg) {
-        log.debug(msg);
+    public static void warn(String msg) {
+        log.warn(msg);
     }
 
-    public static void debug(String tem,Object ... param) {
-        log.debug(tem,param);
+    public static void warn(String tem,Object ... param) {
+        log.warn(tem,param);
     }
-    public static void debug(Class clazz,String tem,Object ... param){
-        debug("{} : " + tem,getClassName(clazz),param);
+    public static void warn(Class clazz,String tem,Object ... param){
+        warn("{} : " + tem,getClassName(clazz),param);
     }
 
 

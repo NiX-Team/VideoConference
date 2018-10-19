@@ -47,9 +47,25 @@
                 <version>${nettyVersion}</version>
             </dependency>
             <dependency>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>bolt</artifactId>
+                <version>1.5.1</version>
+            </dependency>
+            <dependency>
                 <groupId>ant</groupId>
                 <artifactId>ant</artifactId>
                 <version>1.6.5</version>
+            </dependency>
+            <!--log-->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.7</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>1.7.7</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -10,6 +10,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
+import com.nix.video.common.util.log.LogKit;
 import org.apache.tools.bzip2.CBZip2InputStream;
 import org.apache.tools.bzip2.CBZip2OutputStream;
 
@@ -196,18 +197,18 @@ public class ZipUtil {
         String s = "this is a testfewgrgwegfsecygtrehvsdcfhfytvefrsvchtgfgddfseshdvedgccrdefhrddfefgcrdeftfteschfrcsrfhcdfcgt";
 
         byte[] b1 = zip(s.getBytes());
-        System.out.println("zip:" + bytesToHexString(b1));
+        LogKit.debug("zip:{}",bytesToHexString(b1));
         byte[] b2 = unZip(b1);
-        System.out.println("unZip:" + new String(b2));
+        LogKit.debug("unZip:{}",new String(b2));
 
         byte[] b3 = bZip2(s.getBytes());
-        System.out.println("bZip2:" + bytesToHexString(b3));
+        LogKit.debug("bZip2:{}", bytesToHexString(b3));
         byte[] b4 = unBZip2(b3);
-        System.out.println("unBZip2:" + new String(b4));
+        LogKit.debug("unBZip2:{}",new String(b4));
 
         byte[] b5 = gZip(s.getBytes());
-        System.out.println("bZip2:" + bytesToHexString(b5));
+        LogKit.debug("bZip2:{}",bytesToHexString(b5));
         byte[] b6 = unGZip(b5);
-        System.out.println("unBZip2:" + new String(b6));
+        LogKit.debug("unBZip2:{}",new String(b6));
     }
 }

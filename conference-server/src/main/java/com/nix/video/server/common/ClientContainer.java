@@ -4,7 +4,9 @@ import com.alipay.remoting.RemotingContext;
 import com.alipay.remoting.util.RemotingUtil;
 import com.nix.video.common.VideoAddressParser;
 import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.message.MessageCommandCode;
 import com.nix.video.common.util.log.LogKit;
+import com.nix.video.server.socket.VideoRemotingServer;
 import io.netty.channel.Channel;
 
 import java.util.ArrayList;
@@ -44,5 +46,21 @@ public class ClientContainer {
     public static void removeClient(Channel channel, AbstractMessage message) {
         LogKit.info("房间" + message.getRoomId() + "移除用户" + message.getUserId());
         CLIENT_CONTEXT.get(message.getRoomId()).remove(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
+        message.setCommandCode(MessageCommandCode.SERVER_SAY_LEAVE);
+        pushMessage2Room(message);
+    }
+
+    public static void pushData2Room(AbstractMessage message) {
+        message.setCommandCode(MessageCommandCode.SERVER_PUSH_DATA);
+        pushMessage2Room(message);
+    }
+    private static void pushMessage2Room(AbstractMessage message) {
+        CLIENT_CONTEXT.get(message.getRoomId()).forEach(client -> {
+            try {
+                VideoRemotingServer.server.getConnectionManager().get(client).getChannel().writeAndFlush(message);
+            }catch (Exception e) {
+                LogKit.error("server push data error");
+            }
+        });
     }
 }

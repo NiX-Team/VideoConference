@@ -2,6 +2,7 @@ package com.nix.video.client.common;
 
 
 import java.awt.image.BufferedImage;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * @author 11723
@@ -9,6 +10,7 @@ import java.awt.image.BufferedImage;
  */
 public abstract class VideoThread{
     protected Thread thread;
+    protected final AtomicBoolean stop = new AtomicBoolean(false);
     public interface Exe {
         /**
          * 抓取到图片后回调方法
@@ -29,12 +31,11 @@ public abstract class VideoThread{
         this.exe = exe;
     }
     public void start() {
+        stop.set(false);
         setThread();
         thread.start();
     }
     public void stop() {
-        if (thread != null) {
-            thread.interrupt();
-        }
+        stop.set(true);
     }
 }

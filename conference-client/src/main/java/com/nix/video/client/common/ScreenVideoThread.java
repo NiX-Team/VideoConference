@@ -26,21 +26,17 @@ public class ScreenVideoThread extends VideoThread{
     }
     @Override
     protected void setThread() {
-        Thread thread = new Thread(){
-            @Override
-            public void run() {
-                while (!isInterrupted()){
-                    try{
-                        //捕获制定屏幕矩形区域
-                        BufferedImage image = robot.createScreenCapture(rectangle);
-                        exe.exeImage(image);
-                        Thread.sleep(1000/DEFAULT_FRAME);
-                        break;
-                    }catch(Exception ignored){
-                    }
+        Thread thread = new Thread(() -> {
+            while (!stop.get()){
+                try{
+                    //捕获制定屏幕矩形区域
+                    BufferedImage image = robot.createScreenCapture(rectangle);
+                    exe.exeImage(image);
+                    Thread.sleep(1000/DEFAULT_FRAME);
+                }catch(Exception ignored){
                 }
             }
-        };
+        });
         setThread(thread);
     }
 }

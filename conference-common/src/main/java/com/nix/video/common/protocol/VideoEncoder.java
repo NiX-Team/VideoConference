@@ -23,7 +23,6 @@ public class VideoEncoder implements CommandEncoder {
      */
     @Override
     public void encode(ChannelHandlerContext ctx, Serializable msg, ByteBuf out) throws Exception {
-        System.out.println("out:" + msg);
         try {
             if (msg instanceof AbstractMessage) {
                 AbstractMessage cmd = (AbstractMessage) msg;

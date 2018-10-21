@@ -3,6 +3,8 @@ package com.nix.video.server.socket.processor;
 import com.alipay.remoting.RemotingContext;
 import com.alipay.remoting.RemotingProcessor;
 import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.util.log.LogKit;
+import com.nix.video.server.common.ClientContainer;
 
 import java.util.concurrent.ExecutorService;
 
@@ -21,7 +23,8 @@ public class ClientPushDataProcessor implements RemotingProcessor<AbstractMessag
      */
     @Override
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
-        System.out.println("data:" + msg.getContent().length);
+        LogKit.debug("server get push data . size : {}" ,msg.getContent().length);
+        defaultExecutor.execute(() -> ClientContainer.pushData2Room(msg));
     }
 
     /**

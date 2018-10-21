@@ -4,6 +4,7 @@ import com.alipay.remoting.RemotingContext;
 import com.alipay.remoting.RemotingProcessor;
 import com.nix.video.client.ClientWindow;
 import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.util.log.LogKit;
 
 import java.util.concurrent.ExecutorService;
 
@@ -22,6 +23,7 @@ public class ServerPushDataProcessor implements RemotingProcessor<AbstractMessag
      */
     @Override
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
+        LogKit.debug("get server push data:{}",msg.getContent().length);
         defaultExecutor.execute(() -> ClientWindow.getClientWindow().mainController.addAClient(msg));
     }
 

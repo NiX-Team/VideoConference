@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
  */
 public final class LogKit {
     private static Logger log = LoggerFactory.getLogger("nix");
+    private static boolean DEBUG = Boolean.valueOf(System.getProperty("LogKit.debug")) == null ? true : Boolean.valueOf(System.getProperty("LogKit.debug"));
 
     private static String getClassName(Class clazz){
         return clazz.getName() + " : ";
@@ -29,6 +30,24 @@ public final class LogKit {
         info("{} : " + tem,getClassName(clazz),param);
     }
 
+    public static void debug(Class clazz,String msg){
+        debug("{} : {}",getClassName(clazz),msg);
+    }
+
+    public static void debug(String msg) {
+        if (DEBUG) {
+            log.info(msg);
+        }
+    }
+
+    public static void debug(String tem,Object ... param) {
+        if (DEBUG) {
+            log.info(tem, param);
+        }
+    }
+    public static void debug(Class clazz,String tem,Object ... param){
+        debug("{} : " + tem,getClassName(clazz),param);
+    }
 
     public static void warn(Class clazz,String msg){
         warn("{} : {}",getClassName(clazz),msg);

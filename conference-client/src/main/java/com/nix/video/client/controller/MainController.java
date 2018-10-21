@@ -7,10 +7,12 @@ import com.nix.video.client.socket.RemotingVideoClient;
 import com.nix.video.client.util.ImageUtil;
 import com.nix.video.common.message.AbstractMessage;
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -74,12 +76,16 @@ public class MainController {
             if (maxPane != null && maxPane.getId().equals(imageMessage.getRoomId() + "-" + imageMessage.getUserId())) {
                 ((ImageView)maxPane.lookup("#video")).setImage(SwingFXUtils.toFXImage(Objects.requireNonNull(ImageUtil.messageToBufferedImage(imageMessage)),new WritableImage(320,240)));
             }
-            Pane pane = (Pane) otherVideoPane.lookup("#" + imageMessage.getUserId());
+            ObservableList<Node> children = otherVideoPane.getChildren().filtered(p -> imageMessage.getUserId().equals(p.getId()));
             ImageView view;
-            if (pane == null) {
+            Pane pane;
+            if (children.size() == 0) {
                 pane = getClientPane(imageMessage,320,240,true);
                 otherVideoPane.getChildren().add(pane);
-                LogKit.info("新增加一名用户：" + imageMessage);
+                System.out.println("new pane " + pane.getId());
+                LogKit.debug("新增加一名用户：" + imageMessage);
+            } else {
+                pane = (Pane) children.get(0);
             }
             view = (ImageView) pane.lookup("#video");
             view.setImage(SwingFXUtils.toFXImage(Objects.requireNonNull(ImageUtil.messageToBufferedImage(imageMessage)),new WritableImage(320,240)));
@@ -102,7 +108,7 @@ public class MainController {
         pane.setId(imageMessage.getUserId());
         pane.setPrefWidth(width);
         pane.setPrefHeight(height + 25);
-        Text text = new Text(String.valueOf(imageMessage.getId()));
+        Text text = new Text(String.valueOf(imageMessage.getUserId()));
         text.setLayoutX(0);
         text.setLayoutY(17);
         text.setFont(Font.font(20));

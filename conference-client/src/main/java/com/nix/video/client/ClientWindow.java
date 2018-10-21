@@ -4,8 +4,8 @@ import com.nix.video.client.common.CameraVideoThread;
 import com.nix.video.client.common.Config;
 import com.nix.video.client.common.ScreenVideoThread;
 import com.nix.video.client.common.VideoThread;
-import com.nix.video.client.controller.MainController;
-import com.nix.video.client.socket.RemotingVideoClient;
+import com.nix.video.client.UI.MainController;
+import com.nix.video.client.remoting.RemotingVideoClient;
 import com.nix.video.client.util.ImageUtil;
 import com.nix.video.common.message.AbstractMessage;
 import com.nix.video.common.util.log.LogKit;
@@ -38,7 +38,7 @@ public class ClientWindow extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         clientWindow = this;
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("controller/sample.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("UI/sample.fxml"));
         rootWindow = fxmlLoader.load();
         primaryStage.setTitle("客户端");
         primaryStage.setScene(new Scene(rootWindow, 950, 736));
@@ -46,7 +46,6 @@ public class ClientWindow extends Application {
         mainController = fxmlLoader.getController();
         primaryStage.setOnCloseRequest(event -> {
             try {
-                RemotingVideoClient.VIDEO_CLIENT.oneway(Config.getConnection(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
                 Thread.sleep(200);
                 mainController.close();
                 cameraVideoThread.stop();
@@ -62,6 +61,7 @@ public class ClientWindow extends Application {
      * */
     public void openCameraVideo() {
         cameraVideoThread.start();
+        RemotingVideoClient.VIDEO_CLIENT.oneway(Config.getConnection(), AbstractMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
     }
     /**
      * 关闭
@@ -75,6 +75,7 @@ public class ClientWindow extends Application {
      * */
     public void openScreenVideo() {
         screenVideoThread.start();
+        RemotingVideoClient.VIDEO_CLIENT.oneway(Config.getConnection(), AbstractMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
     }
     public void closeScreenVideo() {
         screenVideoThread.stop();

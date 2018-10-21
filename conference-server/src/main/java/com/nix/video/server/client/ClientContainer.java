@@ -1,4 +1,4 @@
-package com.nix.video.server.common;
+package com.nix.video.server.client;
 
 import com.alipay.remoting.RemotingContext;
 import com.alipay.remoting.util.RemotingUtil;
@@ -6,12 +6,10 @@ import com.nix.video.common.VideoAddressParser;
 import com.nix.video.common.message.AbstractMessage;
 import com.nix.video.common.message.MessageCommandCode;
 import com.nix.video.common.util.log.LogKit;
-import com.nix.video.server.socket.VideoRemotingServer;
+import com.nix.video.server.remoting.VideoRemotingServer;
 import io.netty.channel.Channel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -22,7 +20,7 @@ public class ClientContainer {
     /**
      * 房间号-房间的所有客户端的hello包信息
      * */
-    private final static ConcurrentHashMap<String/*roomId*/,List<String>/*url.getUniqueKey()*/> CLIENT_CONTEXT = new ConcurrentHashMap<>();
+    private final static ConcurrentHashMap<String/*roomId*/,Set<String>/*url.getUniqueKey()*/> CLIENT_CONTEXT = new ConcurrentHashMap<>();
 
     private final static ConcurrentHashMap<String/*url.getUniqueKey()*/,String[]/*roomId*/> CHANNEL_ROOM = new ConcurrentHashMap<>();
 
@@ -34,7 +32,7 @@ public class ClientContainer {
     public static void addClient(Channel channel, AbstractMessage message) {
         String key = ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey();
         if (!CLIENT_CONTEXT.containsKey(message.getRoomId())) {
-            List<String> list = Collections.synchronizedList(new ArrayList<>());
+            Set<String> list = Collections.synchronizedSet(new LinkedHashSet<>());
             if (CLIENT_CONTEXT.putIfAbsent( message.getRoomId(),list) == null) {
                 LogKit.info("新添加房间：" + message.getRoomId());
             }
@@ -69,7 +67,8 @@ public class ClientContainer {
         message.setCommandCode(MessageCommandCode.SERVER_PUSH_DATA);
         pushMessage2Room(message,channel);
     }
-    private static void pushMessage2Room(AbstractMessage message,Channel channel) {
+
+    public static void pushMessage2Room(AbstractMessage message,Channel channel) {
         String ownerKey = ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey();
         CLIENT_CONTEXT.get(message.getRoomId()).stream().filter(key -> !key.equals(ownerKey)).forEach(client -> {
             try {

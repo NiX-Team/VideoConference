@@ -1,18 +1,19 @@
-package com.nix.video.server.socket.processor;
+package com.nix.video.server.remoting.processor;
 
 import com.alipay.remoting.RemotingContext;
 import com.alipay.remoting.RemotingProcessor;
 import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.message.MessageCommandCode;
 import com.nix.video.common.util.log.LogKit;
-import com.nix.video.server.common.ClientContainer;
+import com.nix.video.server.client.ClientContainer;
 
 import java.util.concurrent.ExecutorService;
 
 /**
  * @author keray
- * @date 2018/10/19 2:25 PM
+ * @date 2018/10/19 2:23 PM
  */
-public class ClientPushDataProcessor implements RemotingProcessor<AbstractMessage> {
+public class ClientLeaveProcessor implements RemotingProcessor<AbstractMessage> {
     /**
      * Process the remoting command.
      *
@@ -23,8 +24,10 @@ public class ClientPushDataProcessor implements RemotingProcessor<AbstractMessag
      */
     @Override
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
-        LogKit.debug("server get push data . size : {}" ,msg.getContent().length);
-        defaultExecutor.execute(() -> ClientContainer.pushData2Room(msg,ctx.getChannelContext().channel()));
+        LogKit.info("客户端 {} 离开了",msg);
+        msg.setCommandCode(MessageCommandCode.SERVER_SAY_LEAVE);
+        defaultExecutor.execute(() -> ClientContainer.pushMessage2Room(msg,ctx.getChannelContext().channel()));
+
     }
 
     /**

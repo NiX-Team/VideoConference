@@ -1,18 +1,18 @@
-package com.nix.video.client.socket.processor;
+package com.nix.video.server.remoting.processor;
 
 import com.alipay.remoting.RemotingContext;
 import com.alipay.remoting.RemotingProcessor;
-import com.nix.video.client.ClientWindow;
 import com.nix.video.common.message.AbstractMessage;
 import com.nix.video.common.util.log.LogKit;
+import com.nix.video.server.client.ClientContainer;
 
 import java.util.concurrent.ExecutorService;
 
 /**
  * @author keray
- * @date 2018/10/19 10:39 PM
+ * @date 2018/10/19 2:25 PM
  */
-public class ServerPushDataProcessor implements RemotingProcessor<AbstractMessage> {
+public class ClientPushDataProcessor implements RemotingProcessor<AbstractMessage> {
     /**
      * Process the remoting command.
      *
@@ -23,8 +23,8 @@ public class ServerPushDataProcessor implements RemotingProcessor<AbstractMessag
      */
     @Override
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
-        LogKit.debug("get server push data:{}",msg.getContent().length);
-        defaultExecutor.execute(() -> ClientWindow.getClientWindow().mainController.addAClient(msg));
+        LogKit.debug("server get push data . size : {}" ,msg.getContent().length);
+        defaultExecutor.execute(() -> ClientContainer.pushData2Room(msg,ctx.getChannelContext().channel()));
     }
 
     /**

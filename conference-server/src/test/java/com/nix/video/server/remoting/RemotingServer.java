@@ -1,8 +1,6 @@
-package com.nix.video.server.socket;
+package com.nix.video.server.remoting;
 
 import org.junit.Test;
-
-import java.util.function.Function;
 
 /**
  * @author keray

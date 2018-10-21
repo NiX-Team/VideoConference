@@ -1,12 +1,10 @@
-package com.nix.video.server.socket.processor;
+package com.nix.video.server.remoting.processor;
 
-import com.alipay.remoting.Connection;
 import com.alipay.remoting.RemotingContext;
 import com.alipay.remoting.RemotingProcessor;
 import com.nix.video.common.message.AbstractMessage;
 import com.nix.video.common.util.log.LogKit;
-import com.nix.video.server.common.ClientContainer;
-import com.nix.video.server.socket.VideoRemotingServer;
+import com.nix.video.server.client.ClientContainer;
 
 import java.util.concurrent.ExecutorService;
 
@@ -25,8 +23,9 @@ public class ClientSayHelloProcessor implements RemotingProcessor<AbstractMessag
      */
     @Override
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
-        LogKit.debug("client hello: {}",msg);
+        LogKit.info("客户端 {} 连接了",msg);
         defaultExecutor.execute(() -> ClientContainer.addClient(ctx.getChannelContext().channel(),msg));
+        defaultExecutor.execute(() -> ClientContainer.pushMessage2Room(AbstractMessage.createServerSayHelloMessage(msg.getRoomId(),msg.getUserId()),ctx.getChannelContext().channel()));
     }
 
     /**

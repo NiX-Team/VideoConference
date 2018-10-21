@@ -1,4 +1,4 @@
-package com.nix.video.client.socket;
+package com.nix.video.client.remoting;
 
 import com.alipay.remoting.*;
 import com.alipay.remoting.exception.RemotingException;

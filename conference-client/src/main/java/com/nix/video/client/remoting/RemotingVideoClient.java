@@ -1,4 +1,4 @@
-package com.nix.video.client.socket;
+package com.nix.video.client.remoting;
 import com.alipay.remoting.*;
 import com.alipay.remoting.config.AbstractConfigurableInstance;
 import com.alipay.remoting.config.configs.ConfigType;
@@ -6,16 +6,21 @@ import com.alipay.remoting.config.switches.GlobalSwitch;
 import com.alipay.remoting.connection.ConnectionFactory;
 import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.*;
-import com.nix.video.client.socket.processor.ServerHelloProcessor;
-import com.nix.video.client.socket.processor.ServerPushDataProcessor;
-import com.nix.video.client.socket.processor.ServerSayLeaveProcessor;
+import com.nix.video.client.common.Config;
+import com.nix.video.client.remoting.processor.ServerHelloProcessor;
+import com.nix.video.client.remoting.processor.ServerPushDataProcessor;
+import com.nix.video.client.remoting.processor.ServerSayLeaveProcessor;
 import com.nix.video.common.VideoAddressParser;
+import com.nix.video.common.message.AbstractMessage;
 import com.nix.video.common.message.MessageCommandCode;
 import com.nix.video.common.protocol.VideoHeardProcessor;
 import com.nix.video.common.protocol.VideoCodec;
 import com.nix.video.common.protocol.VideoCommandFactory;
 import com.nix.video.common.protocol.VideoProtocol;
 import com.nix.video.common.util.log.LogKit;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelPromise;
+
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -26,7 +31,15 @@ import java.util.concurrent.TimeUnit;
  */
 public class RemotingVideoClient extends AbstractConfigurableInstance{
     private ConnectionFactory connectionFactory        = new VideoClientConnectionFactory(new VideoCodec(),new HeartbeatHandler(),new ClientHandler(),this);
-    private ConnectionEventHandler                      connectionEventHandler   = new RpcConnectionEventHandler(switches());
+    private ConnectionEventHandler                      connectionEventHandler   = new RpcConnectionEventHandler(switches()) {
+        @Override
+        public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+            super.close(ctx, promise);
+            LogKit.info("客户端连接关闭 等待重连");
+            // 重连
+
+        }
+    };
     private ReconnectManager                            reconnectManager;
     private ConnectionEventListener                     connectionEventListener  = new ConnectionEventListener();
     private RemotingAddressParser                       addressParser;
@@ -83,6 +96,10 @@ public class RemotingVideoClient extends AbstractConfigurableInstance{
             connectionEventHandler.setReconnectManager(reconnectManager);
             LogKit.warn("Switch on reconnect manager");
         }
+        switches().turnOn(GlobalSwitch.CONN_RECONNECT_SWITCH);
+        switches().turnOn(GlobalSwitch.CONN_MONITOR_SWITCH);
+        switches().turnOn(GlobalSwitch.SERVER_MANAGE_CONNECTION_SWITCH);
+        switches().turnOn(GlobalSwitch.SERVER_SYNC_STOP);
         ProtocolManager.registerProtocol(VideoProtocol.VIDEO_PROTOCOL,VideoProtocol.PROTOCOL_CODE);
         ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerDefaultExecutor(IMAGE_PROCESSOR_EXECUTOR);
         ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerProcessor(MessageCommandCode.SERVER_HELLO,new ServerHelloProcessor());
@@ -112,6 +129,20 @@ public class RemotingVideoClient extends AbstractConfigurableInstance{
     @Override
     public void initWriteBufferWaterMark(int low, int high) {
         super.initWriteBufferWaterMark(0,1024*1024*1024);
+    }
+
+    public Connection connectionVideoServer(String url) {
+        try {
+            Connection connection = RemotingVideoClient.VIDEO_CLIENT.createConnection(url);
+            if (connection == null) {
+                return null;
+            }
+            RemotingVideoClient.VIDEO_CLIENT.oneway(connection, AbstractMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
+            return connection;
+        }catch (Exception e) {
+            LogKit.error("connect server error",e);
+            return null;
+        }
     }
 
     public Connection createConnection(String url)

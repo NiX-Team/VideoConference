@@ -1,17 +1,18 @@
-package com.nix.video.client.socket.processor;
+package com.nix.video.client.remoting.processor;
 
 import com.alipay.remoting.RemotingContext;
 import com.alipay.remoting.RemotingProcessor;
 import com.nix.video.client.ClientWindow;
 import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.util.log.LogKit;
 
 import java.util.concurrent.ExecutorService;
 
 /**
  * @author keray
- * @date 2018/10/19 10:38 PM
+ * @date 2018/10/19 10:39 PM
  */
-public class ServerSayLeaveProcessor implements RemotingProcessor<AbstractMessage> {
+public class ServerPushDataProcessor implements RemotingProcessor<AbstractMessage> {
     /**
      * Process the remoting command.
      *
@@ -22,8 +23,8 @@ public class ServerSayLeaveProcessor implements RemotingProcessor<AbstractMessag
      */
     @Override
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
-        defaultExecutor.execute(() -> ClientWindow.getClientWindow().mainController.removeClient(msg));
-
+        LogKit.debug("get server push data:{}",msg.getContent().length);
+        defaultExecutor.execute(() -> ClientWindow.getClientWindow().mainController.addAClient(msg));
     }
 
     /**

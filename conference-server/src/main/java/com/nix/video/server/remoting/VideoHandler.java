@@ -1,4 +1,4 @@
-package com.nix.video.server.socket;
+package com.nix.video.server.remoting;
 
 import com.alipay.remoting.*;
 import io.netty.channel.ChannelHandler;

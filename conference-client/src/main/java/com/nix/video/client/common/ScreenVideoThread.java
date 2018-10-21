@@ -31,6 +31,9 @@ public class ScreenVideoThread extends VideoThread{
                 try{
                     //捕获制定屏幕矩形区域
                     BufferedImage image = robot.createScreenCapture(rectangle);
+                    if (stop.get()) {
+                        break;
+                    }
                     exe.exeImage(image);
                     Thread.sleep(1000/DEFAULT_FRAME);
                 }catch(Exception ignored){

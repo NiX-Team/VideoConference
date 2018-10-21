@@ -1,4 +1,4 @@
-package com.nix.video.server.socket;
+package com.nix.video.server.remoting;
 import com.alipay.remoting.*;
 import com.alipay.remoting.codec.Codec;
 import com.alipay.remoting.config.ConfigManager;
@@ -12,9 +12,10 @@ import com.nix.video.common.protocol.VideoHeardProcessor;
 import com.nix.video.common.protocol.VideoCodec;
 import com.nix.video.common.protocol.VideoProtocol;
 import com.nix.video.common.util.log.LogKit;
-import com.nix.video.server.socket.processor.ClientLeaveProcessor;
-import com.nix.video.server.socket.processor.ClientPushDataProcessor;
-import com.nix.video.server.socket.processor.ClientSayHelloProcessor;
+import com.nix.video.server.client.ClientContainer;
+import com.nix.video.server.remoting.processor.ClientLeaveProcessor;
+import com.nix.video.server.remoting.processor.ClientPushDataProcessor;
+import com.nix.video.server.remoting.processor.ClientSayHelloProcessor;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.*;
@@ -102,7 +103,13 @@ public class VideoRemotingServer extends AbstractRemotingServer{
         if (this.addressParser == null) {
             this.addressParser = VideoAddressParser.PARSER;
         }
-        this.connectionEventHandler = new ConnectionEventHandler(switches());
+        this.connectionEventHandler = new ConnectionEventHandler(switches()) {
+            @Override
+            public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+                super.close(ctx, promise);
+                ClientContainer.removeClient(ctx.channel());
+            }
+        };
         this.connectionManager = new DefaultConnectionManager(new RandomSelectStrategy());
         this.connectionEventHandler.setConnectionManager(this.connectionManager);
         this.connectionEventHandler.setConnectionEventListener(this.connectionEventListener);
@@ -110,10 +117,6 @@ public class VideoRemotingServer extends AbstractRemotingServer{
         this.bootstrap.group(BOSS_GROUP, WORKER_GROUP)
                 .channel(NettyEventLoopUtil.getServerSocketChannelClass())
                 .option(ChannelOption.SO_BACKLOG, ConfigManager.tcp_so_backlog())
-                //发包缓冲区，单位多少？
-                .option(ChannelOption.SO_SNDBUF, 1024*256)
-                //收包换成区，单位多少？
-                .option(ChannelOption.SO_RCVBUF, 1024*256)
                 .option(ChannelOption.SO_REUSEADDR, ConfigManager.tcp_so_reuseaddr())
                 //TCP立即发包
                 .childOption(ChannelOption.TCP_NODELAY, ConfigManager.tcp_nodelay())

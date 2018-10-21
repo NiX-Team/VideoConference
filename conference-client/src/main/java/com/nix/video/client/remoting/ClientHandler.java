@@ -1,12 +1,9 @@
-package com.nix.video.client.socket;
+package com.nix.video.client.remoting;
 
 import com.alipay.remoting.*;
-import com.alipay.remoting.rpc.protocol.UserProcessor;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Kiss

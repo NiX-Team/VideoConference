@@ -4,6 +4,7 @@ import com.alipay.remoting.ProtocolCode;
 import com.alipay.remoting.codec.Codec;
 import com.alipay.remoting.codec.ProtocolCodeBasedDecoder;
 import com.alipay.remoting.codec.ProtocolCodeBasedEncoder;
+import com.nix.video.common.Decoder;
 import io.netty.channel.ChannelHandler;
 
 /**
@@ -18,6 +19,6 @@ public class VideoCodec implements Codec {
 
     @Override
     public ChannelHandler newDecoder() {
-        return new ProtocolCodeBasedDecoder(VideoProtocol.HEADER_LEN);
+        return new Decoder(VideoProtocol.HEADER_LEN);
     }
 }

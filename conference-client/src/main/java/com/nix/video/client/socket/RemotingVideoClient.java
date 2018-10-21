@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2018/10/20 0:08
  */
 public class RemotingVideoClient extends AbstractConfigurableInstance{
-    private ConnectionFactory connectionFactory        = new DefaultConnectionFactory(new VideoCodec(),new HeartbeatHandler(),new ClientHandler(),this);
+    private ConnectionFactory connectionFactory        = new VideoClientConnectionFactory(new VideoCodec(),new HeartbeatHandler(),new ClientHandler(),this);
     private ConnectionEventHandler                      connectionEventHandler   = new RpcConnectionEventHandler(switches());
     private ReconnectManager                            reconnectManager;
     private ConnectionEventListener                     connectionEventListener  = new ConnectionEventListener();

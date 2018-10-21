@@ -21,7 +21,7 @@ public class ClientPushDataProcessor implements RemotingProcessor<AbstractMessag
      */
     @Override
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
-        System.out.println("data:" + msg);
+        System.out.println("data:" + msg.getContent().length);
     }
 
     /**

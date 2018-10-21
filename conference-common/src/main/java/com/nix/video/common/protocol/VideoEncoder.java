@@ -27,8 +27,12 @@ public class VideoEncoder implements CommandEncoder {
         try {
             if (msg instanceof AbstractMessage) {
                 AbstractMessage cmd = (AbstractMessage) msg;
-                //写入协议byte
+                // 写入数据包长度
+                out.writeInt(VideoProtocol.HEADER_DATA_LEN + cmd.getContent().length);
+                //写入协议code
                 out.writeByte(VideoProtocol.PROTOCOL_CODE);
+                //写入协议version
+                out.writeByte(VideoProtocol.VERSION);
                 //写入command类型
                 out.writeShort(cmd.getCmdCode().value());
                 //写入message id

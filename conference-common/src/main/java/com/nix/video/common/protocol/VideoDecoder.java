@@ -22,7 +22,7 @@ public class VideoDecoder implements CommandDecoder {
      */
     @Override
     public void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-        if (in.readByte() == VideoProtocol.PROTOCOL_CODE) {
+        try {
             short commandCode = in.readShort();
             int id = in.readInt();
             AbstractMessage message = null;
@@ -44,6 +44,7 @@ public class VideoDecoder implements CommandDecoder {
                 message.setContent(content);
                 out.add(message);
             }
+        }catch (Exception ignored) {
         }
     }
 }

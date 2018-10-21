@@ -11,6 +11,8 @@ public class VideoProtocol implements Protocol {
     public static final byte PROTOCOL_CODE       = 0x01;
     /** PROTOCOL_CODE */
     public static final int HEADER_LEN  = 1;
+
+    public static final int HEADER_DATA_LEN  = 44;
     public static final byte VERSION       = 1;
     private final static CommandEncoder   ENCODER = new VideoEncoder();
     private final static CommandDecoder   DECODER = new VideoDecoder();

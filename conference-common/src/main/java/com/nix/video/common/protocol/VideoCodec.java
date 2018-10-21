@@ -18,6 +18,6 @@ public class VideoCodec implements Codec {
 
     @Override
     public ChannelHandler newDecoder() {
-        return new ProtocolCodeBasedDecoder(1);
+        return new ProtocolCodeBasedDecoder(VideoProtocol.HEADER_LEN);
     }
 }

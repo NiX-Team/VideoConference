@@ -1,5 +1,7 @@
 package com.nix.video.client.common;
 
+import com.alipay.remoting.Connection;
+
 /**
  * @author 11723
  */
@@ -8,6 +10,7 @@ public class Config {
     private static String userId;
     private static String serverHost;
     private static Integer serverPort;
+    private static Connection connection;
 
     public static String getRoomId() {
         return roomId;
@@ -39,5 +42,17 @@ public class Config {
 
     public static void setServerPort(Integer serverPort) {
         Config.serverPort = serverPort;
+    }
+
+    public static Connection getConnection() {
+        return connection;
+    }
+
+    public static void setConnection(Connection connection) {
+        Config.connection = connection;
+    }
+
+    public static String getServerUrl() {
+        return serverHost == null ||  serverPort == null ? null : serverHost + ":" + serverPort;
     }
 }

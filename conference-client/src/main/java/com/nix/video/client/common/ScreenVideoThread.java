@@ -36,7 +36,7 @@ public class ScreenVideoThread extends VideoThread{
                         BufferedImage image = robot.createScreenCapture(rectangle);
                         exe.exeImage(image);
                         Thread.sleep(1000/DEFAULT_FRAME);
-                    }catch(Exception e){
+                    }catch(Exception ignored){
                     }
                 }
                 try {

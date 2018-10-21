@@ -9,6 +9,8 @@ import com.alipay.remoting.exception.SerializationException;
 import com.alipay.remoting.util.IDGenerator;
 import com.nix.video.common.protocol.VideoProtocol;
 
+import java.util.Arrays;
+
 /**
  * @author 11723
  */
@@ -38,7 +40,7 @@ public class AbstractMessage implements RemotingCommand {
     /**
      * 消息内容
      * */
-    private byte[] content;
+    private byte[] content = new byte[0];
 
 
     public AbstractMessage(String roomId,String userId) {
@@ -192,5 +194,16 @@ public class AbstractMessage implements RemotingCommand {
 
     public void setCommandCode(CommandCode commandCode) {
         this.commandCode = commandCode;
+    }
+
+    @Override
+    public String toString() {
+        return "AbstractMessage{" +
+                "roomId='" + roomId + '\'' +
+                ", userId='" + userId + '\'' +
+                ", id=" + id +
+                ", commandCode=" + commandCode +
+                ", content=" + Arrays.toString(content) +
+                '}';
     }
 }

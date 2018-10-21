@@ -1,7 +1,7 @@
 package com.nix.video.client.util;
 
+import com.nix.video.client.common.Config;
 import com.nix.video.common.message.AbstractMessage;
-import com.nix.video.common.message.impl.ImageMessage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -21,8 +21,7 @@ public class ImageUtil {
             e.printStackTrace();
             return null;
         }
-        AbstractMessage message = new ImageMessage();
-        message.setStatus(ImageMessage.status.data);
+        AbstractMessage message = AbstractMessage.createClientPushDataMessage(Config.getRoomId(),Config.getUserId());
         message.setContent(outputStream.toByteArray());
         return message;
     }

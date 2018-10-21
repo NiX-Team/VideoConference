@@ -11,6 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ServerController {
     @GetMapping("{roomId}/{userId}")
     public boolean userIsHave(@PathVariable String roomId, @PathVariable String userId) {
-        return true;
+        return false;
     }
 }

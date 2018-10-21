@@ -23,27 +23,28 @@ public class VideoEncoder implements CommandEncoder {
      */
     @Override
     public void encode(ChannelHandlerContext ctx, Serializable msg, ByteBuf out) throws Exception {
+        System.out.println("out:" + msg);
         try {
             if (msg instanceof AbstractMessage) {
                 AbstractMessage cmd = (AbstractMessage) msg;
                 //写入协议byte
                 out.writeByte(VideoProtocol.PROTOCOL_CODE);
-                //写入message id
-                out.writeInt(cmd.getId());
                 //写入command类型
                 out.writeShort(cmd.getCmdCode().value());
+                //写入message id
+                out.writeInt(cmd.getId());
                 //写入roomId(16byte)
                 byte[] roomIdBytes = new byte[16];
-                System.arraycopy(roomIdBytes,0,cmd.getRoomId().getBytes(),0,cmd.getRoomId().getBytes().length);
+                System.arraycopy(cmd.getRoomId().getBytes(),0,roomIdBytes,0,cmd.getRoomId().getBytes().length);
                 out.writeBytes(roomIdBytes);
                 //写入userId(16byte)
                 byte[] userIdBytes = new byte[16];
-                System.arraycopy(userIdBytes,0,cmd.getUserId().getBytes(),0,cmd.getUserId().getBytes().length);
+                System.arraycopy(cmd.getUserId().getBytes(),0,userIdBytes,0,cmd.getUserId().getBytes().length);
                 out.writeBytes(userIdBytes);
                 //写入content长度
                 out.writeInt(cmd.getContent().length);
                 //写入content
-                out.writeInt(cmd.getContent().length);
+                out.writeBytes(cmd.getContent());
             } else {
                 String warnMsg = "msg type [" + msg.getClass() + "] is not subclass of RpcCommand";
                 LogKit.warn(warnMsg);

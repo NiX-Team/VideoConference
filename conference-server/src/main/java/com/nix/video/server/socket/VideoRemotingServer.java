@@ -141,7 +141,7 @@ public class VideoRemotingServer extends AbstractRemotingServer{
                 }
                 pipeline.addLast("connectionEventHandler", connectionEventHandler);
                 pipeline.addLast("handler", new VideoHandler());
-                createConnection(channel);
+//                createConnection(channel);
             }
             /**
              *
@@ -149,7 +149,7 @@ public class VideoRemotingServer extends AbstractRemotingServer{
              */
             private void createConnection(SocketChannel channel) {
                 if (switches().isOn(GlobalSwitch.SERVER_MANAGE_CONNECTION_SWITCH)) {
-                    connectionManager.add(new Connection(channel), "");
+                    connectionManager.add(new Connection(channel), String.valueOf(channel.hashCode()));
                 } else {
                     new Connection(channel);
                 }

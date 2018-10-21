@@ -1,57 +1,53 @@
 package com.nix.video.client;
 
 import com.nix.video.client.common.CameraVideoThread;
+import com.nix.video.client.common.Config;
 import com.nix.video.client.common.ScreenVideoThread;
-import com.nix.video.client.common.TcpUtil;
 import com.nix.video.client.common.VideoThread;
 import com.nix.video.client.controller.MainController;
+import com.nix.video.client.socket.RemotingVideoClient;
 import com.nix.video.client.util.ImageUtil;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
 import java.awt.image.BufferedImage;
 
 /**
  * @author 11723
  */
-public class Main extends Application {
+public class ClientWindow extends Application {
     private final VideoThread.Exe exe = javaImage -> {
         //在本地窗口显示自己的视频
         setImage(javaImage);
         //上传录制视频到服务器
-        TcpUtil.getTcpUtil().sendImageMessage(ImageUtil.imageToImageMessage(javaImage));
+        RemotingVideoClient.VIDEO_CLIENT.oneway(Config.getConnection(),ImageUtil.imageToImageMessage(javaImage));
     };
+
     private final CameraVideoThread cameraVideoThread = new CameraVideoThread(exe);
     private final ScreenVideoThread screenVideoThread = new ScreenVideoThread(exe);
-    private static Parent root;
-    public static Main main;
+    private static ClientWindow clientWindow;
+    private static Parent rootWindow;
     public MainController mainController;
     @Override
     public void start(Stage primaryStage) throws Exception{
-        main = this;
+        clientWindow = this;
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("controller/sample.fxml"));
-        root = fxmlLoader.load();
+        rootWindow = fxmlLoader.load();
         primaryStage.setTitle("客户端");
-        primaryStage.setScene(new Scene(root, 950, 736));
+        primaryStage.setScene(new Scene(rootWindow, 950, 736));
         primaryStage.show();
         mainController = fxmlLoader.getController();
-        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                try {
-                    mainController.close();
-                    cameraVideoThread.stop();
-                    screenVideoThread.stop();
-                }catch (Exception e1){}
-            }
+        primaryStage.setOnCloseRequest(event -> {
+            try {
+                mainController.close();
+                cameraVideoThread.stop();
+                screenVideoThread.stop();
+            }catch (Exception ignored){}
         });
     }
 
@@ -81,7 +77,11 @@ public class Main extends Application {
      * 设置本地视频窗口视频
      * */
     public static void setImage(BufferedImage javaImage) {
-        main.mainController.setImage(SwingFXUtils.toFXImage(javaImage,new WritableImage(100,100)));
+        clientWindow.mainController.setImage(SwingFXUtils.toFXImage(javaImage,new WritableImage(100,100)));
+    }
+
+    public static ClientWindow getClientWindow() {
+        return clientWindow;
     }
 
     /**

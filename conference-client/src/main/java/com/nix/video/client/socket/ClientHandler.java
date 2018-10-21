@@ -1,24 +1,27 @@
-package com.nix.video.server.socket;
+package com.nix.video.client.socket;
 
 import com.alipay.remoting.*;
+import com.alipay.remoting.rpc.protocol.UserProcessor;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
- * @author keray
- * @date 2018/10/19 4:44 PM
+ * @author Kiss
+ * @date 2018/10/20 21:09
  */
-public class VideoHandler extends ChannelInboundHandlerAdapter {
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        System.out.println("msg:" + msg);
-        ProtocolCode protocolCode = ctx.channel().attr(Connection.PROTOCOL).get();
-        Protocol protocol = ProtocolManager.getProtocol(protocolCode);
-        protocol.getCommandHandler().handleCommand(new RemotingContext(ctx), msg);
+@ChannelHandler.Sharable
+public class ClientHandler  extends ChannelInboundHandlerAdapter {
+
+    public ClientHandler() {
     }
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        super.channelActive(ctx);
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        ProtocolCode protocolCode = ctx.channel().attr(Connection.PROTOCOL).get();
+        Protocol protocol = ProtocolManager.getProtocol(protocolCode);
+        protocol.getCommandHandler().handleCommand(new RemotingContext(ctx), msg);
     }
 }

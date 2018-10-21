@@ -1,5 +1,6 @@
 package com.nix.video.client.common;
 
+import com.nix.video.common.util.log.LogKit;
 import com.xuggle.xuggler.*;
 
 import java.awt.image.BufferedImage;
@@ -159,20 +160,14 @@ public class CameraVideoThread extends VideoThread{
 
                     }
                 }
-                System.out.println("开始关闭摄像头...");
-                /*
-                 * Technically since we're exiting anyway, these will be cleaned
-                 * up by the garbage collector... but because we're nice people
-                 * and want to be invited places for Christmas, we're going to
-                 * show how to clean up.
-                 */
+                LogKit.warn("开始关闭摄像头...");
                 if (videoCoder != null) {
                     videoCoder.close();
                 }
                 if (container != null) {
                     container.close();
                 }
-                System.out.println("摄像头关闭完成...");
+                LogKit.warn("摄像头关闭完成...");
             }
         };
         setThread(thread);

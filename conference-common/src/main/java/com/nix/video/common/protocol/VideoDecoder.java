@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class VideoDecoder implements CommandDecoder {
     /**
-     * Decode bytes into object.
+     * DecommandCode bytes into object.
      *
      * @param ctx
      * @param in
@@ -23,22 +23,22 @@ public class VideoDecoder implements CommandDecoder {
     @Override
     public void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
         if (in.readByte() == VideoProtocol.PROTOCOL_CODE) {
-            short code = in.readShort();
+            short commandCode = in.readShort();
             int id = in.readInt();
             AbstractMessage message;
             byte[] roomIdBytes = new byte[16];
             byte[] userIdBytes = new byte[16];
             in.readBytes(roomIdBytes);
             in.readBytes(userIdBytes);
-            if (code == MessageCommandCode.CLIENT_HELLO.value() || code == MessageCommandCode.CLIENT_LEAVE.value() ||
-                    code == MessageCommandCode.SERVER_HELLO.value() || code == MessageCommandCode.SERVER_SAY_LEAVE.value()) {
+            if (commandCode == MessageCommandCode.CLIENT_HELLO.value() || commandCode == MessageCommandCode.CLIENT_LEAVE.value() ||
+                    commandCode == MessageCommandCode.SERVER_HELLO.value() || commandCode == MessageCommandCode.SERVER_SAY_LEAVE.value()) {
                 message = new AbstractMessage(new String(roomIdBytes),new String(userIdBytes),id);
-                message.setCommandCode(MessageCommandCode.valueOfCode(code));
+                message.setCommandCode(MessageCommandCode.valueOfCode(commandCode));
                 out.add(message);
             }
-            if (code == MessageCommandCode.CLIENT_PUSH_DATA.value() || code == MessageCommandCode.SERVER_PUSH_DATA.value()) {
+            else if (commandCode == MessageCommandCode.CLIENT_PUSH_DATA.value() || commandCode == MessageCommandCode.SERVER_PUSH_DATA.value()) {
                 message = new AbstractMessage(new String(roomIdBytes),new String(userIdBytes),id);
-                message.setCommandCode(MessageCommandCode.valueOfCode(code));
+                message.setCommandCode(MessageCommandCode.valueOfCode(commandCode));
                 byte[] content = new byte[in.readInt()];
                 in.readBytes(content);
                 message.setContent(content);

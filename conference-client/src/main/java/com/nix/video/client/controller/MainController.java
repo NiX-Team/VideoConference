@@ -1,7 +1,9 @@
 package com.nix.video.client.controller;
 
-import com.nix.video.client.Main;
+import com.alipay.remoting.Connection;
+import com.nix.video.client.ClientWindow;
 import com.nix.video.client.common.*;
+import com.nix.video.client.socket.RemotingVideoClient;
 import com.nix.video.client.util.ImageUtil;
 import com.nix.video.common.message.AbstractMessage;
 import javafx.application.Platform;
@@ -28,6 +30,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.util.Objects;
 import java.util.concurrent.ThreadFactory;
 
 /**
@@ -54,10 +57,6 @@ public class MainController {
     @FXML
     private TextField serverPort;
 
-    private ClientConsumers clientConsumers;
-
-    private AbstractNetworkUtil networkUtil = TcpUtil.getTcpUtil();
-
     /**
      * 宽高比
      * */
@@ -69,56 +68,41 @@ public class MainController {
     public void setImage(Image image) {
         video_box.setImage(image);
     }
-    @FXML
-    public void exeMessage(AbstractMessage imageMessage) {
-        System.out.println("exeMessage:" + imageMessage);
-        if (imageMessage.getStatus().equals(AbstractMessage.status.bye)) {
-            removeClient(imageMessage);
-        }else if (imageMessage.getStatus().equals(AbstractMessage.status.data)){
-            addAClient(imageMessage);
-        }
-    }
 
-    private void addAClient(AbstractMessage imageMessage) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                if (maxPane != null && maxPane.getId().equals(imageMessage.getRoomId() + "-" + imageMessage.getUserId())) {
-                    ((ImageView)maxPane.lookup("#video")).setImage(SwingFXUtils.toFXImage(ImageUtil.messageToBufferedImage(imageMessage),new WritableImage(320,240)));
-                }
-                Pane pane = (Pane) otherVideoPane.lookup("#" + imageMessage.getUserId());
-                ImageView view;
-                if (pane == null) {
-                    pane = getClientPane(imageMessage,320,240,true);
-                    otherVideoPane.getChildren().add(pane);
-                    LogKit.info("新增加一名用户：" + imageMessage);
-                }
-                view = (ImageView) pane.lookup("#video");
-                view.setImage(SwingFXUtils.toFXImage(ImageUtil.messageToBufferedImage(imageMessage),new WritableImage(320,240)));
+    public void addAClient(AbstractMessage imageMessage) {
+        Platform.runLater(() -> {
+            if (maxPane != null && maxPane.getId().equals(imageMessage.getRoomId() + "-" + imageMessage.getUserId())) {
+                ((ImageView)maxPane.lookup("#video")).setImage(SwingFXUtils.toFXImage(Objects.requireNonNull(ImageUtil.messageToBufferedImage(imageMessage)),new WritableImage(320,240)));
             }
+            Pane pane = (Pane) otherVideoPane.lookup("#" + imageMessage.getUserId());
+            ImageView view;
+            if (pane == null) {
+                pane = getClientPane(imageMessage,320,240,true);
+                otherVideoPane.getChildren().add(pane);
+                LogKit.info("新增加一名用户：" + imageMessage);
+            }
+            view = (ImageView) pane.lookup("#video");
+            view.setImage(SwingFXUtils.toFXImage(Objects.requireNonNull(ImageUtil.messageToBufferedImage(imageMessage)),new WritableImage(320,240)));
         });
     }
 
-    private void removeClient(AbstractMessage imageMessage) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                if (maxPane != null && maxPane.getId().equals(imageMessage.getRoomId() + "-" + imageMessage.getUserId())) {
-                    maxStage.close();
-                }
-                Pane pane = (Pane) otherVideoPane.lookup("#" + imageMessage.getUserId());
-                otherVideoPane.getChildren().removeAll(pane);
-                LogKit.info("移除面板" + imageMessage);
+    public void removeClient(AbstractMessage imageMessage) {
+        Platform.runLater(() -> {
+            if (maxPane != null && maxPane.getId().equals(imageMessage.getRoomId() + "-" + imageMessage.getUserId())) {
+                maxStage.close();
             }
+            Pane pane = (Pane) otherVideoPane.lookup("#" + imageMessage.getUserId());
+            otherVideoPane.getChildren().removeAll(pane);
+            LogKit.info("移除面板" + imageMessage);
         });
     }
 
-    private Pane getClientPane(AbstractMessage imageMessage, double width, double height, boolean haveMax) {
+    public Pane getClientPane(AbstractMessage imageMessage, double width, double height, boolean haveMax) {
         Pane pane = new Pane();
         pane.setId(imageMessage.getUserId());
         pane.setPrefWidth(width);
         pane.setPrefHeight(height + 25);
-        Text text = new Text(imageMessage.getMessageId());
+        Text text = new Text(String.valueOf(imageMessage.getId()));
         text.setLayoutX(0);
         text.setLayoutY(17);
         text.setFont(Font.font(20));
@@ -157,36 +141,25 @@ public class MainController {
             setError("用户id不能为空");
             return;
         }
-        if (Boolean.parseBoolean(HttpClient.doGet("http://" + serverHost.getText() + "/server/" + roomId.getText() + "/" + userId.getText(),null)) && clientConsumers == null) {
+        if (Boolean.parseBoolean(HttpClient.doGet("http://" + serverHost.getText() + "/server/" + roomId.getText() + "/" + userId.getText(),null))) {
             setError("用户名已存在");
             return;
         }
-        if (clientConsumers == null) {
-            clientConsumers = new ClientConsumers(100, 100, new ThreadFactory() {
-                @Override
-                public Thread newThread(Runnable r) {
-                    Thread t = new Thread(r);
-                    t.setName("client-consumers");
-                    return t;
-                }
-            });
-            clientConsumers.start();
-        }
-        if (!networkUtil.isConnect()) {
-            int port;
+        if (Config.getConnection() == null) {
             try {
                 Config.setRoomId(roomId.getText());
                 Config.setUserId(userId.getText());
                 Config.setServerHost(serverHost.getText());
                 Config.setServerPort(Integer.valueOf(serverPort.getText()));
-                port = Integer.parseInt(serverPort.getText());
+                Connection connection = RemotingVideoClient.VIDEO_CLIENT.createConnection(Config.getServerHost(),Config.getServerPort(),5000);
+                if (connection == null) {
+                    setError("服务器不存在");
+                    return;
+                }
+                Config.setConnection(connection);
+                RemotingVideoClient.VIDEO_CLIENT.oneway(connection,AbstractMessage.createClientSayHelloMessage(Config.getRoomId(),Config.getUserId()));
             }catch (Exception e) {
-                setError("端口错误");
-                return;
-            }
-            if (!networkUtil.connectServer(serverHost.getText(), port)) {
-                setError("服务器不存在");
-                return;
+                setError("连接服务器失败");
             }
         }
     }
@@ -206,12 +179,7 @@ public class MainController {
         maxPane = pane;
         maxPane.setId(message.getRoomId() + "-" + message.getUserId());
         stage.setScene(new Scene(pane));
-        stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-            @Override
-            public void handle(WindowEvent event) {
-                maxPane = null;
-            }
-        });
+        stage.setOnCloseRequest(event -> maxPane = null);
         stage.addEventHandler(KeyEvent.ANY, event -> {
             if (event.getCode() == KeyCode.ESCAPE) {
                 maxPane = null;
@@ -226,31 +194,30 @@ public class MainController {
         error.setText(errorMsg);
     }
     public void close() {
-        networkUtil.close();
-        clientConsumers.close();
+        RemotingVideoClient.VIDEO_CLIENT.shutdown();
     }
 
     public void camera(MouseEvent mouseEvent) {
         if (openCamera.getText().equals("打开摄像头")) {
-            Main.main.openCameraVideo();
+            ClientWindow.getClientWindow().openCameraVideo();
             openCamera.setText("关闭摄像头");
             openScreen.setText("打开屏幕分享");
-            Main.main.closeScreenVideo();
+            ClientWindow.getClientWindow().closeScreenVideo();
         }else {
             openCamera.setText("打开摄像头");
-            Main.main.closeCameraVideo();
+            ClientWindow.getClientWindow().closeCameraVideo();
         }
     }
 
     public void screen(MouseEvent mouseEvent) {
         if (openScreen.getText().equals("打开屏幕分享")) {
-            Main.main.openScreenVideo();
+            ClientWindow.getClientWindow().openScreenVideo();
             openScreen.setText("关闭屏幕分享");
             openCamera.setText("打开摄像头");
-            Main.main.closeCameraVideo();
+            ClientWindow.getClientWindow().closeCameraVideo();
         }else {
             openScreen.setText("打开屏幕分享");
-            Main.main.closeScreenVideo();
+            ClientWindow.getClientWindow().closeScreenVideo();
         }
     }
 }

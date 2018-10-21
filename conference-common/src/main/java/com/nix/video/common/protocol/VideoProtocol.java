@@ -8,9 +8,10 @@ import com.alipay.remoting.*;
  *
  */
 public class VideoProtocol implements Protocol {
-    public static final byte PROTOCOL_CODE       = 0x71;
-    /** 1 + 2 + 16 + 16 + 4 */
-    private static final int HEADER_LEN  = 39;
+    public static final byte PROTOCOL_CODE       = 0x01;
+    /** PROTOCOL_CODE */
+    public static final int HEADER_LEN  = 1;
+    public static final byte VERSION       = 1;
     private final static CommandEncoder   ENCODER = new VideoEncoder();
     private final static CommandDecoder   DECODER = new VideoDecoder();
     private HeartbeatTrigger heartbeatTrigger = new VideoHeartbeatTrigger();

@@ -38,6 +38,11 @@
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.alipay.sofa</groupId>
+            <artifactId>hessian</artifactId>
+            <version>3.3.2</version>
+        </dependency>
+        <dependency>
             <groupId>xuggle</groupId>
             <artifactId>xuggle-xuggler</artifactId>
             <version>5.4</version>
@@ -71,7 +76,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>com.nix.video.client.Main</mainClass>
+                            <mainClass>com.nix.video.client.ClientWindow</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

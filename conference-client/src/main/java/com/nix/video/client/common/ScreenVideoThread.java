@@ -29,20 +29,15 @@ public class ScreenVideoThread extends VideoThread{
         Thread thread = new Thread(){
             @Override
             public void run() {
-                FileOutputStream fos = null;
                 while (!isInterrupted()){
                     try{
                         //捕获制定屏幕矩形区域
                         BufferedImage image = robot.createScreenCapture(rectangle);
                         exe.exeImage(image);
                         Thread.sleep(1000/DEFAULT_FRAME);
+                        break;
                     }catch(Exception ignored){
                     }
-                }
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
             }
         };

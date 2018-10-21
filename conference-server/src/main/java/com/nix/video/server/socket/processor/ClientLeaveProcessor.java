@@ -3,6 +3,8 @@ package com.nix.video.server.socket.processor;
 import com.alipay.remoting.RemotingContext;
 import com.alipay.remoting.RemotingProcessor;
 import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.server.common.ClientContainer;
+import com.nix.video.server.socket.VideoRemotingServer;
 
 import java.util.concurrent.ExecutorService;
 
@@ -21,6 +23,8 @@ public class ClientLeaveProcessor implements RemotingProcessor<AbstractMessage> 
      */
     @Override
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
+        System.out.println("leave:" + msg);
+        defaultExecutor.execute(() -> ClientContainer.removeClient(ctx.getChannelContext().channel(),msg));
 
     }
 

@@ -70,4 +70,6 @@ public class VideoProtocol implements Protocol {
     public CommandFactory getCommandFactory() {
         return COMMAND_FACTORY;
     }
+
+
 }

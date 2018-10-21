@@ -14,7 +14,7 @@ import java.util.Properties;
  * @author Kiss
  * @date 2018/10/20 21:37
  */
-public class VideoAdressParser  implements RemotingAddressParser {
+public class VideoAddressParser implements RemotingAddressParser {
     /**
      * @see com.alipay.remoting.RemotingAddressParser#parse(java.lang.String)
      */
@@ -242,4 +242,10 @@ public class VideoAdressParser  implements RemotingAddressParser {
         SoftReference<Url> softRef = Url.parsedUrls.get(url);
         return (null == softRef) ? null : softRef.get();
     }
+
+    private VideoAddressParser() {
+
+    }
+
+    public static final VideoAddressParser PARSER = new VideoAddressParser();
 }

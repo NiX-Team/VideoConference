@@ -151,7 +151,7 @@ public class MainController {
                 Config.setUserId(userId.getText());
                 Config.setServerHost(serverHost.getText());
                 Config.setServerPort(Integer.valueOf(serverPort.getText()));
-                Connection connection = RemotingVideoClient.VIDEO_CLIENT.createConnection(Config.getServerHost(),Config.getServerPort(),5000);
+                Connection connection = RemotingVideoClient.VIDEO_CLIENT.createConnection(Config.getServerUrl());
                 if (connection == null) {
                     setError("服务器不存在");
                     return;

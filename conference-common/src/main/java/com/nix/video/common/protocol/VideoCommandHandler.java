@@ -31,17 +31,24 @@ public class VideoCommandHandler implements CommandHandler {
     public void handleCommand(RemotingContext ctx, Object msg) throws Exception {
         if (msg instanceof List) {
             ((List) msg).forEach(message -> {
-                if (message instanceof AbstractMessage) {
-                    try {
-                        PROCESSOR.get(((AbstractMessage) message).getCmdCode()).process(ctx,(AbstractMessage) message,executorService);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        LogKit.error("处理message失败",e);
-                    }
-                }
+                handler(ctx, message);
             });
+        } else {
+            handler(ctx, msg);
         }
     }
+
+    private void handler(RemotingContext ctx, Object msg) {
+        if (msg instanceof AbstractMessage) {
+            try {
+                PROCESSOR.get(((AbstractMessage) msg).getCmdCode()).process(ctx,(AbstractMessage) msg,executorService);
+            } catch (Exception e) {
+                e.printStackTrace();
+                LogKit.error("处理message失败",e);
+            }
+        }
+    }
+
 
     /**
      * Register processor for command with specified code.

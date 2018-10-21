@@ -25,7 +25,7 @@ public class VideoDecoder implements CommandDecoder {
         if (in.readByte() == VideoProtocol.PROTOCOL_CODE) {
             short commandCode = in.readShort();
             int id = in.readInt();
-            AbstractMessage message;
+            AbstractMessage message = null;
             byte[] roomIdBytes = new byte[16];
             byte[] userIdBytes = new byte[16];
             in.readBytes(roomIdBytes);

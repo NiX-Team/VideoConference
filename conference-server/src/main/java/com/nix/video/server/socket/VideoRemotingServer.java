@@ -5,6 +5,9 @@ import com.alipay.remoting.config.ConfigManager;
 import com.alipay.remoting.config.switches.GlobalSwitch;
 import com.alipay.remoting.rpc.protocol.UserProcessor;
 import com.alipay.remoting.util.NettyEventLoopUtil;
+import com.alipay.remoting.util.RemotingUtil;
+import com.alipay.remoting.util.RunStateRecordedFutureTask;
+import com.nix.video.common.VideoAddressParser;
 import com.nix.video.common.message.MessageCommandCode;
 import com.nix.video.common.protocol.VideoCodec;
 import com.nix.video.common.protocol.VideoProtocol;
@@ -20,10 +23,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import java.net.InetSocketAddress;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.concurrent.*;
 
 /**
  * @author keray
@@ -45,6 +46,7 @@ public class VideoRemotingServer extends AbstractRemotingServer{
     private ServerBootstrap bootstrap;
     private ConnectionEventHandler connectionEventHandler;
     private DefaultConnectionManager connectionManager;
+    private RemotingAddressParser                       addressParser;
     private ConnectionEventListener connectionEventListener = new ConnectionEventListener();
     private static final EventLoopGroup BOSS_GROUP = NettyEventLoopUtil.newEventLoopGroup(1,
                     new NamedThreadFactory(
@@ -98,6 +100,10 @@ public class VideoRemotingServer extends AbstractRemotingServer{
 
     @Override
     protected void doInit() {
+
+        if (this.addressParser == null) {
+            this.addressParser = VideoAddressParser.PARSER;
+        }
         this.connectionEventHandler = new ConnectionEventHandler(switches());
         this.connectionManager = new DefaultConnectionManager(new RandomSelectStrategy());
         this.connectionEventHandler.setConnectionManager(this.connectionManager);
@@ -106,21 +112,22 @@ public class VideoRemotingServer extends AbstractRemotingServer{
         this.bootstrap.group(BOSS_GROUP, WORKER_GROUP)
                 .channel(NettyEventLoopUtil.getServerSocketChannelClass())
                 .option(ChannelOption.SO_BACKLOG, ConfigManager.tcp_so_backlog())
+                //发包缓冲区，单位多少？
+                .option(ChannelOption.SO_SNDBUF, 1024*256)
+                //收包换成区，单位多少？
+                .option(ChannelOption.SO_RCVBUF, 1024*256)
                 .option(ChannelOption.SO_REUSEADDR, ConfigManager.tcp_so_reuseaddr())
+                //TCP立即发包
                 .childOption(ChannelOption.TCP_NODELAY, ConfigManager.tcp_nodelay())
+                // 保持长连接
                 .childOption(ChannelOption.SO_KEEPALIVE, ConfigManager.tcp_so_keepalive());
 
         // set write buffer water mark
         initWriteBufferWaterMark();
 
         // init byte buf allocator
-        if (ConfigManager.netty_buffer_pooled()) {
-            this.bootstrap.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
-                    .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-        } else {
-            this.bootstrap.option(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT)
-                    .childOption(ChannelOption.ALLOCATOR, UnpooledByteBufAllocator.DEFAULT);
-        }
+        this.bootstrap.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT)
+                .childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
 
         // enable trigger mode for epoll if need
         NettyEventLoopUtil.enableTriggeredMode(bootstrap);
@@ -137,29 +144,29 @@ public class VideoRemotingServer extends AbstractRemotingServer{
                 pipeline.addLast("encoder", codec.newEncoder());
                 if (idleSwitch) {
                     pipeline.addLast("idleStateHandler", new IdleStateHandler(0, 500, idleTime, TimeUnit.MILLISECONDS));
-                    pipeline.addLast("serverIdleHandler", serverIdleHandler);
+//                    pipeline.addLast("serverIdleHandler", serverIdleHandler);
                 }
-                pipeline.addLast("connectionEventHandler", connectionEventHandler);
+//                pipeline.addLast("connectionEventHandler", connectionEventHandler);
                 pipeline.addLast("handler", new VideoHandler());
-//                createConnection(channel);
+                createConnection(channel);
             }
             /**
              *
              * 管理链接
              */
             private void createConnection(SocketChannel channel) {
+                Url url = addressParser.parse(RemotingUtil.parseRemoteAddress(channel));
                 if (switches().isOn(GlobalSwitch.SERVER_MANAGE_CONNECTION_SWITCH)) {
-                    connectionManager.add(new Connection(channel), String.valueOf(channel.hashCode()));
+                    connectionManager.add(new Connection(channel), url.getUniqueKey());
                 } else {
                     new Connection(channel);
                 }
-                channel.pipeline().fireUserEventTriggered(ConnectionEventType.CONNECT);
             }
         });
     }
-
     @Override
     protected boolean doStart() throws InterruptedException {
+        init();
         this.channelFuture = this.bootstrap.bind(new InetSocketAddress(ip(), port())).sync();
         return this.channelFuture.isSuccess();
     }
@@ -186,12 +193,16 @@ public class VideoRemotingServer extends AbstractRemotingServer{
 
     @Override
     public void init() {
-        super.init();
+        switches().turnOn(GlobalSwitch.CONN_RECONNECT_SWITCH);
+        switches().turnOn(GlobalSwitch.CONN_MONITOR_SWITCH);
+        switches().turnOn(GlobalSwitch.SERVER_MANAGE_CONNECTION_SWITCH);
+        switches().turnOn(GlobalSwitch.SERVER_SYNC_STOP);
         registerDefaultExecutor(VideoProtocol.PROTOCOL_CODE,IMAGE_PROCESSOR_EXECUTOR);
         registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.CLIENT_HELLO,new ClientSayHelloProcessor());
         registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.CLIENT_LEAVE,new ClientLeaveProcessor());
         registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.CLIENT_PUSH_DATA,new ClientPushDataProcessor());
     }
+
 
     /**
      * init netty write buffer water mark
@@ -214,7 +225,7 @@ public class VideoRemotingServer extends AbstractRemotingServer{
     }
 
 
-    private volatile static VideoRemotingServer server;
+    public volatile static VideoRemotingServer server;
     public static VideoRemotingServer getServer(int port) {
         if (server == null) {
             synchronized (VideoRemotingServer.class) {
@@ -224,5 +235,13 @@ public class VideoRemotingServer extends AbstractRemotingServer{
             }
         }
         return server;
+    }
+
+    public DefaultConnectionManager getConnectionManager() {
+        return connectionManager;
+    }
+
+    public void setConnectionManager(DefaultConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
     }
 }

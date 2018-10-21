@@ -80,6 +80,13 @@ public class AbstractMessage implements RemotingCommand {
     }
 
     /**
+     * key
+     * */
+    public String getKey() {
+        return getRoomId();
+    }
+
+    /**
      * 获取消息的唯一id
      * @return
      * */
@@ -203,7 +210,6 @@ public class AbstractMessage implements RemotingCommand {
                 ", userId='" + userId + '\'' +
                 ", id=" + id +
                 ", commandCode=" + commandCode +
-                ", content=" + Arrays.toString(content) +
                 '}';
     }
 }

@@ -7,6 +7,8 @@ import com.nix.video.client.common.VideoThread;
 import com.nix.video.client.controller.MainController;
 import com.nix.video.client.socket.RemotingVideoClient;
 import com.nix.video.client.util.ImageUtil;
+import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.util.log.LogKit;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXMLLoader;
@@ -44,10 +46,14 @@ public class ClientWindow extends Application {
         mainController = fxmlLoader.getController();
         primaryStage.setOnCloseRequest(event -> {
             try {
+                RemotingVideoClient.VIDEO_CLIENT.oneway(Config.getConnection(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
+                Thread.sleep(200);
                 mainController.close();
                 cameraVideoThread.stop();
                 screenVideoThread.stop();
-            }catch (Exception ignored){}
+            }catch (Exception e){
+                LogKit.error("close window error",e);
+            }
         });
     }
 

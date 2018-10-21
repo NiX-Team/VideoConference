@@ -1,6 +1,7 @@
 package com.nix.video.client.socket;
 import com.alipay.remoting.*;
 import com.alipay.remoting.config.AbstractConfigurableInstance;
+import com.alipay.remoting.config.configs.ConfigItem;
 import com.alipay.remoting.config.configs.ConfigType;
 import com.alipay.remoting.config.switches.GlobalSwitch;
 import com.alipay.remoting.connection.ConnectionFactory;
@@ -10,7 +11,7 @@ import com.alipay.remoting.rpc.*;
 import com.nix.video.client.socket.processor.ServerHelloProcessor;
 import com.nix.video.client.socket.processor.ServerPushDataProcessor;
 import com.nix.video.client.socket.processor.ServerSayLeaveProcessor;
-import com.nix.video.common.VideoAdressParser;
+import com.nix.video.common.VideoAddressParser;
 import com.nix.video.common.message.MessageCommandCode;
 import com.nix.video.common.protocol.VideoCodec;
 import com.nix.video.common.protocol.VideoCommandFactory;
@@ -64,7 +65,7 @@ public class RemotingVideoClient extends AbstractConfigurableInstance{
 
     private void init() {
         if (this.addressParser == null) {
-            this.addressParser = new VideoAdressParser();
+            this.addressParser = VideoAddressParser.PARSER;
         }
         this.connectionManager.setAddressParser(this.addressParser);
         this.connectionManager.init();
@@ -107,11 +108,16 @@ public class RemotingVideoClient extends AbstractConfigurableInstance{
             connectionMonitor.destroy();
         }
     }
+    @Override
+    public void initWriteBufferWaterMark(int low, int high) {
+        super.initWriteBufferWaterMark(0,1024*1024*1024);
+    }
 
-    public Connection createConnection(String ip, int port, int connectTimeout)
+    public Connection createConnection(String url)
             throws RemotingException {
-        Connection connection = this.connectionManager.create(ip, port, connectTimeout);
+        Connection connection = this.connectionManager.create(VideoAddressParser.PARSER.parse(url));
         connection.getChannel().attr(Connection.PROTOCOL).set(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE));
+        connection.getChannel().attr(Connection.CONNECTION).set(connection);
         return connection;
     }
 

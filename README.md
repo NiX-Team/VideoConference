@@ -1,0 +1,1 @@
+### 本地启动看debug日志在idea vm参数中加 -DLogKit.debug=true 

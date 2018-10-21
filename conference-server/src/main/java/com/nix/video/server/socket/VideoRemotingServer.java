@@ -6,9 +6,9 @@ import com.alipay.remoting.config.switches.GlobalSwitch;
 import com.alipay.remoting.rpc.protocol.UserProcessor;
 import com.alipay.remoting.util.NettyEventLoopUtil;
 import com.alipay.remoting.util.RemotingUtil;
-import com.alipay.remoting.util.RunStateRecordedFutureTask;
 import com.nix.video.common.VideoAddressParser;
 import com.nix.video.common.message.MessageCommandCode;
+import com.nix.video.common.protocol.VideoHeardProcessor;
 import com.nix.video.common.protocol.VideoCodec;
 import com.nix.video.common.protocol.VideoProtocol;
 import com.nix.video.common.util.log.LogKit;
@@ -17,13 +17,11 @@ import com.nix.video.server.socket.processor.ClientPushDataProcessor;
 import com.nix.video.server.socket.processor.ClientSayHelloProcessor;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.buffer.UnpooledByteBufAllocator;
 import io.netty.channel.*;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 
 import java.net.InetSocketAddress;
-import java.util.List;
 import java.util.concurrent.*;
 
 /**
@@ -66,7 +64,7 @@ public class VideoRemotingServer extends AbstractRemotingServer{
     }
     @Override
     public boolean start() {
-        ProtocolManager.registerProtocol(new VideoProtocol(),VideoProtocol.PROTOCOL_CODE);
+        ProtocolManager.registerProtocol(VideoProtocol.VIDEO_PROTOCOL,VideoProtocol.PROTOCOL_CODE);
         return super.start();
     }
 
@@ -134,7 +132,7 @@ public class VideoRemotingServer extends AbstractRemotingServer{
 
         final boolean idleSwitch = ConfigManager.tcp_idle_switch();
         final int idleTime = ConfigManager.tcp_server_idle();
-        final ChannelHandler serverIdleHandler = new ServerIdleHandler();
+        final ChannelHandler serverIdleHandler = new VideoServerIdleHandler();
         this.bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
 
             @Override
@@ -143,10 +141,10 @@ public class VideoRemotingServer extends AbstractRemotingServer{
                 pipeline.addLast("decoder", codec.newDecoder());
                 pipeline.addLast("encoder", codec.newEncoder());
                 if (idleSwitch) {
-                    pipeline.addLast("idleStateHandler", new IdleStateHandler(0, 500, idleTime, TimeUnit.MILLISECONDS));
-//                    pipeline.addLast("serverIdleHandler", serverIdleHandler);
+                    pipeline.addLast("idleStateHandler", new IdleStateHandler(20000, 20000, idleTime, TimeUnit.MILLISECONDS));
+                    pipeline.addLast("serverIdleHandler", serverIdleHandler);
                 }
-//                pipeline.addLast("connectionEventHandler", connectionEventHandler);
+                pipeline.addLast("connectionEventHandler", connectionEventHandler);
                 pipeline.addLast("handler", new VideoHandler());
                 createConnection(channel);
             }
@@ -201,6 +199,8 @@ public class VideoRemotingServer extends AbstractRemotingServer{
         registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.CLIENT_HELLO,new ClientSayHelloProcessor());
         registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.CLIENT_LEAVE,new ClientLeaveProcessor());
         registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.CLIENT_PUSH_DATA,new ClientPushDataProcessor());
+        registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.HEART_SYN_COMMAND,new VideoHeardProcessor());
+        registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.HEART_ACK_COMMAND,new VideoHeardProcessor());
     }
 
 

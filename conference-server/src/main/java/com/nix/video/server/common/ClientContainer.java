@@ -23,13 +23,16 @@ public class ClientContainer {
      * 房间号-房间的所有客户端的hello包信息
      * */
     private final static ConcurrentHashMap<String/*roomId*/,List<String>/*url.getUniqueKey()*/> CLIENT_CONTEXT = new ConcurrentHashMap<>();
+
+    private final static ConcurrentHashMap<String/*url.getUniqueKey()*/,String[]/*roomId*/> CHANNEL_ROOM = new ConcurrentHashMap<>();
+
     private final static VideoAddressParser ADDRESS_PARSER = VideoAddressParser.PARSER;
 
     /**
      * 添加一个客户端连接
      * */
     public static void addClient(Channel channel, AbstractMessage message) {
-
+        String key = ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey();
         if (!CLIENT_CONTEXT.containsKey(message.getRoomId())) {
             List<String> list = Collections.synchronizedList(new ArrayList<>());
             if (CLIENT_CONTEXT.putIfAbsent( message.getRoomId(),list) == null) {
@@ -37,7 +40,8 @@ public class ClientContainer {
             }
         }
         LogKit.info("添加客户端" + message + "，roomId=" + message.getRoomId());
-        CLIENT_CONTEXT.get(message.getRoomId()).add(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
+        CLIENT_CONTEXT.get(message.getRoomId()).add(key);
+        CHANNEL_ROOM.put(key,new String[]{message.getRoomId(),message.getUserId()});
 
     }
     /**
@@ -47,15 +51,27 @@ public class ClientContainer {
         LogKit.info("房间" + message.getRoomId() + "移除用户" + message.getUserId());
         CLIENT_CONTEXT.get(message.getRoomId()).remove(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
         message.setCommandCode(MessageCommandCode.SERVER_SAY_LEAVE);
-        pushMessage2Room(message);
+        pushMessage2Room(message,channel);
     }
 
-    public static void pushData2Room(AbstractMessage message) {
-        message.setCommandCode(MessageCommandCode.SERVER_PUSH_DATA);
-        pushMessage2Room(message);
+    /**
+     * 服务器通知房间里的客户端 哪个连接断开了
+     * */
+    public static void removeClient(Channel channel) {
+        String[] userMsg = CHANNEL_ROOM.get(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
+        LogKit.info("房间" + userMsg[0] + "移除用户" +userMsg[1]);
+        CLIENT_CONTEXT.get(userMsg[0]).remove(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
+        AbstractMessage message = AbstractMessage.createServerSayLeaveMessage(userMsg[0],userMsg[1]);
+        pushMessage2Room(message,channel);
     }
-    private static void pushMessage2Room(AbstractMessage message) {
-        CLIENT_CONTEXT.get(message.getRoomId()).forEach(client -> {
+
+    public static void pushData2Room(AbstractMessage message,Channel channel) {
+        message.setCommandCode(MessageCommandCode.SERVER_PUSH_DATA);
+        pushMessage2Room(message,channel);
+    }
+    private static void pushMessage2Room(AbstractMessage message,Channel channel) {
+        String ownerKey = ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey();
+        CLIENT_CONTEXT.get(message.getRoomId()).stream().filter(key -> !key.equals(ownerKey)).forEach(client -> {
             try {
                 VideoRemotingServer.server.getConnectionManager().get(client).getChannel().writeAndFlush(message);
             }catch (Exception e) {

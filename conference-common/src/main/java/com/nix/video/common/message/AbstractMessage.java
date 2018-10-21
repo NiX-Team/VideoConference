@@ -78,6 +78,12 @@ public class AbstractMessage implements RemotingCommand {
     public static AbstractMessage createServerPushDataMessage(String roomId,String userId) {
         return createAbstractMessage(roomId,userId,MessageCommandCode.SERVER_PUSH_DATA);
     }
+    public static AbstractMessage createHeardSynMessage() {
+        return createAbstractMessage("","",MessageCommandCode.HEART_SYN_COMMAND);
+    }
+    public static AbstractMessage createHeardAckMessage() {
+        return createAbstractMessage("","",MessageCommandCode.HEART_ACK_COMMAND);
+    }
 
     /**
      * key

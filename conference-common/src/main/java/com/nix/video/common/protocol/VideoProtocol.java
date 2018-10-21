@@ -16,11 +16,11 @@ public class VideoProtocol implements Protocol {
     public static final byte VERSION       = 1;
     private final static CommandEncoder   ENCODER = new VideoEncoder();
     private final static CommandDecoder   DECODER = new VideoDecoder();
-    private HeartbeatTrigger heartbeatTrigger = new VideoHeartbeatTrigger();
+    private final static HeartbeatTrigger heartbeatTrigger = new VideoHeartbeatTrigger();
     private static final CommandHandler  COMMAND_HANDLER = new VideoCommandHandler();
     private static final CommandFactory  COMMAND_FACTORY = new VideoCommandFactory();
-
-    public VideoProtocol() {
+    public static final VideoProtocol VIDEO_PROTOCOL = new VideoProtocol();
+    private VideoProtocol() {
     }
 
     /**

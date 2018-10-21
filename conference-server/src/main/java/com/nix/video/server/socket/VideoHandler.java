@@ -1,6 +1,7 @@
 package com.nix.video.server.socket;
 
 import com.alipay.remoting.*;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 
@@ -8,6 +9,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * @author keray
  * @date 2018/10/19 4:44 PM
  */
+@ChannelHandler.Sharable
 public class VideoHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {

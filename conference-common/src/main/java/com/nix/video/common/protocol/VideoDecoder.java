@@ -2,6 +2,7 @@ package com.nix.video.common.protocol;
 
 import com.alipay.remoting.CommandDecoder;
 import com.nix.video.common.message.*;
+import com.nix.video.common.util.log.LogKit;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -31,7 +32,8 @@ public class VideoDecoder implements CommandDecoder {
             in.readBytes(roomIdBytes);
             in.readBytes(userIdBytes);
             if (commandCode == MessageCommandCode.CLIENT_HELLO.value() || commandCode == MessageCommandCode.CLIENT_LEAVE.value() ||
-                    commandCode == MessageCommandCode.SERVER_HELLO.value() || commandCode == MessageCommandCode.SERVER_SAY_LEAVE.value()) {
+                    commandCode == MessageCommandCode.SERVER_HELLO.value() || commandCode == MessageCommandCode.SERVER_SAY_LEAVE.value() ||
+                    commandCode == MessageCommandCode.HEART_SYN_COMMAND.value() || commandCode == MessageCommandCode.HEART_ACK_COMMAND.value()) {
                 message = new AbstractMessage(new String(roomIdBytes),new String(userIdBytes),id);
                 message.setCommandCode(MessageCommandCode.valueOfCode(commandCode));
                 out.add(message);
@@ -44,6 +46,7 @@ public class VideoDecoder implements CommandDecoder {
                 message.setContent(content);
                 out.add(message);
             }
+            LogKit.debug("decode success:{}",message);
         }catch (Exception ignored) {
         }
     }

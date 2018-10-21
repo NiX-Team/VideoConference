@@ -20,7 +20,11 @@ public enum MessageCommandCode implements CommandCode {
     /** 服务器通知有个客户端离开房间 */
     SERVER_SAY_LEAVE((short) 0X05),
     /** 服务器发送数据 */
-    SERVER_PUSH_DATA((short) 0x06);
+    SERVER_PUSH_DATA((short) 0x06),
+    /** 请求心跳数据包 */
+    HEART_SYN_COMMAND((short) 0x07),
+    /** 确认心跳数据包 */
+    HEART_ACK_COMMAND((short) 0x08);
 
     /** 编码 */
     short code;

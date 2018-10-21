@@ -1,11 +1,9 @@
 package com.nix.video.client.socket;
 import com.alipay.remoting.*;
 import com.alipay.remoting.config.AbstractConfigurableInstance;
-import com.alipay.remoting.config.configs.ConfigItem;
 import com.alipay.remoting.config.configs.ConfigType;
 import com.alipay.remoting.config.switches.GlobalSwitch;
 import com.alipay.remoting.connection.ConnectionFactory;
-import com.alipay.remoting.connection.DefaultConnectionFactory;
 import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.*;
 import com.nix.video.client.socket.processor.ServerHelloProcessor;
@@ -13,6 +11,7 @@ import com.nix.video.client.socket.processor.ServerPushDataProcessor;
 import com.nix.video.client.socket.processor.ServerSayLeaveProcessor;
 import com.nix.video.common.VideoAddressParser;
 import com.nix.video.common.message.MessageCommandCode;
+import com.nix.video.common.protocol.VideoHeardProcessor;
 import com.nix.video.common.protocol.VideoCodec;
 import com.nix.video.common.protocol.VideoCommandFactory;
 import com.nix.video.common.protocol.VideoProtocol;
@@ -84,11 +83,13 @@ public class RemotingVideoClient extends AbstractConfigurableInstance{
             connectionEventHandler.setReconnectManager(reconnectManager);
             LogKit.warn("Switch on reconnect manager");
         }
-        ProtocolManager.registerProtocol(new VideoProtocol(),VideoProtocol.PROTOCOL_CODE);
+        ProtocolManager.registerProtocol(VideoProtocol.VIDEO_PROTOCOL,VideoProtocol.PROTOCOL_CODE);
         ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerDefaultExecutor(IMAGE_PROCESSOR_EXECUTOR);
         ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerProcessor(MessageCommandCode.SERVER_HELLO,new ServerHelloProcessor());
         ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerProcessor(MessageCommandCode.SERVER_SAY_LEAVE,new ServerSayLeaveProcessor());
         ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerProcessor(MessageCommandCode.SERVER_PUSH_DATA,new ServerPushDataProcessor());
+        ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerProcessor(MessageCommandCode.HEART_SYN_COMMAND,new VideoHeardProcessor());
+        ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerProcessor(MessageCommandCode.HEART_ACK_COMMAND,new VideoHeardProcessor());
     }
 
     /**

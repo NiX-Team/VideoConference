@@ -97,8 +97,7 @@ public class MainController {
             if (maxPane != null && maxPane.getId().equals(imageMessage.getRoomId() + "-" + imageMessage.getUserId())) {
                 maxStage.close();
             }
-            Pane pane = (Pane) otherVideoPane.lookup("#" + imageMessage.getUserId());
-            otherVideoPane.getChildren().removeAll(pane);
+            otherVideoPane.getChildren().filtered(p -> imageMessage.getUserId().equals(p.getId())).forEach(pane -> otherVideoPane.getChildren().removeAll(pane));
             LogKit.info("移除面板" + imageMessage);
         });
     }

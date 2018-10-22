@@ -37,9 +37,10 @@ public class ClientContainer {
                 LogKit.info("新添加房间：" + message.getRoomId());
             }
         }
-        LogKit.info("添加客户端" + message + "，roomId=" + message.getRoomId());
-        CLIENT_CONTEXT.get(message.getRoomId()).add(key);
-        CHANNEL_ROOM.put(key,new String[]{message.getRoomId(),message.getUserId()});
+        if (CLIENT_CONTEXT.get(message.getRoomId()).add(key)) {
+            LogKit.info("添加客户端 msg={} key={}",message,key);
+            CHANNEL_ROOM.put(key, new String[]{message.getRoomId(), message.getUserId()});
+        }
 
     }
     /**

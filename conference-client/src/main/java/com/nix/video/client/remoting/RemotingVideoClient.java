@@ -37,7 +37,15 @@ public class RemotingVideoClient extends AbstractConfigurableInstance{
             super.close(ctx, promise);
             LogKit.info("客户端连接关闭 等待重连");
             // 重连
-
+            if (Config.getConnection() == null || !Config.getConnection().isFine()) {
+                Connection connection = RemotingVideoClient.VIDEO_CLIENT.connectionVideoServer(Config.getServerUrl());
+                if (connection == null) {
+                    LogKit.warn("重连失败 {}", Config.getServerUrl());
+                } else {
+                    LogKit.info("重连成功 {}", Config.getServerUrl());
+                    Config.setConnection(connection);
+                }
+            }
         }
     };
     private ReconnectManager                            reconnectManager;
@@ -127,11 +135,6 @@ public class RemotingVideoClient extends AbstractConfigurableInstance{
             connectionMonitor.destroy();
         }
     }
-    @Override
-    public void initWriteBufferWaterMark(int low, int high) {
-        super.initWriteBufferWaterMark(0,1024*1024*1024);
-    }
-
     public Connection connectionVideoServer(String url) {
         try {
             Connection connection = RemotingVideoClient.VIDEO_CLIENT.createConnection(url);

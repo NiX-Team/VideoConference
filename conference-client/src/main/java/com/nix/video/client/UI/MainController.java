@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
 
 /**
  * @author 11723
@@ -66,30 +68,43 @@ public class MainController {
     private final float widthHeigth = 1.2F;
     private Stage maxStage;
     private Pane maxPane;
-    private final static ConcurrentHashMap<String,Boolean> OTHER_CLIENT_SIGN = new ConcurrentHashMap<>(16);
+    private final static Map<String,Boolean> OTHER_CLIENT_SIGN = new HashMap<>(16);
     private final static Map<String, SyncCompareAndSet> SERIAL_NUMBER = new HashMap<>(16);
+    private final static Map<String, Semaphore> CLIENT_PANE = new HashMap<>(16);
 
     @FXML
     public void setImage(Image image) {
         video_box.setImage(image);
     }
     public void addAClient(AbstractMessage imageMessage) {
-        if (imageMessage.getId() != SERIAL_NUMBER.get(imageMessage.getUserId()).highSet(imageMessage.getId())) {
-            return;
+        if (SERIAL_NUMBER.get(imageMessage.getSign()) == null) {
+            synchronized (SERIAL_NUMBER) {
+                SERIAL_NUMBER.put(imageMessage.getSign(),new SyncCompareAndSet(0));
+                CLIENT_PANE.put(imageMessage.getSign(),new Semaphore(1));
+                OTHER_CLIENT_SIGN.put(imageMessage.getSign(),true);
+            }
+        } else {
+            if (imageMessage.getId() != SERIAL_NUMBER.get(imageMessage.getSign()).highSet(imageMessage.getId())) {
+                LogKit.warn("数据包序列号倒叙 {} < {}",imageMessage.getId(),SERIAL_NUMBER.get(imageMessage.getSign()).get());
+                return;
+            }
         }
         Platform.runLater(() -> {
             if (maxPane != null && maxPane.getId().equals(imageMessage.getSign())) {
                 ((ImageView)maxPane.lookup("#video")).setImage(SwingFXUtils.toFXImage(Objects.requireNonNull(ImageUtil.messageToBufferedImage(imageMessage)),new WritableImage(320,240)));
             }
-            ObservableList<Node> children = otherVideoPane.getChildren().filtered(p -> imageMessage.getUserId().equals(p.getId()));
+            CLIENT_PANE.get(imageMessage.getSign()).tryAcquire();
+            if (!OTHER_CLIENT_SIGN.get(imageMessage.getSign())) {
+                CLIENT_PANE.get(imageMessage.getSign()).release();
+                return;
+            }
+            ObservableList<Node> children = otherVideoPane.getChildren().filtered(p -> imageMessage.getSign().equals(p.getId()));
             ImageView view;
             Pane pane = null;
             if (children.size() == 0) {
-                if (OTHER_CLIENT_SIGN.get(imageMessage.getSign())) {
-                    pane = getClientPane(imageMessage, 320, 240, true);
-                    otherVideoPane.getChildren().add(pane);
-                    LogKit.debug("新增加一名用户：" + imageMessage);
-                }
+                pane = getClientPane(imageMessage, 320, 240, true);
+                otherVideoPane.getChildren().add(pane);
+                LogKit.debug("新增加一名用户：" + imageMessage);
             } else {
                 pane = (Pane) children.get(0);
             }
@@ -97,16 +112,19 @@ public class MainController {
                 view = (ImageView) pane.lookup("#video");
                 view.setImage(SwingFXUtils.toFXImage(Objects.requireNonNull(ImageUtil.messageToBufferedImage(imageMessage)), new WritableImage(320, 240)));
             }
+            CLIENT_PANE.get(imageMessage.getSign()).release();
         });
     }
 
     public void serverSayHello(AbstractMessage imageMessage) {
-        OTHER_CLIENT_SIGN.put(imageMessage.getUserId(),true);
-        SERIAL_NUMBER.put(imageMessage.getUserId(),new SyncCompareAndSet(imageMessage.getId()));
+        OTHER_CLIENT_SIGN.put(imageMessage.getSign(),true);
+        CLIENT_PANE.put(imageMessage.getSign(),new Semaphore(1));
+        SERIAL_NUMBER.put(imageMessage.getSign(),new SyncCompareAndSet(0));
     }
 
     public void removeClient(AbstractMessage imageMessage) {
-        OTHER_CLIENT_SIGN.put(imageMessage.getUserId(),false);
+        CLIENT_PANE.get(imageMessage.getSign()).tryAcquire();
+        OTHER_CLIENT_SIGN.put(imageMessage.getSign(),false);
         Platform.runLater(() -> {
             if (maxPane != null && maxPane.getId().equals(imageMessage.getSign())) {
                 maxStage.close();
@@ -117,12 +135,13 @@ public class MainController {
             }catch (Exception e) {
                 LogKit.error("面板移除异常 {}",imageMessage);
             }
+            CLIENT_PANE.get(imageMessage.getSign()).release();
         });
     }
 
     public Pane getClientPane(AbstractMessage imageMessage, double width, double height, boolean haveMax) {
         Pane pane = new Pane();
-        pane.setId(imageMessage.getUserId());
+        pane.setId(imageMessage.getSign());
         pane.setPrefWidth(width);
         pane.setPrefHeight(height + 25);
         Text text = new Text(String.valueOf(imageMessage.getUserId()));
@@ -168,7 +187,7 @@ public class MainController {
             setError("用户名已存在");
             return;
         }
-        if (Config.getConnection() == null) {
+        if (Config.getConnection() == null || !Config.getConnection().isFine()) {
             Config.setRoomId(roomId.getText());
             Config.setUserId(userId.getText());
             Config.setServerHost(serverHost.getText());

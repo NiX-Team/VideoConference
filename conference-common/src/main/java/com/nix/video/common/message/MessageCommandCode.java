@@ -24,12 +24,14 @@ public enum MessageCommandCode implements CommandCode {
     /** 请求心跳数据包 */
     HEART_SYN_COMMAND((short) 0x07),
     /** 确认心跳数据包 */
-    HEART_ACK_COMMAND((short) 0x08);
+    HEART_ACK_COMMAND((short) 0x08),
+    /** 视频数据包*/
+    VIDEO_DATA((short) 0x09);
 
     /** 编码 */
     short code;
     /**
-     * @return the short value of the code
+     * the short value of the code
      */
     MessageCommandCode(short code) {
         this.code = code;

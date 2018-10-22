@@ -16,7 +16,7 @@ public class VideoProtocol implements Protocol {
     public static final byte VERSION       = 1;
     private final static CommandEncoder   ENCODER = new VideoEncoder();
     private final static CommandDecoder   DECODER = new VideoDecoder();
-    private final static HeartbeatTrigger heartbeatTrigger = new VideoHeartbeatTrigger();
+    private final static HeartbeatTrigger HEARTBEAT_TRIGGER = new VideoHeartbeatTrigger();
     private static final CommandHandler  COMMAND_HANDLER = new VideoCommandHandler();
     private static final CommandFactory  COMMAND_FACTORY = new VideoCommandFactory();
     public static final VideoProtocol VIDEO_PROTOCOL = new VideoProtocol();
@@ -50,7 +50,7 @@ public class VideoProtocol implements Protocol {
      */
     @Override
     public HeartbeatTrigger getHeartbeatTrigger() {
-        return heartbeatTrigger;
+        return HEARTBEAT_TRIGGER;
     }
 
     /**

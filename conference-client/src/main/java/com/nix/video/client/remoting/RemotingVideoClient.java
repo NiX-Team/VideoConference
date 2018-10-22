@@ -107,6 +107,7 @@ public class RemotingVideoClient extends AbstractConfigurableInstance{
         ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerProcessor(MessageCommandCode.SERVER_PUSH_DATA,new ServerPushDataProcessor());
         ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerProcessor(MessageCommandCode.HEART_SYN_COMMAND,new VideoHeardProcessor());
         ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerProcessor(MessageCommandCode.HEART_ACK_COMMAND,new VideoHeardProcessor());
+        ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerProcessor(MessageCommandCode.VIDEO_DATA,new VideoHeardProcessor());
     }
 
     /**

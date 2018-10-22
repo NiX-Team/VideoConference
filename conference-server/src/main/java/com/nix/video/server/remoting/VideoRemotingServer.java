@@ -204,6 +204,7 @@ public class VideoRemotingServer extends AbstractRemotingServer{
         registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.CLIENT_PUSH_DATA,new ClientPushDataProcessor());
         registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.HEART_SYN_COMMAND,new VideoHeardProcessor());
         registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.HEART_ACK_COMMAND,new VideoHeardProcessor());
+        registerProcessor(VideoProtocol.PROTOCOL_CODE, MessageCommandCode.VIDEO_DATA,new ClientPushDataProcessor());
     }
 
 

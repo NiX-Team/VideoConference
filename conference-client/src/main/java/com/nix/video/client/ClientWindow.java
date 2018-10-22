@@ -1,9 +1,6 @@
 package com.nix.video.client;
 
-import com.nix.video.client.common.CameraVideoThread;
-import com.nix.video.client.common.Config;
-import com.nix.video.client.common.ScreenVideoThread;
-import com.nix.video.client.common.VideoThread;
+import com.nix.video.client.common.*;
 import com.nix.video.client.UI.MainController;
 import com.nix.video.client.remoting.RemotingVideoClient;
 import com.nix.video.client.util.ImageUtil;
@@ -23,12 +20,7 @@ import java.awt.image.BufferedImage;
  * @author 11723
  */
 public class ClientWindow extends Application {
-    private final VideoThread.Exe exe = javaImage -> {
-        //在本地窗口显示自己的视频
-        setImage(javaImage);
-        //上传录制视频到服务器
-        RemotingVideoClient.VIDEO_CLIENT.oneway(Config.getConnection(),ImageUtil.imageToImageMessage(javaImage));
-    };
+    private final VideoThread.Exe exe = new ImageExe();
 
     private final CameraVideoThread cameraVideoThread = new CameraVideoThread(exe);
     private final ScreenVideoThread screenVideoThread = new ScreenVideoThread(exe);

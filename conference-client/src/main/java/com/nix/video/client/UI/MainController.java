@@ -78,14 +78,14 @@ public class MainController {
             return;
         }
         Platform.runLater(() -> {
-            if (maxPane != null && maxPane.getId().equals(imageMessage.getRoomId() + "-" + imageMessage.getUserId())) {
+            if (maxPane != null && maxPane.getId().equals(imageMessage.getSign())) {
                 ((ImageView)maxPane.lookup("#video")).setImage(SwingFXUtils.toFXImage(Objects.requireNonNull(ImageUtil.messageToBufferedImage(imageMessage)),new WritableImage(320,240)));
             }
             ObservableList<Node> children = otherVideoPane.getChildren().filtered(p -> imageMessage.getUserId().equals(p.getId()));
             ImageView view;
             Pane pane = null;
             if (children.size() == 0) {
-                if (OTHER_CLIENT_SIGN.get(imageMessage.getUserId())) {
+                if (OTHER_CLIENT_SIGN.get(imageMessage.getSign())) {
                     pane = getClientPane(imageMessage, 320, 240, true);
                     otherVideoPane.getChildren().add(pane);
                     LogKit.debug("新增加一名用户：" + imageMessage);
@@ -108,11 +108,11 @@ public class MainController {
     public void removeClient(AbstractMessage imageMessage) {
         OTHER_CLIENT_SIGN.put(imageMessage.getUserId(),false);
         Platform.runLater(() -> {
-            if (maxPane != null && maxPane.getId().equals(imageMessage.getRoomId() + "-" + imageMessage.getUserId())) {
+            if (maxPane != null && maxPane.getId().equals(imageMessage.getSign())) {
                 maxStage.close();
             }
             try {
-                otherVideoPane.getChildren().filtered(p -> imageMessage.getUserId().equals(p.getId())).forEach(pane -> otherVideoPane.getChildren().removeAll(pane));
+                otherVideoPane.getChildren().filtered(p -> imageMessage.getSign().equals(p.getId())).forEach(pane -> otherVideoPane.getChildren().removeAll(pane));
                 LogKit.info("移除面板" + imageMessage);
             }catch (Exception e) {
                 LogKit.error("面板移除异常 {}",imageMessage);

@@ -209,6 +209,10 @@ public class AbstractMessage implements RemotingCommand {
         this.commandCode = commandCode;
     }
 
+    public String getSign() {
+        return getRoomId() + "-" + getUserId();
+    }
+
     @Override
     public String toString() {
         return "AbstractMessage{" +

@@ -5,6 +5,7 @@ import com.nix.video.client.ClientWindow;
 import com.nix.video.client.common.*;
 import com.nix.video.client.remoting.RemotingVideoClient;
 import com.nix.video.client.util.ImageUtil;
+import com.nix.video.client.util.SyncCompareAndSet;
 import com.nix.video.common.message.AbstractMessage;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -30,6 +31,8 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -64,13 +67,16 @@ public class MainController {
     private Stage maxStage;
     private Pane maxPane;
     private final static ConcurrentHashMap<String,Boolean> OTHER_CLIENT_SIGN = new ConcurrentHashMap<>(16);
+    private final static Map<String, SyncCompareAndSet> SERIAL_NUMBER = new HashMap<>(16);
 
     @FXML
     public void setImage(Image image) {
         video_box.setImage(image);
     }
-
     public void addAClient(AbstractMessage imageMessage) {
+        if (imageMessage.getId() != SERIAL_NUMBER.get(imageMessage.getUserId()).highSet(imageMessage.getId())) {
+            return;
+        }
         Platform.runLater(() -> {
             if (maxPane != null && maxPane.getId().equals(imageMessage.getRoomId() + "-" + imageMessage.getUserId())) {
                 ((ImageView)maxPane.lookup("#video")).setImage(SwingFXUtils.toFXImage(Objects.requireNonNull(ImageUtil.messageToBufferedImage(imageMessage)),new WritableImage(320,240)));
@@ -96,6 +102,7 @@ public class MainController {
 
     public void serverSayHello(AbstractMessage imageMessage) {
         OTHER_CLIENT_SIGN.put(imageMessage.getUserId(),true);
+        SERIAL_NUMBER.put(imageMessage.getUserId(),new SyncCompareAndSet(imageMessage.getId()));
     }
 
     public void removeClient(AbstractMessage imageMessage) {

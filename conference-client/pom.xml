@@ -34,10 +34,6 @@
             <artifactId>bolt</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.alipay.sofa</groupId>
             <artifactId>hessian</artifactId>
             <version>3.3.2</version>
@@ -50,12 +46,42 @@
                     <groupId>org.opensaml</groupId>
                     <artifactId>*</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.openimaj</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+
+
+        <dependency>
+            <groupId>Jim2mov</groupId>
+            <artifactId>org.Jim2mov</artifactId>
+            <scope>system</scope>
+            <!--本地jar的路径,相对或者绝对都可以-->
+            <systemPath>${basedir}/lib/Jim2mov1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>jmf</groupId>
+            <artifactId>org.jmf</artifactId>
+            <scope>system</scope>
+            <!--本地jar的路径,相对或者绝对都可以-->
+            <systemPath>${basedir}/lib/jmf.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.intel.analytics.bigdl.core.native.opencv</groupId>
+            <artifactId>opencv-java-win64</artifactId>
+            <version>0.6.0</version>
             <scope>test</scope>
         </dependency>
 

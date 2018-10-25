@@ -40,4 +40,5 @@ public class SyncCompareAndSetTest {
         downLatch.await();
         System.out.println(compareAndSet.get());
     }
+
 }

@@ -69,6 +69,12 @@
 			<artifactId>hessian</artifactId>
 			<version>3.3.2</version>
 		</dependency>
+		<dependency>
+			<groupId>org.bytedeco.javacpp-presets</groupId>
+			<artifactId>opencv</artifactId>
+			<version>3.4.2-1.4.2</version>
+			<classifier>windows-x86</classifier>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

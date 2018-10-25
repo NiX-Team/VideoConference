@@ -229,6 +229,7 @@ public class MainController {
         error.setText(errorMsg);
     }
     public void close() {
+        RemotingVideoClient.VIDEO_CLIENT.oneway(Config.getConnection(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
         RemotingVideoClient.VIDEO_CLIENT.shutdown();
     }
     private enum ButtonState{

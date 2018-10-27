@@ -2,9 +2,12 @@ package com.nix.video.server.remoting.processor;
 
 import com.alipay.remoting.RemotingContext;
 import com.alipay.remoting.RemotingProcessor;
+import com.alipay.remoting.util.RemotingUtil;
 import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.util.HttpClient;
 import com.nix.video.common.util.log.LogKit;
 import com.nix.video.server.client.ClientContainer;
+import com.nix.video.server.common.WebConfig;
 
 import java.util.concurrent.ExecutorService;
 
@@ -24,8 +27,19 @@ public class ClientSayHelloProcessor implements RemotingProcessor<AbstractMessag
     @Override
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
         LogKit.info("客户端 {} 连接了",msg);
-        defaultExecutor.execute(() -> ClientContainer.addClient(ctx.getChannelContext().channel(),msg));
-        defaultExecutor.execute(() -> ClientContainer.pushMessage2Room(AbstractMessage.createServerSayHelloMessage(msg.getRoomId(),msg.getUserId()),ctx.getChannelContext().channel()));
+        defaultExecutor.execute(() -> {
+            if (ClientContainer.addClient(ctx.getChannelContext().channel(),msg)) {
+                if (Boolean.valueOf(HttpClient.doHttp(WebConfig.WEB_HOST + msg.getWebPath(), HttpClient.HttpMethod.PUT,null))) {
+                    ClientContainer.pushMessage2Room(AbstractMessage.createServerSayHelloMessage(msg.getRoomId(),msg.getUserId()),ctx.getChannelContext().channel());
+                } else {
+                    LogKit.warn("添加客户端失败 (同步web数据失败) userMsg={} url={}",msg, RemotingUtil.parseRemoteAddress(ctx.getChannelContext().channel()));
+                    ClientContainer.removeClient(ctx.getChannelContext().channel(),msg);
+                }
+            } else {
+                LogKit.warn("添加客户端失败 (已存在) userMsg={} url={}",msg, RemotingUtil.parseRemoteAddress(ctx.getChannelContext().channel()));
+                ClientContainer.pushMessage2Room(AbstractMessage.createServerSayHelloMessage(msg.getRoomId(),msg.getUserId()),ctx.getChannelContext().channel());
+            }
+        });
     }
 
     /**

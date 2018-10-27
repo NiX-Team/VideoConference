@@ -215,6 +215,9 @@ public class AbstractMessage implements RemotingCommand {
     public String getSign() {
         return getRoomId() + "-" + getUserId();
     }
+    public String getWebPath() {
+        return "/server/" + getRoomId() + "/" + getUserId();
+    }
 
     @Override
     public String toString() {

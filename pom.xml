@@ -17,6 +17,7 @@
         <module>conference-client</module>
         <module>conference-common</module>
         <module>conference-server</module>
+        <module>conference-web</module>
     </modules>
 
     <dependencyManagement>

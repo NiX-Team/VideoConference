@@ -7,6 +7,7 @@ import com.nix.video.client.remoting.RemotingVideoClient;
 import com.nix.video.client.util.ImageUtil;
 import com.nix.video.client.util.SyncCompareAndSet;
 import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.util.HttpClient;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -34,8 +35,6 @@ import javafx.stage.Stage;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -183,7 +182,7 @@ public class MainController {
             setError("用户id不能为空");
             return;
         }
-        if (Boolean.parseBoolean(HttpClient.doGet("http://" + serverHost.getText() + "/server/" + roomId.getText() + "/" + userId.getText(),null))) {
+        if (Boolean.parseBoolean(HttpClient.doHttp("http://" + serverHost.getText() + "/server/" + roomId.getText() + "/" + userId.getText(), HttpClient.HttpMethod.GET,null))) {
             setError("用户名已存在");
             return;
         }

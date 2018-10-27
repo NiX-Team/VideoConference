@@ -34,12 +34,12 @@ public class VideoDecoder implements CommandDecoder {
             if (commandCode == MessageCommandCode.CLIENT_HELLO.value() || commandCode == MessageCommandCode.CLIENT_LEAVE.value() ||
                     commandCode == MessageCommandCode.SERVER_HELLO.value() || commandCode == MessageCommandCode.SERVER_SAY_LEAVE.value() ||
                     commandCode == MessageCommandCode.HEART_SYN_COMMAND.value() || commandCode == MessageCommandCode.HEART_ACK_COMMAND.value()) {
-                message = new AbstractMessage(new String(roomIdBytes),new String(userIdBytes),id);
+                message = new AbstractMessage(new String(roomIdBytes).trim(),new String(userIdBytes).trim(),id);
                 message.setCommandCode(MessageCommandCode.valueOfCode(commandCode));
                 out.add(message);
             }
             else if (commandCode == MessageCommandCode.CLIENT_PUSH_DATA.value() || commandCode == MessageCommandCode.SERVER_PUSH_DATA.value()) {
-                message = new AbstractMessage(new String(roomIdBytes),new String(userIdBytes),id);
+                message = new AbstractMessage(new String(roomIdBytes).trim(),new String(userIdBytes).trim(),id);
                 message.setCommandCode(MessageCommandCode.valueOfCode(commandCode));
                 byte[] content = new byte[in.readInt()];
                 in.readBytes(content);

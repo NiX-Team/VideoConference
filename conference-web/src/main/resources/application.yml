@@ -1,0 +1,12 @@
+server:
+  port: 80
+logging:
+  file: ./log/web/log.log
+  level:
+    root: info
+    org.springfromework.web: debug
+    org.hibernate: error
+spring:
+  redis:
+    timeout: 2S
+    password:

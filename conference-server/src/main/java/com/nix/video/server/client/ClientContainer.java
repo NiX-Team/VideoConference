@@ -5,7 +5,9 @@ import com.alipay.remoting.util.RemotingUtil;
 import com.nix.video.common.VideoAddressParser;
 import com.nix.video.common.message.AbstractMessage;
 import com.nix.video.common.message.MessageCommandCode;
+import com.nix.video.common.util.HttpClient;
 import com.nix.video.common.util.log.LogKit;
+import com.nix.video.server.common.WebConfig;
 import com.nix.video.server.remoting.VideoRemotingServer;
 import io.netty.channel.Channel;
 
@@ -29,7 +31,7 @@ public class ClientContainer {
     /**
      * 添加一个客户端连接
      * */
-    public static void addClient(Channel channel, AbstractMessage message) {
+    public static boolean addClient(Channel channel, AbstractMessage message) {
         String key = ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey();
         if (!CLIENT_CONTEXT.containsKey(message.getRoomId())) {
             Set<String> list = Collections.synchronizedSet(new LinkedHashSet<>());
@@ -40,17 +42,24 @@ public class ClientContainer {
         if (CLIENT_CONTEXT.get(message.getRoomId()).add(key)) {
             LogKit.info("添加客户端 msg={} key={}",message,key);
             CHANNEL_ROOM.put(key, new String[]{message.getRoomId(), message.getUserId()});
+            return true;
         }
-
+        return false;
     }
     /**
      * 根据{@link RemotingContext}客户端通道移除一个客户端
      * */
-    public static void removeClient(Channel channel, AbstractMessage message) {
-        LogKit.info("房间" + message.getRoomId() + "移除用户" + message.getUserId());
-        CLIENT_CONTEXT.get(message.getRoomId()).remove(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
-        message.setCommandCode(MessageCommandCode.SERVER_SAY_LEAVE);
-        pushMessage2Room(message,channel);
+    public static boolean removeClient(Channel channel, AbstractMessage message) {
+        if (Boolean.valueOf(HttpClient.doHttp(WebConfig.WEB_HOST + message.getWebPath(), HttpClient.HttpMethod.DELETE,null))) {
+            LogKit.info("房间" + message.getRoomId() + "移除用户" + message.getUserId());
+            CLIENT_CONTEXT.get(message.getRoomId()).remove(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
+            message.setCommandCode(MessageCommandCode.SERVER_SAY_LEAVE);
+            pushMessage2Room(message,channel);
+            return true;
+        } else {
+            LogKit.warn("移除用户失败 userMsg={}",message);
+            return false;
+        }
     }
 
     /**
@@ -58,10 +67,9 @@ public class ClientContainer {
      * */
     public static void removeClient(Channel channel) {
         String[] userMsg = CHANNEL_ROOM.get(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
-        LogKit.info("房间" + userMsg[0] + "移除用户" +userMsg[1]);
-        CLIENT_CONTEXT.get(userMsg[0]).remove(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
-        AbstractMessage message = AbstractMessage.createServerSayLeaveMessage(userMsg[0],userMsg[1]);
-        pushMessage2Room(message,channel);
+        if (removeClient(channel,AbstractMessage.createServerSayLeaveMessage(userMsg[0],userMsg[1]))) {
+            CHANNEL_ROOM.remove(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
+        }
     }
 
     public static void pushData2Room(AbstractMessage message,Channel channel) {

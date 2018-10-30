@@ -1,9 +1,5 @@
 package com.nix.video.web.common;
 
-/**
- * @author Kiss
- * @date 2018/10/27 11:53
- */
 
 import java.io.Serializable;
 import java.util.function.Consumer;
@@ -11,10 +7,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * 需要满足平台要求, 这种实现更现实一些
- *
- * @param <S>
- * @author weifeng.lwf
+ * @author Kiss
+ * @date 2018/10/27 11:53
  */
 public abstract class Result<S> implements Serializable {
     private final boolean success;

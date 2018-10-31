@@ -24,7 +24,6 @@ public class VideoEncoder implements CommandEncoder {
     @Override
     public void encode(ChannelHandlerContext ctx, Serializable msg, ByteBuf out) throws Exception {
         try {
-            LogKit.debug("encode : {}",msg);
             if (msg instanceof AbstractMessage) {
                 AbstractMessage cmd = (AbstractMessage) msg;
                 // 写入数据包长度

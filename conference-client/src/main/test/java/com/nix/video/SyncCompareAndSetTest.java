@@ -3,6 +3,7 @@ package com.nix.video;
 import com.nix.video.client.util.SyncCompareAndSet;
 import org.junit.Test;
 
+import java.util.BitSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -40,5 +41,10 @@ public class SyncCompareAndSetTest {
         downLatch.await();
         System.out.println(compareAndSet.get());
     }
-
+    @Test
+    public void bitSetTest() {
+        BitSet bitSet = new BitSet();
+        bitSet.set(3);
+        System.out.println(bitSet.get(3));
+    }
 }

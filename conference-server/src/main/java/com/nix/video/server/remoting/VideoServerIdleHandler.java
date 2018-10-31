@@ -14,14 +14,14 @@ import io.netty.handler.timeout.IdleStateEvent;
  */
 @ChannelHandler.Sharable
 public class VideoServerIdleHandler  extends ChannelDuplexHandler {
+
+
     @Override
     public void userEventTriggered(final ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             try {
-                LogKit.warn("Connection idle, close it from server side: {}",
-                        RemotingUtil.parseRemoteAddress(ctx.channel()));
+                LogKit.warn("Connection idle, close it from server side: {}", RemotingUtil.parseRemoteAddress(ctx.channel()));
                 ctx.close();
-                ClientContainer.removeClient(ctx.channel());
             } catch (Exception e) {
                 LogKit.warn("Exception caught when closing connection in ServerIdleHandler.", e);
             }

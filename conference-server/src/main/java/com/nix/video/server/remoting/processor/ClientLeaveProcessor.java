@@ -26,7 +26,7 @@ public class ClientLeaveProcessor implements RemotingProcessor<AbstractMessage> 
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
         LogKit.info("客户端 {} 离开了",msg);
         msg.setCommandCode(MessageCommandCode.SERVER_SAY_LEAVE);
-        defaultExecutor.execute(() -> ClientContainer.pushMessage2Room(msg,ctx.getChannelContext().channel()));
+        defaultExecutor.execute(() -> ClientContainer.pushMessage2Room(msg,ctx.getConnection()));
 
     }
 

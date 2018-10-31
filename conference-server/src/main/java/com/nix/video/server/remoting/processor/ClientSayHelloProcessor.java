@@ -28,16 +28,16 @@ public class ClientSayHelloProcessor implements RemotingProcessor<AbstractMessag
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
         LogKit.info("客户端 {} 连接了",msg);
         defaultExecutor.execute(() -> {
-            if (ClientContainer.addClient(ctx.getChannelContext().channel(),msg)) {
+            if (ClientContainer.addClient(ctx.getConnection(),msg)) {
                 if (Boolean.valueOf(HttpClient.doHttp(WebConfig.WEB_HOST + msg.getWebPath(), HttpClient.HttpMethod.PUT,null))) {
-                    ClientContainer.pushMessage2Room(AbstractMessage.createServerSayHelloMessage(msg.getRoomId(),msg.getUserId()),ctx.getChannelContext().channel());
+                    ClientContainer.pushMessage2Room(AbstractMessage.createServerSayHelloMessage(msg.getRoomId(),msg.getUserId()),ctx.getConnection());
                 } else {
                     LogKit.warn("添加客户端失败 (同步web数据失败) userMsg={} url={}",msg, RemotingUtil.parseRemoteAddress(ctx.getChannelContext().channel()));
-                    ClientContainer.removeClient(ctx.getChannelContext().channel(),msg);
+                    ClientContainer.removeClient(ctx.getConnection(),msg);
                 }
             } else {
                 LogKit.warn("添加客户端失败 (已存在) userMsg={} url={}",msg, RemotingUtil.parseRemoteAddress(ctx.getChannelContext().channel()));
-                ClientContainer.pushMessage2Room(AbstractMessage.createServerSayHelloMessage(msg.getRoomId(),msg.getUserId()),ctx.getChannelContext().channel());
+                ClientContainer.pushMessage2Room(AbstractMessage.createServerSayHelloMessage(msg.getRoomId(),msg.getUserId()),ctx.getConnection());
             }
         });
     }

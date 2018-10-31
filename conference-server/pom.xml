@@ -26,12 +26,6 @@
 		<dependency>
 			<groupId>com.alipay.sofa</groupId>
 			<artifactId>bolt</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
@@ -41,12 +35,6 @@
 			<groupId>com.alipay.sofa</groupId>
 			<artifactId>hessian</artifactId>
 			<version>3.3.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.bytedeco.javacpp-presets</groupId>
-			<artifactId>opencv</artifactId>
-			<version>3.4.2-1.4.2</version>
-			<classifier>windows-x86</classifier>
 		</dependency>
         <dependency>
             <groupId>junit</groupId>

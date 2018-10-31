@@ -1,5 +1,6 @@
 package com.nix.video.server.client;
 
+import com.alipay.remoting.Connection;
 import com.alipay.remoting.RemotingContext;
 import com.alipay.remoting.util.RemotingUtil;
 import com.nix.video.common.VideoAddressParser;
@@ -13,6 +14,9 @@ import io.netty.channel.Channel;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author 11723
@@ -26,13 +30,11 @@ public class ClientContainer {
 
     private final static ConcurrentHashMap<String/*url.getUniqueKey()*/,String[]/*roomId*/> CHANNEL_ROOM = new ConcurrentHashMap<>();
 
-    private final static VideoAddressParser ADDRESS_PARSER = VideoAddressParser.PARSER;
-
     /**
      * 添加一个客户端连接
      * */
-    public static boolean addClient(Channel channel, AbstractMessage message) {
-        String key = ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey();
+    public static boolean addClient(Connection connection, AbstractMessage message) {
+        String key = connection.getUrl().getUniqueKey();
         if (!CLIENT_CONTEXT.containsKey(message.getRoomId())) {
             Set<String> list = Collections.synchronizedSet(new LinkedHashSet<>());
             if (CLIENT_CONTEXT.putIfAbsent( message.getRoomId(),list) == null) {
@@ -49,12 +51,12 @@ public class ClientContainer {
     /**
      * 根据{@link RemotingContext}客户端通道移除一个客户端
      * */
-    public static boolean removeClient(Channel channel, AbstractMessage message) {
+    public static boolean removeClient(Connection connection, AbstractMessage message) {
+        LogKit.info("开始移除用户 {}",message);
         if (Boolean.valueOf(HttpClient.doHttp(WebConfig.WEB_HOST + message.getWebPath(), HttpClient.HttpMethod.DELETE,null))) {
-            LogKit.info("房间" + message.getRoomId() + "移除用户" + message.getUserId());
-            CLIENT_CONTEXT.get(message.getRoomId()).remove(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
+            CLIENT_CONTEXT.get(message.getRoomId()).remove(connection.getUrl().getUniqueKey());
             message.setCommandCode(MessageCommandCode.SERVER_SAY_LEAVE);
-            pushMessage2Room(message,channel);
+            pushMessage2Room(message,connection);
             return true;
         } else {
             LogKit.warn("移除用户失败 userMsg={}",message);
@@ -65,20 +67,21 @@ public class ClientContainer {
     /**
      * 服务器通知房间里的客户端 哪个连接断开了
      * */
-    public static void removeClient(Channel channel) {
-        String[] userMsg = CHANNEL_ROOM.get(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
-        if (removeClient(channel,AbstractMessage.createServerSayLeaveMessage(userMsg[0],userMsg[1]))) {
-            CHANNEL_ROOM.remove(ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey());
+    public static void removeClient(Connection connection) {
+        String[] userMsg = CHANNEL_ROOM.get(connection.getUrl().getUniqueKey());
+        LogKit.debug("客户端移除断开，开始关闭通道 {}-{}",userMsg[0],userMsg[1]);
+        if (removeClient(connection,AbstractMessage.createServerSayLeaveMessage(userMsg[0],userMsg[1]))) {
+            CHANNEL_ROOM.remove(connection.getUrl().getUniqueKey());
         }
     }
 
-    public static void pushData2Room(AbstractMessage message,Channel channel) {
+    public static void pushData2Room(AbstractMessage message,Connection channel) {
         message.setCommandCode(MessageCommandCode.SERVER_PUSH_DATA);
         pushMessage2Room(message,channel);
     }
 
-    public static void pushMessage2Room(AbstractMessage message,Channel channel) {
-        String ownerKey = ADDRESS_PARSER.parse(RemotingUtil.parseRemoteAddress(channel)).getUniqueKey();
+    public static void pushMessage2Room(AbstractMessage message,Connection connection) {
+        String ownerKey = connection.getUrl().getUniqueKey();
         CLIENT_CONTEXT.get(message.getRoomId()).stream().filter(key -> !key.equals(ownerKey)).forEach(client -> {
             try {
                 VideoRemotingServer.server.getConnectionManager().get(client).getChannel().writeAndFlush(message);

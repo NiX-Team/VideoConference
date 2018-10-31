@@ -24,7 +24,7 @@ public class ClientPushDataProcessor implements RemotingProcessor<AbstractMessag
     @Override
     public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
         LogKit.debug("server get push data . size : {}" ,msg.getContent().length);
-        defaultExecutor.execute(() -> ClientContainer.pushData2Room(msg,ctx.getChannelContext().channel()));
+        defaultExecutor.execute(() -> ClientContainer.pushData2Room(msg,ctx.getConnection()));
     }
 
     /**

@@ -46,7 +46,6 @@ public class VideoDecoder implements CommandDecoder {
                 message.setContent(content);
                 out.add(message);
             }
-            LogKit.debug("decode success:{}",message);
         }catch (Exception ignored) {
         }
     }

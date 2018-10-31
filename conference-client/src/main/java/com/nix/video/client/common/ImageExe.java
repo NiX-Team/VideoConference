@@ -1,7 +1,7 @@
 package com.nix.video.client.common;
 
 import com.nix.video.client.ClientWindow;
-import com.nix.video.client.remoting.RemotingVideoClient;
+import com.nix.video.client.remoting.VideoRemotingClient;
 import com.nix.video.client.util.ImageUtil;
 
 import java.awt.image.BufferedImage;
@@ -16,6 +16,6 @@ public class ImageExe implements VideoThread.Exe{
         //在本地窗口显示自己的视频
         ClientWindow.setImage(javaImage);
         //上传录制视频到服务器
-        RemotingVideoClient.VIDEO_CLIENT.oneway(Config.getConnection(), ImageUtil.imageToImageMessage(javaImage));
+        VideoRemotingClient.CLIENT.oneway(Config.getConnection(), ImageUtil.imageToImageMessage(javaImage));
     }
 }

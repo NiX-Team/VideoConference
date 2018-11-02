@@ -52,7 +52,7 @@ public class ClientWindow extends Application {
      * */
     public void openCameraVideo() {
         cameraVideoThread.start();
-        VideoRemotingClient.CLIENT.oneway(Config.getConnection(), AbstractMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
+        VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), AbstractMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
     }
     /**
      * 关闭
@@ -66,7 +66,7 @@ public class ClientWindow extends Application {
      * */
     public void openScreenVideo() {
         screenVideoThread.start();
-        VideoRemotingClient.CLIENT.oneway(Config.getConnection(), AbstractMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
+        VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), AbstractMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
     }
     public void closeScreenVideo() {
         screenVideoThread.stop();

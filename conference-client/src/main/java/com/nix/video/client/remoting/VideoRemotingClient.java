@@ -102,21 +102,12 @@ public class VideoRemotingClient extends BaseRemoting {
         ProtocolManager.getProtocol(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE)).getCommandHandler().registerProcessor(MessageCommandCode.VIDEO_DATA,new VideoHeardProcessor());
     }
 
-    public Connection createConnection(String url)
-            throws RemotingException {
-        Connection connection = this.connectionManager.create(VideoAddressParser.PARSER.parse(url));
-        connection.getChannel().attr(Connection.PROTOCOL).set(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE));
-        connection.getChannel().attr(Connection.CONNECTION).set(connection);
-        return connection;
-    }
-
-    public Connection connectionVideoServer(String url) {
+    public Connection getAndCreateIfAbsent(String url) {
         try {
-            Connection connection = createConnection(url);
+            Connection connection = connectionManager.getAndCreateIfAbsent(addressParser.parse(url));
             if (connection == null) {
                 return null;
             }
-            oneway(connection, AbstractMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
             return connection;
         }catch (Exception e) {
             LogKit.error("connect server error",e);
@@ -134,25 +125,23 @@ public class VideoRemotingClient extends BaseRemoting {
         }
     }
 
-    @Override
-    public RemotingCommand invokeSync(final Connection conn, final RemotingCommand request,
+    public RemotingCommand invokeSync(final String url, final RemotingCommand request,
                                       final int timeoutMillis) throws RemotingException,
             InterruptedException {
-        return super.invokeSync(conn,request,timeoutMillis);
+
+        return super.invokeSync(getAndCreateIfAbsent(url),request,timeoutMillis);
     }
-    @Override
-    public void invokeWithCallback(final Connection conn, final RemotingCommand request,
+    public void invokeWithCallback(final String url, final RemotingCommand request,
                                    final InvokeCallback invokeCallback, final int timeoutMillis) {
-        super.invokeWithCallback(conn, request, invokeCallback, timeoutMillis);
+        super.invokeWithCallback(getAndCreateIfAbsent(url), request, invokeCallback, timeoutMillis);
     }
-    @Override
-    public InvokeFuture invokeWithFuture(final Connection conn, final RemotingCommand request, final int timeoutMillis) {
-        return super.invokeWithFuture(conn, request, timeoutMillis);
+    public InvokeFuture invokeWithFuture(final String url, final RemotingCommand request, final int timeoutMillis) {
+        return super.invokeWithFuture(getAndCreateIfAbsent(url), request, timeoutMillis);
     }
-    @Override
-    public void oneway(final Connection conn, final RemotingCommand request) {
-        super.oneway(conn, request);
+    public void oneway(final String url, final RemotingCommand request) {
+        super.oneway(getAndCreateIfAbsent(url), request);
     }
+
 
     @Override
     protected InvokeFuture createInvokeFuture(RemotingCommand request, InvokeContext invokeContext) {

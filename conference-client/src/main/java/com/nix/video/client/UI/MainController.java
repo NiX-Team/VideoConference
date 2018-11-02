@@ -186,17 +186,14 @@ public class MainController {
             setError("用户名已存在");
             return;
         }
-        if (Config.getConnection() == null || !Config.getConnection().isFine()) {
-            Config.setRoomId(roomId.getText());
-            Config.setUserId(userId.getText());
-            Config.setServerHost(serverHost.getText());
-            Config.setServerPort(Integer.valueOf(serverPort.getText()));
-            Connection connection = VideoRemotingClient.CLIENT.connectionVideoServer(Config.getServerUrl());
-            if (connection == null) {
-                setError("连接服务器失败");
-            } else {
-                Config.setConnection(connection);
-            }
+        Config.setRoomId(roomId.getText());
+        Config.setUserId(userId.getText());
+        Config.setServerHost(serverHost.getText());
+        Config.setServerPort(Integer.valueOf(serverPort.getText()));
+        Connection connection = VideoRemotingClient.CLIENT.getAndCreateIfAbsent(Config.getServerUrl());
+        if (connection == null) {
+            setError("连接服务器失败");
+            return;
         }
     }
 
@@ -228,7 +225,7 @@ public class MainController {
         error.setText(errorMsg);
     }
     public void close() {
-        VideoRemotingClient.CLIENT.oneway(Config.getConnection(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
+        VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
         VideoRemotingClient.CLIENT.shutdown();
     }
     private enum ButtonState{
@@ -246,7 +243,7 @@ public class MainController {
         }else {
             openCamera.setText(ButtonState.打开摄像头.name());
             ClientWindow.getClientWindow().closeCameraVideo();
-            VideoRemotingClient.CLIENT.oneway(Config.getConnection(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
+            VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
             setImage(null);
         }
     }
@@ -260,7 +257,7 @@ public class MainController {
         }else {
             openScreen.setText(ButtonState.打开屏幕分享.name());
             ClientWindow.getClientWindow().closeScreenVideo();
-            VideoRemotingClient.CLIENT.oneway(Config.getConnection(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
+            VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
             setImage(null);
         }
     }

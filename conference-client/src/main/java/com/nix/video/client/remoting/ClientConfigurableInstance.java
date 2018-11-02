@@ -26,7 +26,7 @@ public class ClientConfigurableInstance implements ConfigurableInstance {
      */
     @Override
     public GlobalSwitch switches() {
-        return null;
+        return new GlobalSwitch();
     }
 
     /**

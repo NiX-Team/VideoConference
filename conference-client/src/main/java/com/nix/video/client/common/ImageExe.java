@@ -16,6 +16,6 @@ public class ImageExe implements VideoThread.Exe{
         //在本地窗口显示自己的视频
         ClientWindow.setImage(javaImage);
         //上传录制视频到服务器
-        VideoRemotingClient.CLIENT.oneway(Config.getConnection(), ImageUtil.imageToImageMessage(javaImage));
+        VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), ImageUtil.imageToImageMessage(javaImage));
     }
 }

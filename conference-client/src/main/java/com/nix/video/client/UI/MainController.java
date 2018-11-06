@@ -1,12 +1,13 @@
 package com.nix.video.client.UI;
 
 import com.alipay.remoting.Connection;
+import com.alipay.remoting.exception.RemotingException;
 import com.nix.video.client.ClientWindow;
 import com.nix.video.client.common.*;
 import com.nix.video.client.remoting.VideoRemotingClient;
 import com.nix.video.client.util.ImageUtil;
 import com.nix.video.client.util.SyncCompareAndSet;
-import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.message.VideoRequestMessage;
 import com.nix.video.common.util.HttpClient;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -75,7 +76,7 @@ public class MainController {
     public void setImage(Image image) {
         video_box.setImage(image);
     }
-    public void addAClient(AbstractMessage imageMessage) {
+    public void addAClient(VideoRequestMessage imageMessage) {
         if (SERIAL_NUMBER.get(imageMessage.getSign()) == null) {
             synchronized (SERIAL_NUMBER) {
                 SERIAL_NUMBER.put(imageMessage.getSign(),new SyncCompareAndSet(0));
@@ -115,13 +116,13 @@ public class MainController {
         });
     }
 
-    public void serverSayHello(AbstractMessage imageMessage) {
+    public void serverSayHello(VideoRequestMessage imageMessage) {
         OTHER_CLIENT_SIGN.put(imageMessage.getSign(),true);
         CLIENT_PANE.put(imageMessage.getSign(),new Semaphore(1));
         SERIAL_NUMBER.put(imageMessage.getSign(),new SyncCompareAndSet(0));
     }
 
-    public void removeClient(AbstractMessage imageMessage) {
+    public void removeClient(VideoRequestMessage imageMessage) {
         CLIENT_PANE.get(imageMessage.getSign()).tryAcquire();
         OTHER_CLIENT_SIGN.put(imageMessage.getSign(),false);
         Platform.runLater(() -> {
@@ -138,7 +139,7 @@ public class MainController {
         });
     }
 
-    public Pane getClientPane(AbstractMessage imageMessage, double width, double height, boolean haveMax) {
+    public Pane getClientPane(VideoRequestMessage imageMessage, double width, double height, boolean haveMax) {
         Pane pane = new Pane();
         pane.setId(imageMessage.getSign());
         pane.setPrefWidth(width);
@@ -195,12 +196,22 @@ public class MainController {
             setError("连接服务器失败");
             return;
         }
+        try {
+            String result = (String) VideoRemotingClient.CLIENT.invokeSync(Config.getServerUrl(),VideoRequestMessage.createClientSayHelloMessage(Config.getRoomId(),Config.getUserId()),2000);
+            if ("OK".equalsIgnoreCase(result)) {
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setError("登陆失败！！！");
+
     }
 
     /**
      * 新建一个最大化窗口
      * */
-    private void showMaxVideo(AbstractMessage message) {
+    private void showMaxVideo(VideoRequestMessage message) {
         Stage stage = new Stage();
         maxStage = stage;
         stage.setTitle(message.getRoomId() + "-" + message.getUserId());
@@ -225,7 +236,7 @@ public class MainController {
         error.setText(errorMsg);
     }
     public void close() {
-        VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
+        VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), VideoRequestMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
         VideoRemotingClient.CLIENT.shutdown();
     }
     private enum ButtonState{
@@ -243,7 +254,7 @@ public class MainController {
         }else {
             openCamera.setText(ButtonState.打开摄像头.name());
             ClientWindow.getClientWindow().closeCameraVideo();
-            VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
+            VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), VideoRequestMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
             setImage(null);
         }
     }
@@ -257,7 +268,7 @@ public class MainController {
         }else {
             openScreen.setText(ButtonState.打开屏幕分享.name());
             ClientWindow.getClientWindow().closeScreenVideo();
-            VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), AbstractMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
+            VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), VideoRequestMessage.createClientLeaveMessage(Config.getRoomId(),Config.getUserId()));
             setImage(null);
         }
     }

@@ -2,21 +2,15 @@ package com.nix.video.server.client;
 
 import com.alipay.remoting.Connection;
 import com.alipay.remoting.RemotingContext;
-import com.alipay.remoting.util.RemotingUtil;
-import com.nix.video.common.VideoAddressParser;
-import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.message.VideoRequestMessage;
 import com.nix.video.common.message.MessageCommandCode;
 import com.nix.video.common.util.HttpClient;
 import com.nix.video.common.util.log.LogKit;
 import com.nix.video.server.common.WebConfig;
 import com.nix.video.server.remoting.VideoRemotingServer;
-import io.netty.channel.Channel;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author 11723
@@ -33,7 +27,7 @@ public class ClientContainer {
     /**
      * 添加一个客户端连接
      * */
-    public static boolean addClient(Connection connection, AbstractMessage message) {
+    public static boolean addClient(Connection connection, VideoRequestMessage message) {
         String key = connection.getUrl().getUniqueKey();
         if (!CLIENT_CONTEXT.containsKey(message.getRoomId())) {
             Set<String> list = Collections.synchronizedSet(new LinkedHashSet<>());
@@ -51,7 +45,7 @@ public class ClientContainer {
     /**
      * 根据{@link RemotingContext}客户端通道移除一个客户端
      * */
-    public static boolean removeClient(Connection connection, AbstractMessage message) {
+    public static boolean removeClient(Connection connection, VideoRequestMessage message) {
         LogKit.info("开始移除用户 {}",message);
         if (Boolean.valueOf(HttpClient.doHttp(WebConfig.WEB_HOST + message.getWebPath(), HttpClient.HttpMethod.DELETE,null))) {
             CLIENT_CONTEXT.get(message.getRoomId()).remove(connection.getUrl().getUniqueKey());
@@ -70,17 +64,17 @@ public class ClientContainer {
     public static void removeClient(Connection connection) {
         String[] userMsg = CHANNEL_ROOM.get(connection.getUrl().getUniqueKey());
         LogKit.debug("客户端移除断开，开始关闭通道 {}-{}",userMsg[0],userMsg[1]);
-        if (removeClient(connection,AbstractMessage.createServerSayLeaveMessage(userMsg[0],userMsg[1]))) {
+        if (removeClient(connection, VideoRequestMessage.createServerSayLeaveMessage(userMsg[0],userMsg[1]))) {
             CHANNEL_ROOM.remove(connection.getUrl().getUniqueKey());
         }
     }
 
-    public static void pushData2Room(AbstractMessage message,Connection channel) {
+    public static void pushData2Room(VideoRequestMessage message, Connection channel) {
         message.setCommandCode(MessageCommandCode.SERVER_PUSH_DATA);
         pushMessage2Room(message,channel);
     }
 
-    public static void pushMessage2Room(AbstractMessage message,Connection connection) {
+    public static void pushMessage2Room(VideoRequestMessage message, Connection connection) {
         String ownerKey = connection.getUrl().getUniqueKey();
         CLIENT_CONTEXT.get(message.getRoomId()).stream().filter(key -> !key.equals(ownerKey)).forEach(client -> {
             try {

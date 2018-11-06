@@ -2,7 +2,7 @@ package com.nix.video.common.protocol;
 
 import com.alipay.remoting.HeartbeatTrigger;
 import com.alipay.remoting.util.RemotingUtil;
-import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.message.VideoRequestMessage;
 import com.nix.video.common.util.log.LogKit;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -14,6 +14,6 @@ public class VideoHeartbeatTrigger implements HeartbeatTrigger {
     @Override
     public void heartbeatTriggered(ChannelHandlerContext ctx) throws Exception {
         LogKit.debug("心跳检测 url={}", RemotingUtil.parseRemoteAddress(ctx.channel()));
-        ctx.writeAndFlush(AbstractMessage.createHeardSynMessage());
+        ctx.writeAndFlush(VideoRequestMessage.createHeardSynMessage());
     }
 }

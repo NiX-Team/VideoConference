@@ -2,6 +2,7 @@ package com.nix.video.common.protocol;
 
 import com.alipay.remoting.CommandEncoder;
 import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.message.VideoRequestMessage;
 import com.nix.video.common.util.log.LogKit;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -26,6 +27,8 @@ public class VideoEncoder implements CommandEncoder {
         try {
             if (msg instanceof AbstractMessage) {
                 AbstractMessage cmd = (AbstractMessage) msg;
+                // 序列化
+                cmd.serialize();
                 // 写入数据包长度
                 out.writeInt(VideoProtocol.HEADER_DATA_LEN + cmd.getContent().length);
                 //写入协议code

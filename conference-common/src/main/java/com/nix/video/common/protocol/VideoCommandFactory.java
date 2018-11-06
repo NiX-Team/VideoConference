@@ -3,8 +3,7 @@ package com.nix.video.common.protocol;
 import com.alipay.remoting.CommandFactory;
 import com.alipay.remoting.RemotingCommand;
 import com.alipay.remoting.ResponseStatus;
-import com.nix.video.common.message.AbstractMessage;
-import com.nix.video.common.message.MessageCommandCode;
+import com.nix.video.common.message.VideoRequestMessage;
 
 import java.net.InetSocketAddress;
 
@@ -20,7 +19,7 @@ public class VideoCommandFactory implements CommandFactory {
      * @return
      */
     @Override
-    public AbstractMessage createRequestCommand(Object requestObject) {
+    public VideoRequestMessage createRequestCommand(Object requestObject) {
         return null;
     }
 
@@ -32,42 +31,42 @@ public class VideoCommandFactory implements CommandFactory {
      * @return
      */
     @Override
-    public AbstractMessage createResponse(Object responseObject, RemotingCommand requestCmd) {
+    public VideoRequestMessage createResponse(Object responseObject, RemotingCommand requestCmd) {
         return null;
     }
 
     @Override
-    public AbstractMessage createExceptionResponse(int id, String errMsg) {
+    public VideoRequestMessage createExceptionResponse(int id, String errMsg) {
         return null;
     }
 
     @Override
-    public AbstractMessage createExceptionResponse(int id, Throwable t, String errMsg) {
+    public VideoRequestMessage createExceptionResponse(int id, Throwable t, String errMsg) {
         return null;
     }
 
     @Override
-    public AbstractMessage createExceptionResponse(int id, ResponseStatus status) {
+    public VideoRequestMessage createExceptionResponse(int id, ResponseStatus status) {
         return null;
     }
 
     @Override
-    public AbstractMessage createExceptionResponse(int id, ResponseStatus status, Throwable t) {
+    public VideoRequestMessage createExceptionResponse(int id, ResponseStatus status, Throwable t) {
         return null;
     }
 
     @Override
-    public AbstractMessage createTimeoutResponse(InetSocketAddress address) {
+    public VideoRequestMessage createTimeoutResponse(InetSocketAddress address) {
         return null;
     }
 
     @Override
-    public AbstractMessage createSendFailedResponse(InetSocketAddress address, Throwable throwable) {
+    public VideoRequestMessage createSendFailedResponse(InetSocketAddress address, Throwable throwable) {
         return null;
     }
 
     @Override
-    public AbstractMessage createConnectionClosedResponse(InetSocketAddress address, String message) {
+    public VideoRequestMessage createConnectionClosedResponse(InetSocketAddress address, String message) {
         return null;
     }
 }

@@ -1,4 +1,5 @@
 package com.nix.video.common.message;
+
 import com.alipay.remoting.CommandCode;
 import com.alipay.remoting.InvokeContext;
 import com.alipay.remoting.ProtocolCode;
@@ -6,184 +7,61 @@ import com.alipay.remoting.RemotingCommand;
 import com.alipay.remoting.config.switches.ProtocolSwitch;
 import com.alipay.remoting.exception.DeserializationException;
 import com.alipay.remoting.exception.SerializationException;
-import com.alipay.remoting.util.IDGenerator;
 import com.nix.video.common.protocol.VideoProtocol;
 
-import java.util.Arrays;
-
 /**
- * @author 11723
+ * @author keray
+ * @date 2018/11/06 下午7:25
  */
-public class AbstractMessage implements RemotingCommand {
+public abstract class AbstractMessage implements RemotingCommand {
+
     /**
-     * 房间号
+     * id
      * */
-    private final String roomId;
-    /**
-     * 用户id
-     * */
-    private final String userId;
-    /**
-     * 消息id
-     * */
-    private final int id;
+    protected int id;
 
     /**
      * 消息类型
      * */
-    private CommandCode commandCode;
+    protected CommandCode commandCode;
 
     /**
-     * 响应类型
+     * 房间号
      * */
+    protected final String roomId;
+    /**
+     * 用户id
+     * */
+    protected final String userId;
 
     /**
-     * 消息内容
+     * 内容
      * */
-    private byte[] content = new byte[0];
+    protected byte[] content = new byte[0];
 
-
-    public AbstractMessage(String roomId,String userId) {
-        id = IDGenerator.nextId();
+    public AbstractMessage(String roomId, String userId) {
         this.roomId = roomId;
         this.userId = userId;
     }
-    public AbstractMessage(String roomId,String userId,int id) {
-        this.roomId = roomId;
-        this.userId = userId;
-        this.id = id;
-    }
 
-    public static AbstractMessage createAbstractMessage(String roomId,String userId,MessageCommandCode commandCode) {
-        AbstractMessage message = new AbstractMessage(roomId,userId);
-        message.setCommandCode(commandCode);
-        return message;
-    }
-
-    public static AbstractMessage createClientSayHelloMessage(String roomId,String userId) {
-        return createAbstractMessage(roomId,userId,MessageCommandCode.CLIENT_HELLO);
-    }
-    public static AbstractMessage createClientLeaveMessage(String roomId,String userId) {
-        return createAbstractMessage(roomId,userId,MessageCommandCode.CLIENT_LEAVE);
-    }
-    public static AbstractMessage createClientPushDataMessage(String roomId,String userId) {
-        return createAbstractMessage(roomId,userId,MessageCommandCode.CLIENT_PUSH_DATA);
-    }
-    public static AbstractMessage createServerSayHelloMessage(String roomId,String userId) {
-        return createAbstractMessage(roomId,userId,MessageCommandCode.SERVER_HELLO);
-    }
-    public static AbstractMessage createServerSayLeaveMessage(String roomId,String userId) {
-        return createAbstractMessage(roomId,userId,MessageCommandCode.SERVER_SAY_LEAVE);
-    }
-    public static AbstractMessage createServerPushDataMessage(String roomId,String userId) {
-        return createAbstractMessage(roomId,userId,MessageCommandCode.SERVER_PUSH_DATA);
-    }
-    public static AbstractMessage createVideoDataMessage(String roomId,String userId) {
-        return createAbstractMessage(roomId,userId,MessageCommandCode.VIDEO_DATA);
-    }
-    public static AbstractMessage createHeardSynMessage() {
-        return createAbstractMessage("","",MessageCommandCode.HEART_SYN_COMMAND);
-    }
-    public static AbstractMessage createHeardAckMessage() {
-        return createAbstractMessage("","",MessageCommandCode.HEART_ACK_COMMAND);
-    }
-
-    /**
-     * key
-     * */
-    public String getKey() {
-        return getRoomId();
-    }
-
-    /**
-     * 获取消息的唯一id
-     * @return
-     * */
-    @Override
-    public int getId() {
-        return id;
-    }
-    /**
-     * Get the code of the protocol that this command belongs to
-     *
-     * @return protocol code
-     */
     @Override
     public ProtocolCode getProtocolCode() {
         return ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE);
     }
 
-
-    /**
-     * Get invoke context for this command
-     *
-     * @return context
-     */
-    @Override
-    public InvokeContext getInvokeContext() {
-        return null;
-    }
-
-    /**
-     * Get serializer type for this command
-     *
-     * @return
-     */
     @Override
     public byte getSerializer() {
-        return 0;
+        return 1;
     }
 
-    /**
-     * Get the protocol switch status for this command
-     *
-     * @return
-     */
     @Override
     public ProtocolSwitch getProtocolSwitch() {
         return null;
     }
 
-    /**
-     * Serialize all parts of remoting command
-     *
-     * @throws SerializationException
-     */
     @Override
-    public void serialize() throws SerializationException {
-
-    }
-
-    /**
-     * Deserialize all parts of remoting command
-     *
-     * @throws DeserializationException
-     */
-    @Override
-    public void deserialize() throws DeserializationException {
-
-    }
-
-    /**
-     * Serialize content of remoting command
-     *
-     * @param invokeContext
-     * @throws SerializationException
-     */
-    @Override
-    public void serializeContent(InvokeContext invokeContext) throws SerializationException {
-
-    }
-
-    /**
-     * Deserialize content of remoting command
-     *
-     * @param invokeContext
-     * @throws DeserializationException
-     */
-    @Override
-    public void deserializeContent(InvokeContext invokeContext) throws DeserializationException {
-
+    public int getId() {
+        return id;
     }
 
     @Override
@@ -191,13 +69,14 @@ public class AbstractMessage implements RemotingCommand {
         return commandCode;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
-    public String getUserId() {
-        return userId;
+    public void setCommandCode(CommandCode commandCode) {
+        this.commandCode = commandCode;
     }
-    public String getRoomId() {
-        return roomId;
-    }
+
 
     public byte[] getContent() {
         return content;
@@ -207,25 +86,11 @@ public class AbstractMessage implements RemotingCommand {
         this.content = content;
     }
 
-
-    public void setCommandCode(CommandCode commandCode) {
-        this.commandCode = commandCode;
+    public String getRoomId() {
+        return roomId;
     }
 
-    public String getSign() {
-        return getRoomId() + "-" + getUserId();
-    }
-    public String getWebPath() {
-        return "/server/" + getRoomId() + "/" + getUserId();
-    }
-
-    @Override
-    public String toString() {
-        return "AbstractMessage{" +
-                "roomId='" + roomId + '\'' +
-                ", userId='" + userId + '\'' +
-                ", id=" + id +
-                ", commandCode=" + commandCode +
-                '}';
+    public String getUserId() {
+        return userId;
     }
 }

@@ -9,6 +9,8 @@ import java.util.stream.Stream;
  * @date 2018/10/19 1:56 PM
  */
 public enum MessageCommandCode implements CommandCode {
+    /** 请求响应包*/
+    RESPONSE((short) 0x00),
     /** 客户端第一次连接 */
     CLIENT_HELLO((short) 0x01),
     /** 客户端离开 */
@@ -27,7 +29,6 @@ public enum MessageCommandCode implements CommandCode {
     HEART_ACK_COMMAND((short) 0x08),
     /** 视频数据包*/
     VIDEO_DATA((short) 0x09);
-
     /** 编码 */
     short code;
     /**

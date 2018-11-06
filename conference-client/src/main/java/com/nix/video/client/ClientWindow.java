@@ -3,7 +3,7 @@ package com.nix.video.client;
 import com.nix.video.client.common.*;
 import com.nix.video.client.UI.MainController;
 import com.nix.video.client.remoting.VideoRemotingClient;
-import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.message.VideoRequestMessage;
 import com.nix.video.common.util.log.LogKit;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
@@ -52,7 +52,7 @@ public class ClientWindow extends Application {
      * */
     public void openCameraVideo() {
         cameraVideoThread.start();
-        VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), AbstractMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
+        VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), VideoRequestMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
     }
     /**
      * 关闭
@@ -66,7 +66,7 @@ public class ClientWindow extends Application {
      * */
     public void openScreenVideo() {
         screenVideoThread.start();
-        VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), AbstractMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
+        VideoRemotingClient.CLIENT.oneway(Config.getServerUrl(), VideoRequestMessage.createClientSayHelloMessage(Config.getRoomId(), Config.getUserId()));
     }
     public void closeScreenVideo() {
         screenVideoThread.stop();

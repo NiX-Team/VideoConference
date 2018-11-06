@@ -1,6 +1,6 @@
 package com.nix.video.common;
 
-import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.message.VideoRequestMessage;
 import com.nix.video.common.util.log.LogKit;
 
 import java.util.concurrent.LinkedBlockingQueue;
@@ -13,11 +13,11 @@ public final class MessageContainer {
     /**
      * 消息队列
      * */
-    private final static LinkedBlockingQueue<AbstractMessage> MESSAGES = new LinkedBlockingQueue<>(500000);
+    private final static LinkedBlockingQueue<VideoRequestMessage> MESSAGES = new LinkedBlockingQueue<>(500000);
     /**
      * 生产者添加消息
      * */
-    public static void addMessage(AbstractMessage message) {
+    public static void addMessage(VideoRequestMessage message) {
         try {
             //添加消息被阻塞1秒后丢弃添加
             if (!MESSAGES.offer(message,1, TimeUnit.SECONDS)) {
@@ -30,7 +30,7 @@ public final class MessageContainer {
     /**
      * 消费者获取消息
      * */
-    public static AbstractMessage getMessage() {
+    public static VideoRequestMessage getMessage() {
         try {
             return MESSAGES.poll(1,TimeUnit.SECONDS);
         } catch (InterruptedException e) {

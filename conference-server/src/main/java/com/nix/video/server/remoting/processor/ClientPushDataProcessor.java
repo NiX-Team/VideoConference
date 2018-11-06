@@ -1,49 +1,21 @@
 package com.nix.video.server.remoting.processor;
-
 import com.alipay.remoting.RemotingContext;
-import com.alipay.remoting.RemotingProcessor;
-import com.nix.video.common.message.AbstractMessage;
+import com.nix.video.common.message.VideoRequestMessage;
+import com.nix.video.common.message.VideoResponseMessage;
+import com.nix.video.common.protocol.AbstractVideoRequestProcessor;
 import com.nix.video.common.util.log.LogKit;
 import com.nix.video.server.client.ClientContainer;
-
-import java.util.concurrent.ExecutorService;
 
 /**
  * @author keray
  * @date 2018/10/19 2:25 PM
  */
-public class ClientPushDataProcessor implements RemotingProcessor<AbstractMessage> {
-    /**
-     * Process the remoting command.
-     *
-     * @param ctx
-     * @param msg
-     * @param defaultExecutor
-     * @throws Exception
-     */
+public class ClientPushDataProcessor extends AbstractVideoRequestProcessor<VideoRequestMessage> {
+
     @Override
-    public void process(RemotingContext ctx, AbstractMessage msg, ExecutorService defaultExecutor) throws Exception {
+    public VideoResponseMessage process(RemotingContext ctx, VideoRequestMessage msg) {
         LogKit.debug("server get push data . size : {}" ,msg.getContent().length);
-        defaultExecutor.execute(() -> ClientContainer.pushData2Room(msg,ctx.getConnection()));
-    }
-
-    /**
-     * Get the executor.
-     *
-     * @return
-     */
-    @Override
-    public ExecutorService getExecutor() {
+        ClientContainer.pushData2Room(msg,ctx.getConnection());
         return null;
-    }
-
-    /**
-     * Set executor.
-     *
-     * @param executor
-     */
-    @Override
-    public void setExecutor(ExecutorService executor) {
-
     }
 }

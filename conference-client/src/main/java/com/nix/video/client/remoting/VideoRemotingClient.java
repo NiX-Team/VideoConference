@@ -2,25 +2,27 @@ package com.nix.video.client.remoting;
 
 import com.alipay.remoting.*;
 import com.alipay.remoting.config.ConfigurableInstance;
-import com.alipay.remoting.config.configs.ConfigContainer;
 import com.alipay.remoting.config.switches.GlobalSwitch;
 import com.alipay.remoting.connection.ConnectionFactory;
 import com.alipay.remoting.exception.RemotingException;
+import com.alipay.remoting.rpc.DefaultInvokeFuture;
 import com.alipay.remoting.rpc.HeartbeatHandler;
 import com.alipay.remoting.rpc.RpcConnectionEventHandler;
-import com.nix.video.client.common.Config;
+import com.alipay.remoting.rpc.RpcInvokeCallbackListener;
+import com.alipay.remoting.util.RemotingUtil;
 import com.nix.video.client.remoting.processor.ServerHelloProcessor;
 import com.nix.video.client.remoting.processor.ServerPushDataProcessor;
 import com.nix.video.client.remoting.processor.ServerSayLeaveProcessor;
 import com.nix.video.common.VideoAddressParser;
-import com.nix.video.common.message.AbstractMessage;
 import com.nix.video.common.message.MessageCommandCode;
+import com.nix.video.common.message.VideoResponseMessage;
 import com.nix.video.common.protocol.VideoCodec;
 import com.nix.video.common.protocol.VideoCommandFactory;
 import com.nix.video.common.protocol.VideoHeardProcessor;
 import com.nix.video.common.protocol.VideoProtocol;
 import com.nix.video.common.util.log.LogKit;
 
+import java.io.Serializable;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -125,11 +127,11 @@ public class VideoRemotingClient extends BaseRemoting {
         }
     }
 
-    public RemotingCommand invokeSync(final String url, final RemotingCommand request,
-                                      final int timeoutMillis) throws RemotingException,
+    public Object invokeSync(final String url, final RemotingCommand request,
+                                   final int timeoutMillis) throws RemotingException,
             InterruptedException {
-
-        return super.invokeSync(getAndCreateIfAbsent(url),request,timeoutMillis);
+        VideoResponseMessage responseMessage = (VideoResponseMessage) super.invokeSync(getAndCreateIfAbsent(url),request,timeoutMillis);
+        return responseMessage.getResponseObject();
     }
     public void invokeWithCallback(final String url, final RemotingCommand request,
                                    final InvokeCallback invokeCallback, final int timeoutMillis) {
@@ -145,12 +147,13 @@ public class VideoRemotingClient extends BaseRemoting {
 
     @Override
     protected InvokeFuture createInvokeFuture(RemotingCommand request, InvokeContext invokeContext) {
-        return null;
+        return new DefaultInvokeFuture(request.getId(), (InvokeCallbackListener)null, (InvokeCallback)null, request.getProtocolCode().getFirstByte(), this.getCommandFactory(), invokeContext);
+
     }
 
     @Override
     protected InvokeFuture createInvokeFuture(Connection conn, RemotingCommand request, InvokeContext invokeContext, InvokeCallback invokeCallback) {
-        return null;
+        return new DefaultInvokeFuture(request.getId(), new RpcInvokeCallbackListener(RemotingUtil.parseRemoteAddress(conn.getChannel())), invokeCallback, request.getProtocolCode().getFirstByte(), this.getCommandFactory(), invokeContext);
     }
 
 }

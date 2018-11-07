@@ -14,20 +14,15 @@ public class ResponseProcessor  extends AbstractRemotingProcessor<RemotingComman
         LogKit.debug("收到响应数据包 {}",cmd);
         Connection conn = ctx.getChannelContext().channel().attr(Connection.CONNECTION).get();
         InvokeFuture future = conn.removeInvokeFuture(cmd.getId());
-        System.out.println("future" + future);
         ClassLoader oldClassLoader = null;
         try {
-            System.out.println("future1" + future);
             if (future != null) {
-//                if (future.getAppClassLoader() != null) {
-//                    oldClassLoader = Thread.currentThread().getContextClassLoader();
-//                    Thread.currentThread().setContextClassLoader(future.getAppClassLoader());
-//                }
-                System.out.println("future2" + future);
+                if (future.getAppClassLoader() != null) {
+                    oldClassLoader = Thread.currentThread().getContextClassLoader();
+                    Thread.currentThread().setContextClassLoader(future.getAppClassLoader());
+                }
                 future.putResponse(cmd);
-                System.out.println("future3" + future);
                 future.cancelTimeout();
-                System.out.println("future4" + future);
                 try {
                     future.executeInvokeCallback();
                 } catch (Exception e) {
@@ -41,9 +36,9 @@ public class ResponseProcessor  extends AbstractRemotingProcessor<RemotingComman
                                 RemotingUtil.parseRemoteAddress(ctx.getChannelContext().channel()));
             }
         } finally {
-//            if (null != oldClassLoader) {
-//                Thread.currentThread().setContextClassLoader(oldClassLoader);
-//            }
+            if (null != oldClassLoader) {
+                Thread.currentThread().setContextClassLoader(oldClassLoader);
+            }
         }
     }
 }

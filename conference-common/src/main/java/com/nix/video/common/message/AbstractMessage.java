@@ -93,4 +93,14 @@ public abstract class AbstractMessage implements RemotingCommand {
     public String getUserId() {
         return userId;
     }
+
+    @Override
+    public String toString() {
+        return "AbstractMessage{" +
+                "id=" + id +
+                ", commandCode=" + commandCode +
+                ", roomId='" + roomId + '\'' +
+                ", userId='" + userId + '\'' +
+                '}';
+    }
 }

@@ -1,5 +1,5 @@
 server:
-  port: 1025
+  port: 8080
 logging:
   file: ./log/web/log.log
   level:

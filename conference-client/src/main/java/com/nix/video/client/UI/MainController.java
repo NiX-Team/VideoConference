@@ -197,7 +197,8 @@ public class MainController {
             return;
         }
         try {
-            String result = (String) VideoRemotingClient.CLIENT.invokeSync(Config.getServerUrl(),VideoRequestMessage.createClientSayHelloMessage(Config.getRoomId(),Config.getUserId()),2000);
+            String result = (String) VideoRemotingClient.CLIENT.invokeSync(Config.getServerUrl(),VideoRequestMessage.createClientSayHelloMessage(Config.getRoomId(),Config.getUserId()),4000);
+            LogKit.debug("say hello response {}",result);
             if ("OK".equalsIgnoreCase(result)) {
                 return;
             }

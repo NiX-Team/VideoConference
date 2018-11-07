@@ -1,9 +1,7 @@
 package com.nix.video.common.protocol;
 
-import com.alipay.remoting.CommandCode;
-import com.alipay.remoting.CommandHandler;
-import com.alipay.remoting.RemotingContext;
-import com.alipay.remoting.RemotingProcessor;
+import com.alipay.remoting.*;
+import com.nix.video.common.message.AbstractMessage;
 import com.nix.video.common.message.VideoRequestMessage;
 import com.nix.video.common.message.MessageCommandCode;
 import com.nix.video.common.util.log.LogKit;
@@ -17,7 +15,7 @@ import java.util.concurrent.ExecutorService;
  * @date 2018/10/19 4:05 PM
  */
 public class VideoCommandHandler implements CommandHandler {
-    private final static ConcurrentHashMap<CommandCode,RemotingProcessor<VideoRequestMessage>> PROCESSOR = new ConcurrentHashMap<>(16);
+    private final static ConcurrentHashMap<CommandCode,RemotingProcessor<AbstractMessage>> PROCESSOR = new ConcurrentHashMap<>(16);
     private ExecutorService executorService;
 
     public VideoCommandHandler() {
@@ -34,18 +32,16 @@ public class VideoCommandHandler implements CommandHandler {
     @Override
     public void handleCommand(RemotingContext ctx, Object msg) throws Exception {
         if (msg instanceof List) {
-            ((List) msg).forEach(message -> {
-                handler(ctx, message);
-            });
+            ((List) msg).forEach(message -> handler(ctx, message));
         } else {
             handler(ctx, msg);
         }
     }
 
     private void handler(RemotingContext ctx, Object msg) {
-        if (msg instanceof VideoRequestMessage) {
+        if (msg instanceof AbstractMessage) {
             try {
-                PROCESSOR.get(((VideoRequestMessage) msg).getCmdCode()).process(ctx,(VideoRequestMessage) msg,executorService);
+                PROCESSOR.get(((AbstractMessage) msg).getCmdCode()).process(ctx, (AbstractMessage) msg,executorService);
             } catch (Exception e) {
                 e.printStackTrace();
                 LogKit.error("处理message失败",e);

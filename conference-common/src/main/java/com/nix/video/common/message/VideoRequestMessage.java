@@ -104,7 +104,7 @@ public class VideoRequestMessage extends AbstractMessage {
         return getRoomId() + "-" + getUserId();
     }
     public String getWebPath() {
-        return "/server/" + getRoomId() + "/" + getUserId();
+        return ":8080/server/" + getRoomId() + "/" + getUserId();
     }
 
     @Override

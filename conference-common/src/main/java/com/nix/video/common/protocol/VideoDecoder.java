@@ -2,6 +2,7 @@ package com.nix.video.common.protocol;
 
 import com.alipay.remoting.CommandDecoder;
 import com.nix.video.common.message.*;
+import com.nix.video.common.util.log.LogKit;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 
@@ -47,6 +48,8 @@ public class VideoDecoder implements CommandDecoder {
                 byte[] content = new byte[in.readInt()];
                 in.readBytes(content);
                 message.setContent(content);
+
+                LogKit.debug("解码响应数据包 {}",message);
             }
             // 反序列化
             if (message != null) {

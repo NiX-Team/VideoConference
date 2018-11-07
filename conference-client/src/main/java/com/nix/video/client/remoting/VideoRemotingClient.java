@@ -5,10 +5,7 @@ import com.alipay.remoting.config.ConfigurableInstance;
 import com.alipay.remoting.config.switches.GlobalSwitch;
 import com.alipay.remoting.connection.ConnectionFactory;
 import com.alipay.remoting.exception.RemotingException;
-import com.alipay.remoting.rpc.DefaultInvokeFuture;
 import com.alipay.remoting.rpc.HeartbeatHandler;
-import com.alipay.remoting.rpc.RpcConnectionEventHandler;
-import com.alipay.remoting.rpc.RpcInvokeCallbackListener;
 import com.alipay.remoting.util.RemotingUtil;
 import com.nix.video.client.remoting.processor.ServerHelloProcessor;
 import com.nix.video.client.remoting.processor.ServerPushDataProcessor;
@@ -16,10 +13,7 @@ import com.nix.video.client.remoting.processor.ServerSayLeaveProcessor;
 import com.nix.video.common.VideoAddressParser;
 import com.nix.video.common.message.MessageCommandCode;
 import com.nix.video.common.message.VideoResponseMessage;
-import com.nix.video.common.protocol.VideoCodec;
-import com.nix.video.common.protocol.VideoCommandFactory;
-import com.nix.video.common.protocol.VideoHeardProcessor;
-import com.nix.video.common.protocol.VideoProtocol;
+import com.nix.video.common.protocol.*;
 import com.nix.video.common.util.log.LogKit;
 
 import java.io.Serializable;
@@ -39,7 +33,7 @@ public class VideoRemotingClient extends BaseRemoting {
                                                                                                                     new HeartbeatHandler(),
                                                                                                                     new ClientHandler(),
                                                                                                                     configurableInstance);
-    private ConnectionEventHandler                      connectionEventHandler   = new RpcConnectionEventHandler(configurableInstance.switches());
+    private ConnectionEventHandler                      connectionEventHandler   = new ConnectionEventHandler(configurableInstance.switches());
     private ReconnectManager                            reconnectManager;
     private ConnectionEventListener                     connectionEventListener  = new ConnectionEventListener();
     private RemotingAddressParser                       addressParser            = VideoAddressParser.PARSER;
@@ -73,7 +67,6 @@ public class VideoRemotingClient extends BaseRemoting {
         init();
     }
     private void init() {
-        configurableInstance.switches().turnOn(GlobalSwitch.CONN_RECONNECT_SWITCH);
         configurableInstance.switches().turnOn(GlobalSwitch.CONN_MONITOR_SWITCH);
         configurableInstance.switches().turnOn(GlobalSwitch.SERVER_MANAGE_CONNECTION_SWITCH);
         configurableInstance.switches().turnOn(GlobalSwitch.SERVER_SYNC_STOP);
@@ -153,7 +146,17 @@ public class VideoRemotingClient extends BaseRemoting {
 
     @Override
     protected InvokeFuture createInvokeFuture(Connection conn, RemotingCommand request, InvokeContext invokeContext, InvokeCallback invokeCallback) {
-        return new DefaultInvokeFuture(request.getId(), new RpcInvokeCallbackListener(RemotingUtil.parseRemoteAddress(conn.getChannel())), invokeCallback, request.getProtocolCode().getFirstByte(), this.getCommandFactory(), invokeContext);
+        return new DefaultInvokeFuture(request.getId(), new InvokeCallbackListener() {
+            @Override
+            public void onResponse(InvokeFuture invokeFuture) {
+
+            }
+
+            @Override
+            public String getRemoteAddress() {
+                return null;
+            }
+        }, invokeCallback, request.getProtocolCode().getFirstByte(), this.getCommandFactory(), invokeContext);
     }
 
 }

@@ -4,7 +4,7 @@ import com.alipay.remoting.Connection;
 import com.alipay.remoting.RemotingContext;
 import com.nix.video.common.message.VideoRequestMessage;
 import com.nix.video.common.message.MessageCommandCode;
-import com.nix.video.common.util.HttpClient;
+import com.nix.video.common.util.HttpConnect;
 import com.nix.video.common.util.log.LogKit;
 import com.nix.video.server.common.WebConfig;
 import com.nix.video.server.remoting.VideoRemotingServer;
@@ -47,7 +47,7 @@ public class ClientContainer {
      * */
     public static boolean removeClient(Connection connection, VideoRequestMessage message) {
         LogKit.info("开始移除用户 {}",message);
-        if (Boolean.valueOf(HttpClient.doHttp(WebConfig.WEB_HOST + message.getWebPath(), HttpClient.HttpMethod.DELETE,null))) {
+        if (Boolean.valueOf(HttpConnect.doHttp(WebConfig.WEB_HOST + message.getWebPath(), HttpConnect.HttpMethod.DELETE,null))) {
             CLIENT_CONTEXT.get(message.getRoomId()).remove(connection.getUrl().getUniqueKey());
             message.setCommandCode(MessageCommandCode.SERVER_SAY_LEAVE);
             pushMessage2Room(message,connection);

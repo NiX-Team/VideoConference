@@ -30,7 +30,9 @@ import javax.net.ssl.X509TrustManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.Socket;
+import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.*;
 import java.security.cert.CertificateException;
@@ -44,11 +46,29 @@ import java.util.Map;
  * @date 2018/10/27 14:11
  */
 public class HttpConnect {
+    public enum HttpMethod{
+        POST,
+        PUT,
+        DELETE,
+        GET
+    }
+    public static String doHttp(String url,HttpConnect.HttpMethod method , Map<String,String> param){
+        try {
+            return new HttpConnect.Builder()
+                    .jsonData(null)
+                    .url(url)
+                    .method(method)
+                    .build().sendData().result();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     private static String jsonData;
     private Object object;
     private String url;
-    private String method;
+    private HttpMethod method;
     private Map<String, String> header;
     private String[] filepath;
     private String[] filename;
@@ -58,7 +78,7 @@ public class HttpConnect {
         private String jsonData;
         private Object object;
         private String url;
-        private String method;
+        private HttpMethod method;
         private Map<String, String> header;
         private String[] filepath;
         private String[] filename;
@@ -92,7 +112,7 @@ public class HttpConnect {
             return this;
         }
 
-        public Builder method(String val) {
+        public Builder method(HttpMethod val) {
             method = val;
             return this;
         }
@@ -120,7 +140,7 @@ public class HttpConnect {
         filename = builder.filename;
 
     }
-    class Response {
+    public class Response {
         int responseCode;
         String responseData;
 
@@ -165,7 +185,7 @@ public class HttpConnect {
             throw new StatementException("必要的参数缺失");
         }
         switch (method) {
-            case "POST": {
+            case POST: {
                 HttpClient httpClient = getHttpClient();
 
                 HttpPost httpPost = new HttpPost(url);
@@ -176,7 +196,7 @@ public class HttpConnect {
                 }
                 return setEntity(httpClient,httpPost);
             }
-            case "GET": {
+            case GET: {
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpGet httpGet = new HttpGet(url);
                 if (header != null) {
@@ -188,7 +208,7 @@ public class HttpConnect {
                 String result = EntityUtils.toString(response.getEntity(), Charset.forName("UTF-8"));
                 return new Response(response.getStatusLine().getStatusCode(),result);
             }
-            case "DELETE": {
+            case DELETE: {
                 HttpClient httpClient = new DefaultHttpClient();
                 HttpDelete httpDelete = new HttpDelete(url);
                 if (header != null) {
@@ -200,7 +220,7 @@ public class HttpConnect {
                 String result = EntityUtils.toString(response.getEntity(), Charset.forName("UTF-8"));
                 return new Response(response.getStatusLine().getStatusCode(),result);
             }
-            case "PUT" :{
+            case PUT :{
                 HttpClient httpClient = getHttpClient();
 
                 HttpPut httpPut = new HttpPut(url);
@@ -217,7 +237,7 @@ public class HttpConnect {
         }
     }
 
-    private Response setEntity(HttpClient httpClient,HttpEntityEnclosingRequestBase httpMethod) throws IOException {
+    private Response setEntity(HttpClient httpClient, HttpEntityEnclosingRequestBase httpMethod) throws IOException {
 
         if (object != null && jsonData == null) {
             StringEntity entity = new StringEntity(gson.toJson(object), "UTF-8");//设置StringEntity编码为utf-8
@@ -388,7 +408,7 @@ public class HttpConnect {
     }
 
 
-    class StatementException extends  Exception{
+    public class StatementException extends  Exception{
 
         public StatementException(String msg)
         {

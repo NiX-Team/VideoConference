@@ -1,14 +1,14 @@
 package com.nix.video.client.UI;
 
 import com.alipay.remoting.Connection;
-import com.alipay.remoting.exception.RemotingException;
 import com.nix.video.client.ClientWindow;
-import com.nix.video.client.common.*;
+import com.nix.video.client.common.Config;
 import com.nix.video.client.remoting.VideoRemotingClient;
 import com.nix.video.client.util.ImageUtil;
 import com.nix.video.client.util.SyncCompareAndSet;
 import com.nix.video.common.message.VideoRequestMessage;
-import com.nix.video.common.util.HttpClient;
+import com.nix.video.common.util.HttpConnect;
+import com.nix.video.common.util.log.LogKit;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -25,7 +25,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.FlowPane;
-import com.nix.video.common.util.log.LogKit;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -183,7 +182,7 @@ public class MainController {
             setError("用户id不能为空");
             return;
         }
-        if (Boolean.parseBoolean(HttpClient.doHttp("http://" + serverHost.getText() + "/server/" + roomId.getText() + "/" + userId.getText(), HttpClient.HttpMethod.GET,null))) {
+        if (Boolean.parseBoolean(HttpConnect.doHttp("http://" + serverHost.getText() + "/server/" + roomId.getText() + "/" + userId.getText(), HttpConnect.HttpMethod.GET,null))) {
             setError("用户名已存在");
             return;
         }

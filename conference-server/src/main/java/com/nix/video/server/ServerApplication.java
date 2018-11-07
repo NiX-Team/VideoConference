@@ -1,7 +1,6 @@
 package com.nix.video.server;
 
-import com.nix.video.common.util.HttpClient;
-import com.nix.video.common.util.log.LogKit;
+import com.nix.video.common.util.HttpConnect;
 import com.nix.video.server.common.WebConfig;
 import com.nix.video.server.remoting.VideoRemotingServer;
 
@@ -11,7 +10,7 @@ import com.nix.video.server.remoting.VideoRemotingServer;
 public class ServerApplication {
 
 	public static void main(String[] args) {
-		HttpClient.doHttp(WebConfig.WEB_HOST + "/server/init", HttpClient.HttpMethod.GET,null);
+		HttpConnect.doHttp(WebConfig.WEB_HOST + "/server/init", HttpConnect.HttpMethod.GET,null);
 		VideoRemotingServer.getServer(9999).start();
 	}
 }

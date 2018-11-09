@@ -103,6 +103,9 @@ public class VideoRemotingClient extends BaseRemoting {
             if (connection == null) {
                 return null;
             }
+            if (connection.getChannel().attr(Connection.CONNECTION).get() == null) {
+                connection.getChannel().attr(Connection.CONNECTION).set(connection);
+            }
             return connection;
         }catch (Exception e) {
             LogKit.error("connect server error",e);

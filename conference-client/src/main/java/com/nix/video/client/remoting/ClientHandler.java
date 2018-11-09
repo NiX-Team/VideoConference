@@ -18,9 +18,6 @@ public class ClientHandler  extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (ctx.channel().attr(Connection.CONNECTION).get() == null) {
-            ctx.channel().attr(Connection.CONNECTION).set(VideoRemotingClient.CLIENT.getAndCreateIfAbsent(Config.getServerUrl()));
-        }
         ProtocolCode protocolCode = ctx.channel().attr(Connection.PROTOCOL).get();
         Protocol protocol = ProtocolManager.getProtocol(protocolCode);
         protocol.getCommandHandler().handleCommand(new RemotingContext(ctx), msg);

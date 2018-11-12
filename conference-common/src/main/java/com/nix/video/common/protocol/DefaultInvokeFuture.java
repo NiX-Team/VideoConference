@@ -41,7 +41,7 @@ public class DefaultInvokeFuture implements InvokeFuture {
     private CommandFactory commandFactory;
 
     public DefaultInvokeFuture(int invokeId, InvokeCallbackListener callbackListener,
-                               InvokeCallback callback, byte protocol, CommandFactory commandFactoryy) {
+                               InvokeCallback callback, byte protocol, CommandFactory commandFactory) {
         this.invokeId = invokeId;
         this.callbackListener = callbackListener;
         this.callback = callback;

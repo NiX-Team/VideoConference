@@ -105,6 +105,7 @@ public class VideoRemotingServer extends AbstractRemotingServer{
         final boolean idleSwitch = ConfigManager.tcp_idle_switch();
         final int idleTime = ConfigManager.tcp_server_idle();
         final ChannelHandler serverIdleHandler = new VideoServerIdleHandler();
+        final ChannelHandler videoHandler = new VideoHandler();
         this.bootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
             @Override
             protected void initChannel(SocketChannel channel) {
@@ -116,7 +117,7 @@ public class VideoRemotingServer extends AbstractRemotingServer{
                     pipeline.addLast("serverIdleHandler", serverIdleHandler);
                 }
                 pipeline.addLast("connectionEventHandler", connectionEventHandler);
-                pipeline.addLast("handler", new VideoHandler());
+                pipeline.addLast("handler", videoHandler);
                 createConnection(channel);
             }
             /**

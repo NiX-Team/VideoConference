@@ -6,17 +6,16 @@ import com.alipay.remoting.config.switches.GlobalSwitch;
 import com.alipay.remoting.connection.ConnectionFactory;
 import com.alipay.remoting.exception.RemotingException;
 import com.alipay.remoting.rpc.HeartbeatHandler;
-import com.alipay.remoting.util.RemotingUtil;
 import com.nix.video.client.remoting.processor.ServerHelloProcessor;
 import com.nix.video.client.remoting.processor.ServerPushDataProcessor;
 import com.nix.video.client.remoting.processor.ServerSayLeaveProcessor;
 import com.nix.video.common.VideoAddressParser;
+import com.nix.video.common.VideoCodec;
 import com.nix.video.common.message.MessageCommandCode;
 import com.nix.video.common.message.VideoResponseMessage;
 import com.nix.video.common.protocol.*;
 import com.nix.video.common.util.log.LogKit;
 
-import java.io.Serializable;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;

@@ -7,6 +7,7 @@ import com.alipay.remoting.ProtocolManager;
 import com.alipay.remoting.exception.CodecException;
 import com.nix.video.common.util.log.LogKit;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import java.util.Collections;

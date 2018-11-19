@@ -182,7 +182,7 @@ public class MainController {
             setError("用户id不能为空");
             return;
         }
-        if (Boolean.parseBoolean(HttpConnect.doHttp("http://" + serverHost.getText() + "/server/" + roomId.getText() + "/" + userId.getText(), HttpConnect.HttpMethod.GET,null))) {
+        if (Boolean.parseBoolean(HttpConnect.doHttp("http://" + serverHost.getText() + ":8080/server/" + roomId.getText() + "/" + userId.getText(), HttpConnect.HttpMethod.GET,null))) {
             setError("用户名已存在");
             return;
         }

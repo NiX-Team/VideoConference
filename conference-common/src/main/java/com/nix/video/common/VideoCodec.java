@@ -1,10 +1,11 @@
-package com.nix.video.common.protocol;
+package com.nix.video.common;
 
 import com.alipay.remoting.ProtocolCode;
 import com.alipay.remoting.codec.Codec;
 import com.alipay.remoting.codec.ProtocolCodeBasedDecoder;
 import com.alipay.remoting.codec.ProtocolCodeBasedEncoder;
 import com.nix.video.common.Decoder;
+import com.nix.video.common.protocol.VideoProtocol;
 import io.netty.channel.ChannelHandler;
 
 /**
@@ -12,9 +13,11 @@ import io.netty.channel.ChannelHandler;
  * @date 2018/10/19 4:48 PM
  */
 public class VideoCodec implements Codec {
+
+    private final ChannelHandler encoder = new ProtocolCodeBasedEncoder(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE));
     @Override
     public ChannelHandler newEncoder() {
-        return new ProtocolCodeBasedEncoder(ProtocolCode.fromBytes(VideoProtocol.PROTOCOL_CODE));
+        return encoder;
     }
 
     @Override

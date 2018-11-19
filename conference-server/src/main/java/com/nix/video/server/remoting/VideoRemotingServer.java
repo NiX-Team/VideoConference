@@ -9,7 +9,7 @@ import com.alipay.remoting.util.RemotingUtil;
 import com.nix.video.common.VideoAddressParser;
 import com.nix.video.common.message.MessageCommandCode;
 import com.nix.video.common.protocol.VideoHeardProcessor;
-import com.nix.video.common.protocol.VideoCodec;
+import com.nix.video.common.VideoCodec;
 import com.nix.video.common.protocol.VideoProtocol;
 import com.nix.video.common.util.log.LogKit;
 import com.nix.video.server.client.ClientContainer;
